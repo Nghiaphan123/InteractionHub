@@ -18,6 +18,7 @@ public enum ReportStatus
     Dismissed
 }
 
+
 public class PostReport
 {
     public int Id { get; set; }
