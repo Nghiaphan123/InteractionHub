@@ -7,6 +7,5 @@ public class CreatePostDto
     [Required]
     [MaxLength(2000)]
     public string Content { get; set; } = string.Empty;
-
-    public IFormFile? Image { get; set; } // upload ảnh
+    public string? ImageUrl { get; set; }
 }
