@@ -60,6 +60,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFriendService, FriendService>();
+builder.Services.AddScoped<IStoryService, StoryService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 // Swagger với JWT support
 builder.Services.AddSwaggerGen(c =>
