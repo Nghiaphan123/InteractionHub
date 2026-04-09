@@ -6,8 +6,7 @@ import Profile from './pages/Profile.tsx'; // File này bạn tạo trống trư
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-100">
-      <Navbar />
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-900 dark:text-white transition-colors duration-300">      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/friends" element={<Friends />} />
