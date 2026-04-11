@@ -1,52 +1,69 @@
-import { createContext, useContext, useState } from "react";
-import { loginApi, logoutApi } from "../services/authService";
+import { createContext, useContext, useState, useEffect } from "react";
+import { loginAPI } from "../services/authService";
 
-type AuthContextType = {
+interface AuthContextType {
   user: any;
+  token: string | null;
   loading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (data: { email: string; password: string }) => Promise<void>;
   logout: () => void;
-};
+}
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({ children }: any) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async (email: string, password: string) => {
-    try {
-      setLoading(true);
-      const res = await loginApi({ email, password });
-      const data = res.data;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+    }
+  }, []);
 
-      localStorage.setItem("token", data.token);
-      setUser(data.user);
-      setError(null);
-    } catch (err: any) {
-      setError("Sai tài khoản hoặc mật khẩu");
+  // login
+  const login = async (data: { email: string; password: string }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await loginAPI(data);
+      const token = res.data.token;
+
+      localStorage.setItem("token", token);
+      setToken(token);
+
+      setUser(res.data.user || null);
+    } catch (err: any) {;
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = async () => {
-  try {
-    await logoutApi();
-  } catch (e) {}
-
-  localStorage.removeItem("token");
-  setUser(null);
-};
+  // logout
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, loading, error, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-// custom hook
-export const useAuth = () => useContext(AuthContext)!;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used inside AuthProvider");
+  return context;
+};
