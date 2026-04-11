@@ -3,12 +3,13 @@ import Avatar from './Avatar';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
+import type { Post } from '../types/post';
+import TimeAgo from './TimeAgo';
 
 interface PostProps {
-  id: string | number;
-  author: string;
-  content: string;
-  time: React.ReactNode;
+  post: Post;
+  onDelete?: (id: string) => void;
+  currentUser: { fullName: string };
 }
 
 // 1. Component Menu dùng Portal
@@ -63,9 +64,9 @@ const CommentMenuPortal = ({
   );
 };
 
-const PostCard = ({ id, author, content, time }: PostProps) => {
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 10));
+const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
+  const [liked, setLiked] = useState(post.isLiked);
+  const [likeCount, setLikeCount] = useState(post.likesCount);
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [saved, setSaved] = useState(false);
@@ -74,16 +75,16 @@ const PostCard = ({ id, author, content, time }: PostProps) => {
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const isMyPost = post.author.fullName === currentUser.fullName;
   const [comments, setComments] = useState<string[]>(() => {
-    const savedComments = localStorage.getItem(`comments-${id}`);
+    const savedComments = localStorage.getItem(`comments-${post.id}`);
     return savedComments ? JSON.parse(savedComments) : [];
   });
 
   // Lưu bình luận vào LocalStorage
   useEffect(() => {
-    localStorage.setItem(`comments-${id}`, JSON.stringify(comments));
-  }, [comments, id]);
+    localStorage.setItem(`comments-${post.id}`, JSON.stringify(comments));
+  }, [comments, post.id]);
 
   // --- LOGIC MỚI: ĐÓNG MENU KHI LĂN CHUỘT ---
   useEffect(() => {
@@ -131,10 +132,15 @@ const PostCard = ({ id, author, content, time }: PostProps) => {
       {/* HEADER & CONTENT */}
       <div className="flex items-center justify-between relative">
         <div className="flex items-center space-x-3">
-          <Avatar size="md" /> 
+          <Avatar size="md" src={post.author.avatarUrl}/> 
           <div className="flex flex-col">
-            <Link to="/profile" className="font-bold text-sm text-slate-900 leading-none mb-1 hover:underline hover:text-blue-600 transition">{author}</Link>
-            <div className="leading-none text-xs text-slate-500">{time}</div>
+            <Link to={`/profile/${post.id}`} className="font-bold text-sm text-slate-900 leading-none mb-1 hover:underline hover:text-blue-600 transition">
+              {post.author.fullName} {/* Tên tác giả động */}
+            </Link>            
+            <div className="leading-none text-xs text-slate-500">
+              {/* Sử dụng component TimeAgo với dữ liệu createdAt từ backend */}
+              <TimeAgo date={new Date(post.createdAt)} />
+            </div>
           </div>
         </div>
         <div className="relative">
@@ -142,23 +148,49 @@ const PostCard = ({ id, author, content, time }: PostProps) => {
           {isMenuOpen && (
              <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 shadow-xl rounded-xl py-2 z-20 animate-in fade-in zoom-in duration-150">
                 <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition">✨ Quan tâm</button>
-                <button className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition">🚩 Báo cáo bài viết</button>
+                {isMyPost ? (
+                  <button 
+                    onClick={() => onDelete && onDelete(post.id)}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition"
+                  >
+                    🗑️ Xoá bài viết
+                  </button>
+                ) : (
+                  <button className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition">🚩 Báo cáo bài viết</button>
+                )}
              </div>
           )}
         </div>
       </div>
 
-      <p className="text-slate-800 text-sm">{content}</p>
+      <p className="text-slate-800 text-sm">{post.content}</p>
+      {post.imageUrl && (
+        <div className="mt-3 rounded-xl overflow-hidden border border-slate-100">
+          <img 
+            src={post.imageUrl} 
+            alt="Post content" 
+            className="w-full h-auto max-h-[450px] object-cover"
+          />
+        </div>
+      )}
 
       {/* THỐNG KÊ & NÚT LIKE/CMT */}
       <div className="flex justify-between items-center text-xs text-slate-500 border-b border-slate-50 pb-2">
-        <span className="cursor-pointer hover:text-red-500 transition" onClick={handleLike}>❤️ {likeCount} lượt thích</span>
-        <button onClick={() => setShowCommentInput(!showCommentInput)} className="hover:underline cursor-pointer transition">{comments.length} bình luận</button>
+        <span className="cursor-pointer hover:text-red-500 transition" onClick={handleLike}>
+          ❤️ {likeCount} lượt thích
+        </span>
+        <button onClick={() => setShowCommentInput(!showCommentInput)} className="hover:underline cursor-pointer transition">
+          {post.commentsCount} bình luận {/* Số lượng cmt từ backend */}
+        </button>
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant={liked ? "primary" : "secondary"} onClick={handleLike} className="flex-1 py-2 text-xs font-bold uppercase cursor-pointer transition">{liked ? "❤️ Đã Thích" : "👍 Thích"}</Button>
-        <Button variant="secondary" onClick={handleToggleComment} className="flex-1 py-2 text-xs font-bold uppercase cursor-pointer transition">💬 Bình luận</Button>
+        <Button variant={liked ? "primary" : "secondary"} onClick={handleLike} className="flex-1 py-2 text-xs font-bold uppercase cursor-pointer transition">
+          {liked ? "❤️ Đã Thích" : "👍 Thích"}
+        </Button>
+        <Button variant="secondary" onClick={handleToggleComment} className="flex-1 py-2 text-xs font-bold uppercase cursor-pointer transition">
+          💬 Bình luận
+        </Button>
       </div>
 
       {/* PHẦN DANH SÁCH BÌNH LUẬN */}

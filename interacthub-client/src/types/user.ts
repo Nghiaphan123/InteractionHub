@@ -11,3 +11,4 @@ export interface User {
   isOwnProfile: boolean;
   friendStatus: 'none' | 'friend' | 'pending' | 'follower';
 }
+

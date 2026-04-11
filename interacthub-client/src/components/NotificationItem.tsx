@@ -1,9 +1,9 @@
 import Avatar from './Avatar';
 
-const NotificationItem = ({ user, action, time, isUnread = false }: any) => {
+const NotificationItem = ({ user, avatarUrl, action, time, isUnread = false }: any) => {
   return (
     <div className={`flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-colors ${isUnread ? 'bg-blue-50' : 'hover:bg-slate-50'}`}>
-      <Avatar size="sm" />
+      <Avatar src={avatarUrl} size="sm" />
       <div className="flex-1">
         <p className="text-sm">
           <span className="font-bold">{user}</span> {action}
