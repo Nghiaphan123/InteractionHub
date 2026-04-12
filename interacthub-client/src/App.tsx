@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 
 function App() {
   const { user } = useAuth();
-
   return user ? <Home /> : <Login />;
 }
 
