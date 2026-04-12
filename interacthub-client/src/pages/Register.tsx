@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { registerAPI } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Register({ onBack }: any) {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,6 +24,7 @@ export default function Register({ onBack }: any) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -53,6 +56,8 @@ export default function Register({ onBack }: any) {
     setErrors(e);
     if (Object.keys(e).length) return;
 
+    setLoading(true);
+
     try {
       await registerAPI({
         firstName,
@@ -65,14 +70,24 @@ export default function Register({ onBack }: any) {
         password,
       });
 
-      // auto login luôn
+      // auto login
       await login({ email, password });
-    } catch {
-      alert("Đăng ký thất bại");
+
+      // redirect sau đăng ký
+      navigate("/");
+    } catch (err: any) {
+      console.error(err);
+
+      setErrors({
+        ...e,
+        email: err.response?.data?.message || "Đăng ký thất bại",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
-  const Eye = ({ open }: { open: boolean }) => (
+  const Eye = ({ open }: { open: boolean }) =>
     open ? (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
         <path d="M3 3L21 21" stroke="currentColor" strokeWidth="2" />
@@ -85,8 +100,7 @@ export default function Register({ onBack }: any) {
         <path d="M1 12C1 12 5 5 12 5s11 7 11 7-4 7-11 7S1 12 1 12z" stroke="currentColor" strokeWidth="2"/>
         <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
       </svg>
-    )
-  );
+    );
 
   return (
     <div className="login-container">
@@ -100,6 +114,7 @@ export default function Register({ onBack }: any) {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className={errors.lastName ? "input error" : "input"}
+              onKeyDown={(e) => e.key === "Enter" && handleRegister()}
             />
             {errors.lastName && <p className="error-text">{errors.lastName}</p>}
           </div>
@@ -110,6 +125,7 @@ export default function Register({ onBack }: any) {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className={errors.firstName ? "input error" : "input"}
+              onKeyDown={(e) => e.key === "Enter" && handleRegister()}
             />
             {errors.firstName && <p className="error-text">{errors.firstName}</p>}
           </div>
@@ -156,6 +172,7 @@ export default function Register({ onBack }: any) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className={errors.email ? "input error" : "input"}
+          onKeyDown={(e) => e.key === "Enter" && handleRegister()}
         />
         {errors.email && <p className="error-text">{errors.email}</p>}
 
@@ -166,13 +183,11 @@ export default function Register({ onBack }: any) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={errors.password ? "input error" : "input"}
+            onKeyDown={(e) => e.key === "Enter" && handleRegister()}
           />
 
           {password.length > 0 && (
-            <span
-              className="eye-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
+            <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
               <Eye open={showPassword} />
             </span>
           )}
@@ -187,13 +202,11 @@ export default function Register({ onBack }: any) {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className={errors.confirmPassword ? "input error" : "input"}
+            onKeyDown={(e) => e.key === "Enter" && handleRegister()}
           />
 
           {confirmPassword.length > 0 && (
-            <span
-              className="eye-icon"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
+            <span className="eye-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
               <Eye open={showConfirmPassword} />
             </span>
           )}
@@ -203,8 +216,12 @@ export default function Register({ onBack }: any) {
           <p className="error-text">{errors.confirmPassword}</p>
         )}
 
-        <button className="login-btn" onClick={handleRegister}>
-          Đăng ký
+        <button
+          className="login-btn"
+          onClick={handleRegister}
+          disabled={loading}
+        >
+          {loading ? "Đang đăng ký..." : "Đăng ký"}
         </button>
 
         <p className="forgot" onClick={onBack}>

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginAPI } from "../services/authService";
+import { loginAPI, getMeAPI } from "../services/authService";
 
 type User = {
   id?: string;
@@ -10,6 +10,7 @@ type User = {
 interface AuthContextType {
   user: User | null;
   token: string | null;
+  isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
   login: (data: { email: string; password: string }) => Promise<void>;
@@ -21,17 +22,33 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // restore session
+  // Restore session
   useEffect(() => {
-    const savedToken = localStorage.getItem("token");
+    const initAuth = async () => {
+      const savedToken = localStorage.getItem("token");
 
-    if (savedToken) {
+      if (!savedToken) {
+        setLoading(false);
+        return;
+      }
+
       setToken(savedToken);
-      setUser({ email: "unknown" }); // tạm thời
-    }
+
+      try {
+        const res = await getMeAPI();
+        setUser(res.data);
+      } catch (err) {
+        console.error("Restore failed:", err);
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
   }, []);
 
   // LOGIN
@@ -48,12 +65,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!token) throw new Error("No token returned");
 
       localStorage.setItem("token", token);
+
       setToken(token);
       setUser(user ?? { email: data.email });
 
-    } catch (err: unknown) {
+    } catch (err: any) {
       console.error("LOGIN ERROR:", err);
-      setError("Login failed");
+      setError(err.response?.data?.message || "Login failed");
       throw err;
     } finally {
       setLoading(false);
@@ -67,9 +85,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   };
 
+  const isAuthenticated = !!token;
+
   return (
     <AuthContext.Provider
-      value={{ user, token, loading, error, login, logout }}
+      value={{
+        user,
+        token,
+        isAuthenticated,
+        loading,
+        error,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
