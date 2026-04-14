@@ -2,6 +2,7 @@
 export interface Post {
   id: string;
   author: {
+    id: string;
     fullName: string;
     avatarUrl: string;
   };
