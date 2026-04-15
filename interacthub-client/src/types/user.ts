@@ -13,6 +13,8 @@ export interface User {
   details: UserDetail[];
 }
 
+export type AboutTabType = 'overview' | 'education' | 'location' | 'work' | 'contact' | 'family';
+
 export interface UserDetail {
   id: string;
   content: string;
