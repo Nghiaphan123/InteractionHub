@@ -5,7 +5,13 @@ import CoverSection from '../components/profile/CoverSection.tsx';
 import ProfileTabs from '../components/profile/ProfileTabs.tsx';
 import EditDetailsModal from '../components/profile/EditDetailsModal.tsx'; 
 import AboutSection from '../components/profile/AboutSection.tsx';
+
+// Import đúng component bài viết
+import CreatePost from '../components/CreatePost.tsx';
+import PostCard from '../components/PostCard.tsx';
+
 import type { User, UserDetail } from '../types/user';
+import type { Post } from '../types/post';
 
 const ProfilePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +19,8 @@ const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mainTab, setMainTab] = useState<'posts' | 'about' | 'friends' | 'photos'>('posts');
   
+  const [posts, setPosts] = useState<Post[]>([]);
+
   const [details, setDetails] = useState<UserDetail[]>(() => {
     const saved = localStorage.getItem('user_details_data');
     return saved ? JSON.parse(saved) : [
@@ -21,9 +29,27 @@ const ProfilePage = () => {
     ];
   });
 
-  useEffect(() => {
-    localStorage.setItem('user_details_data', JSON.stringify(details));
-  }, [details]);
+  const handleCreatePost = (content: string, imageFile: File | null) => {
+    const newPost: Post = {
+      id: Date.now().toString(),
+      author: {
+        id: CURRENT_USER.id,
+        fullName: CURRENT_USER.fullName,
+        avatarUrl: CURRENT_USER.avatarUrl,
+      },
+      content: content,
+      imageUrl: imageFile ? URL.createObjectURL(imageFile) : undefined,
+      createdAt: new Date().toISOString(),
+      likesCount: 0,  
+      commentsCount: 0,
+      isLiked: false
+    };
+    setPosts(prev => [newPost, ...prev]);
+  };
+
+  const handleDeletePost = (postId: string) => {
+    setPosts(prev => prev.filter(p => p.id !== postId));
+  };
 
   useEffect(() => {
     const isMe = !id || id === CURRENT_USER.id;
@@ -62,7 +88,7 @@ const ProfilePage = () => {
     fetchUserData();
   }, [id, details]);
 
-  if (!userData) return <div className="p-10 text-center dark:text-white italic">Đang tải dữ liệu...</div>;
+  if (!userData) return <div className="p-10 text-center dark:text-white italic">Đang tải...</div>;
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-[#18191a]">
@@ -81,30 +107,102 @@ const ProfilePage = () => {
       <div className="max-w-5xl mx-auto px-4 py-4">
         {mainTab === 'posts' ? (
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            
+            {/* CỘT TRÁI: GIỚI THIỆU */}
             <div className="md:col-span-2 space-y-4">
               <div className="bg-white dark:bg-[#242526] p-4 rounded-xl shadow">
-                <h3 className="text-xl font-bold dark:text-white mb-3">Tiểu sử</h3>
-                <div className="text-center mb-4">
-                  <p className="dark:text-white text-sm py-2 italic font-medium">"{userData.bio}"</p>
-                  {userData.isOwnProfile && <button className="w-full py-2 bg-gray-100 dark:bg-zinc-800 font-bold rounded-lg hover:bg-gray-200 transition dark:text-white text-sm mt-1">Chỉnh sửa tiểu sử</button>}
+                <h3 className="text-xl font-bold dark:text-white mb-3">Giới thiệu</h3>
+                
+                {/* Phần Tiểu sử (Bio) */}
+                <div className="text-center mb-4 border-b dark:border-zinc-700 pb-4">
+                  <p className="dark:text-white text-[15px] py-2 italic">{userData.bio || "Thêm tiểu sử"}</p>
+                  {userData.isOwnProfile && (
+                    <button className="w-full py-2 bg-gray-100 dark:bg-zinc-800 font-bold rounded-lg hover:bg-gray-200 transition dark:text-white text-sm">
+                      Chỉnh sửa tiểu sử
+                    </button>
+                  )}
                 </div>
-                <div className="space-y-4 border-t dark:border-zinc-700 pt-4">
-                  {details.filter(d => d.isVisible).map(item => (
-                    <div key={item.id} className="flex items-center gap-3 text-[15px] dark:text-zinc-300">
-                      <span className="text-xl">{item.type === 'education' ? '🎓' : item.type === 'work' ? '💼' : item.type === 'status' ? '❤️' : '🏠'}</span>
-                      <span>{item.type === 'education' ? 'Học tại ' : item.type === 'work' ? 'Làm việc tại ' : ''}<b className="dark:text-white font-semibold">{item.content}</b></span>
-                    </div>
-                  ))}
+
+                {/* Phần danh sách thông tin chi tiết với BIỂU TƯỢNG RIÊNG */}
+                <div className="space-y-4">
+                  {details.filter(d => d.isVisible).map(item => {
+                    let icon = '🏠'; // Biểu tượng mặc định
+                    let prefix = '';
+
+                    // Logic gán icon riêng cho từng loại thông tin
+                    switch (item.type) {
+                      case 'education':
+                        icon = '🎓';
+                        prefix = 'Học tại ';
+                        break;
+                      case 'work':
+                        icon = '💼';
+                        prefix = 'Làm việc tại ';
+                        break;
+                      case 'location':
+                        icon = '📍';
+                        prefix = 'Sống tại ';
+                        break;
+                      case 'hometown':
+                        icon = '🏡';
+                        prefix = 'Đến từ ';
+                        break;
+                      case 'status':
+                        icon = '❤️';
+                        prefix = 'Tình trạng: ';
+                        break;
+                    }
+
+                    return (
+                      <div key={item.id} className="flex items-center gap-3 text-[15px] dark:text-zinc-300">
+                        <span className="text-xl w-8 text-center">{icon}</span>
+                        <span>
+                          {prefix}
+                          <b className="dark:text-white font-semibold">{item.content}</b>
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
-                {userData.isOwnProfile && <button onClick={() => setIsModalOpen(true)} className="w-full py-2 bg-zinc-100 dark:bg-zinc-800 font-bold rounded-lg hover:bg-zinc-200 transition dark:text-white mt-4">Chỉnh sửa chi tiết</button>}
+
+                {userData.isOwnProfile && (
+                  <button 
+                    onClick={() => setIsModalOpen(true)} 
+                    className="w-full py-2 bg-zinc-100 dark:bg-zinc-800 font-bold rounded-lg mt-4 dark:text-white hover:bg-zinc-200 transition"
+                  >
+                    Chỉnh sửa chi tiết
+                  </button>
+                )}
               </div>
             </div>
-            <div className="md:col-span-3"><div className="bg-white dark:bg-[#242526] p-4 rounded-xl shadow dark:text-white font-bold italic text-gray-400">Chưa có bài viết nào được đăng...</div></div>
+
+            {/* CỘT PHẢI: BÀI VIẾT */}
+            <div className="md:col-span-3 space-y-4">
+              {userData.isOwnProfile && (
+                <CreatePost onPost={handleCreatePost} />
+              )}
+
+              <div className="space-y-4">
+                {posts.length > 0 ? (
+                  posts.map(post => (
+                    <PostCard 
+                      key={post.id} 
+                      post={post} 
+                      onDelete={handleDeletePost}
+                      currentUser={{ fullName: CURRENT_USER.fullName }} 
+                    />
+                  ))
+                ) : (
+                  <div className="bg-white dark:bg-[#242526] p-8 rounded-xl shadow text-center text-gray-500 italic">
+                    Chưa có bài viết nào để hiển thị.
+                  </div>
+                )}
+              </div>
+            </div>
+
           </div>
-        ) : mainTab === 'about' ? (
-          <AboutSection details={details} onUpdate={setDetails} isOwnProfile={userData.isOwnProfile} />
         ) : (
-          <div className="bg-white dark:bg-[#242526] p-16 rounded-xl shadow text-center dark:text-white italic text-gray-500">Nội dung này đang được cập nhật...</div>
+          <AboutSection details={details} onUpdate={setDetails} isOwnProfile={userData.isOwnProfile} />
         )}
       </div>
 
@@ -112,4 +210,5 @@ const ProfilePage = () => {
     </div>
   );
 };
+
 export default ProfilePage;

@@ -3,19 +3,21 @@ import { Link, NavLink } from 'react-router-dom';
 import { useWindowSize } from '../hooks/useWindowSize';
 import UserMenu from './UserMenu';
 import Badge from './Badge';
-import Avatar from './Avatar';
-import ChatItem from './ChatItem'; // Import component đã viết
+import ChatItem from './ChatItem'; 
 import { Search } from 'lucide-react';
-// Sửa lỗi import type ở đây
 import type { ChatMessage } from '../types/types'; 
 
-const Navbar = () => {
+// 1. Định nghĩa Props để nhận hàm từ App.tsx hoặc Layout.tsx
+interface NavbarProps {
+  onSelectChat?: (user: { fullName: string; avatarUrl: string }) => void;
+}
+
+const Navbar = ({ onSelectChat }: NavbarProps) => {
   const isMobile = useWindowSize();
   
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNotifyOpen, setIsNotifyOpen] = useState(false); 
 
-  // --- MOCK DATA: Dữ liệu mẫu để đổ vào giao diện ---
   const mockChats: ChatMessage[] = [
     { 
       id: "1", 
@@ -45,7 +47,6 @@ const Navbar = () => {
       setIsChatOpen(false);
       setIsNotifyOpen(false);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -117,12 +118,20 @@ const Navbar = () => {
                     </div>
 
                     <div className="max-h-[400px] overflow-y-auto">
-                      {/* Đổ dữ liệu động từ mockChats */}
                       {mockChats.map((chat) => (
                         <ChatItem 
                           key={chat.id} 
                           data={chat} 
-                          onClick={() => console.log(`Mở chat ${chat.id}`)} 
+                          onClick={() => {
+                            // 2. Gọi hàm onSelectChat khi click vào một người
+                            if (onSelectChat) {
+                              onSelectChat({
+                                fullName: chat.user.name,
+                                avatarUrl: chat.user.avatarUrl || "https://api.dicebear.com/7.x/avataaars/svg?seed=1"
+                              });
+                            }
+                            setIsChatOpen(false); // Đóng menu dropdown
+                          }} 
                         />
                       ))}
                     </div>

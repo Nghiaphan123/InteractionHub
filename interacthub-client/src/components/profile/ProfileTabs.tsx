@@ -20,7 +20,6 @@ const ProfileTabs = ({ activeTab, setActiveTab, isOwnProfile, friendStatus }: Pr
     { id: 'friends', label: 'Bạn bè' },
     { id: 'photos', label: 'Ảnh' },
     { id: 'videos', label: 'Video' },
-    { id: 'checkins', label: 'Check-in' }
   ];
 
   useEffect(() => {
