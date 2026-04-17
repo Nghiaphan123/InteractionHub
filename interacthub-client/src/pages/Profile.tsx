@@ -5,6 +5,7 @@ import CoverSection from '../components/profile/CoverSection.tsx';
 import ProfileTabs from '../components/profile/ProfileTabs.tsx';
 import EditDetailsModal from '../components/profile/EditDetailsModal.tsx'; 
 import AboutSection from '../components/profile/AboutSection.tsx';
+import FriendsSection from '../components/profile/FriendsSection.tsx';
 
 // Import đúng component bài viết
 import CreatePost from '../components/CreatePost.tsx';
@@ -18,6 +19,8 @@ const ProfilePage = () => {
   const [userData, setUserData] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mainTab, setMainTab] = useState<'posts' | 'about' | 'friends' | 'photos'>('posts');
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [bioDraft, setBioDraft] = useState("");
   
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -29,6 +32,21 @@ const ProfilePage = () => {
     ];
   });
 
+    const handleSaveBio = () => {
+    if (userData) {
+      setUserData({ ...userData, bio: bioDraft });
+      localStorage.setItem('user_bio', bioDraft);
+      setIsEditingBio(false);
+    }
+  };
+
+  // Hàm này giúp cập nhật ảnh lên giao diện ngay lập tức
+  const handleUpdateImage = (field: 'avatarUrl' | 'coverUrl', url: string) => {
+    setUserData(prev => prev ? { ...prev, [field]: url } : null);
+    
+    // Lưu vào localStorage để khi F5 không bị mất
+    localStorage.setItem(`user_${field}`, url);
+  };
   const handleCreatePost = (content: string, imageFile: File | null) => {
     const newPost: Post = {
       id: Date.now().toString(),
@@ -36,6 +54,7 @@ const ProfilePage = () => {
         id: CURRENT_USER.id,
         fullName: CURRENT_USER.fullName,
         avatarUrl: CURRENT_USER.avatarUrl,
+        username: CURRENT_USER.username || ""
       },
       content: content,
       imageUrl: imageFile ? URL.createObjectURL(imageFile) : undefined,
@@ -47,6 +66,17 @@ const ProfilePage = () => {
     setPosts(prev => [newPost, ...prev]);
   };
 
+  // Hàm xử lý khi chọn file ảnh đại diện hoặc ảnh bìa
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, field: 'avatarUrl' | 'coverUrl') => {
+    const file = e.target.files?.[0];
+    if (file && userData) {
+      const imageUrl = URL.createObjectURL(file);
+      // Cập nhật giao diện ngay lập tức
+      setUserData({ ...userData, [field]: imageUrl });
+      // Nếu muốn lưu lâu dài thì ông có thể lưu vào localStorage như Bio
+      localStorage.setItem(`user_${field}`, imageUrl);
+    }
+  };
   const handleDeletePost = (postId: string) => {
     setPosts(prev => prev.filter(p => p.id !== postId));
   };
@@ -54,37 +84,47 @@ const ProfilePage = () => {
   useEffect(() => {
     const isMe = !id || id === CURRENT_USER.id;
     const fetchUserData = () => {
-      let data: User;
-      if (isMe) {
-        data = {
-          ...CURRENT_USER,
-          coverUrl: "https://picsum.photos/1000/400",
-          bio: "Việc gì cũng có thể thành công nếu cố gắng",
-          friendsCount: 1250,
-          isOwnProfile: true,
-          friendStatus: 'none',
-          location: "TP. Hồ Chí Minh",
-          education: "Đại học Sài Gòn (SGU)",
-          details: details
-        };
-      } else {
-        data = {
-          id: id!,
-          fullName: "Người dùng khác",
-          username: `user.${id}`,
-          avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`,
-          coverUrl: "https://picsum.photos/1000/400",
-          bio: "Chào mừng đến với hồ sơ của tôi!",
-          friendsCount: 500,
-          isOwnProfile: false,
-          friendStatus: 'friend',
-          location: "Chưa cập nhật",
-          education: "Chưa cập nhật",
-          details: []
-        };
-      }
-      setUserData(data);
-    };
+    const savedAvatar = localStorage.getItem('user_avatarUrl');
+    const savedCover = localStorage.getItem('user_coverUrl');
+    const savedBio = localStorage.getItem('user_bio');
+
+    let data: User | null = null; // Gán mặc định là null ở đây
+
+    if (isMe) {
+      data = {
+        ...CURRENT_USER,
+        avatarUrl: savedAvatar || CURRENT_USER.avatarUrl,
+        coverUrl: savedCover || "https://picsum.photos/1000/400",
+        bio: "Việc gì cũng có thể thành công nếu cố gắng",
+        friendsCount: 1250,
+        isOwnProfile: true,
+        friendStatus: 'none',
+        location: "TP. Hồ Chí Minh",
+        education: "Đại học Sài Gòn (SGU)",
+        details: details
+      };
+    } else {
+      // Đảm bảo trong phần else cũng phải gán giá trị cho data
+      data = {
+        id: id!,
+        fullName: "Người dùng khác",
+        username: `user.${id}`,
+        avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`,
+        coverUrl: "https://picsum.photos/1000/400",
+        bio: "Chào mừng đến với hồ sơ của tôi!",
+        friendsCount: 500,
+        isOwnProfile: false,
+        friendStatus: 'friend',
+        location: "Chưa cập nhật",
+        education: "Chưa cập nhật",
+        details: []
+      };
+    }
+
+    if (data) {
+      setUserData(data); // Chỉ set khi data đã được gán giá trị
+    }
+  };
     fetchUserData();
   }, [id, details]);
 
@@ -93,7 +133,16 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-[#18191a]">
       <div className="bg-white dark:bg-[#242526] shadow-sm">
-        <CoverSection user={userData} />
+        <CoverSection 
+          user={userData} 
+          onUpdateImage={(field, url) => {
+            // 1. Cập nhật giao diện ngay lập tức
+            setUserData(prev => prev ? { ...prev, [field]: url } : null);
+            
+            // 2. Lưu vào localStorage để F5 không bị mất ảnh
+            localStorage.setItem(`user_${field}`, url);
+          }} 
+        />
         <div className="max-w-5xl mx-auto px-4">
           <ProfileTabs 
             activeTab={mainTab} 
@@ -115,11 +164,28 @@ const ProfilePage = () => {
                 
                 {/* Phần Tiểu sử (Bio) */}
                 <div className="text-center mb-4 border-b dark:border-zinc-700 pb-4">
-                  <p className="dark:text-white text-[15px] py-2 italic">{userData.bio || "Thêm tiểu sử"}</p>
-                  {userData.isOwnProfile && (
-                    <button className="w-full py-2 bg-gray-100 dark:bg-zinc-800 font-bold rounded-lg hover:bg-gray-200 transition dark:text-white text-sm">
-                      Chỉnh sửa tiểu sử
-                    </button>
+                  {isEditingBio ? (
+                    <div className="space-y-2">
+                      <textarea 
+                        value={bioDraft}
+                        onChange={(e) => setBioDraft(e.target.value)}
+                        className="w-full p-2 rounded-lg border dark:bg-zinc-800 dark:text-white dark:border-zinc-600 outline-none focus:ring-1 focus:ring-blue-500"
+                        rows={3}
+                      />
+                      <div className="flex justify-end gap-2">
+                        <button onClick={() => setIsEditingBio(false)} className="px-3 py-1 bg-gray-200 dark:bg-zinc-700 dark:text-white rounded-lg text-sm font-bold">Hủy</button>
+                        <button onClick={handleSaveBio} className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm font-bold">Lưu</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="dark:text-white text-[15px] py-2 italic whitespace-pre-wrap">{userData.bio || "Thêm tiểu sử"}</p>
+                      {userData.isOwnProfile && (
+                        <button onClick={() => setIsEditingBio(true)} className="w-full py-2 bg-gray-100 dark:bg-zinc-800 font-bold rounded-lg hover:bg-gray-200 transition dark:text-white text-sm">
+                          Chỉnh sửa tiểu sử
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
 
@@ -201,10 +267,27 @@ const ProfilePage = () => {
             </div>
 
           </div>
-        ) : (
+        ) :mainTab === 'about' ? (
           <AboutSection details={details} onUpdate={setDetails} isOwnProfile={userData.isOwnProfile} />
-        )}
-      </div>
+        ): mainTab === 'friends' ? (
+          <div className="bg-white dark:bg-[#242526] rounded-xl shadow min-h-[400px]">
+            <FriendsSection />
+          </div>
+        ) : mainTab === 'photos' ? (
+            <div className="bg-white dark:bg-[#242526] p-4 rounded-xl shadow">
+              <h3 className="text-xl font-bold dark:text-white mb-4">Ảnh</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {/* Render ảnh mẫu ở đây */}
+                <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+                <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white dark:bg-[#242526] p-16 rounded-xl shadow text-center dark:text-white italic">
+              Tính năng Video đang được cập nhật...
+            </div>
+          )}
+        </div>
 
       <EditDetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} details={details} onSave={setDetails} />
     </div>

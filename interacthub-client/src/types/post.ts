@@ -5,6 +5,7 @@ export interface Post {
     id: string;
     fullName: string;
     avatarUrl: string;
+    username: string;
   };
   content: string;
   imageUrl?: string;
