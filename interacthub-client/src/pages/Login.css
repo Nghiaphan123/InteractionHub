@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+}
+
+/* CONTAINER */
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BOX */
+.login-box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  width: 380px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 18px;
+  color: #1c1e21;
+}
+
+/* INPUT / SELECT UNIFIED */
+.input,
+.login-box input,
+.login-box select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  transition: 0.2s;
+  margin-bottom: 10px;
+}
+
+.input:focus,
+.login-box select:focus {
+  outline: none;
+  border-color: #1877f2;
+  box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+}
+
+.input.error {
+  border: 2px solid #ff4d4f;
+}
+
+/* ERROR TEXT */
+.error-text {
+  color: #ff4d4f;
+  font-size: 12px;
+  text-align: left;
+  margin: -6px 0 8px 2px;
+}
+
+/* BUTTONS */
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #1877f2, #2d88ff);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  opacity: 0.9;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #1877f2;
+  background: transparent;
+  color: #1877f2;
+  border-radius: 999px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.forgot {
+  margin: 15px 0;
+  color: #1877f2;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* PASSWORD */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 42px;
+  box-sizing: border-box;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  user-select: none;
+}
+
+/* DOB */
+.dob-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* CLEAN UP */
+.login-box input,
+.login-box select {
+}
