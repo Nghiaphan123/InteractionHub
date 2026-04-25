@@ -16,7 +16,7 @@ public class FriendService : IFriendService
     }
 
     // Gửi lời mời kết bạn
-   public async Task SendFriendRequestAsync(string senderId, string receiverId)
+    public async Task<FriendResponseDto?> SendFriendRequestAsync(string senderId, string receiverId)
     {
         // Kiểm tra receiver có tồn tại không
         var receiverExists = await _userManager.FindByIdAsync(receiverId);
@@ -43,6 +43,9 @@ public class FriendService : IFriendService
 
         _context.Friendships.Add(friendship);
         await _context.SaveChangesAsync(); 
+        
+        // TRẢ VỀ DTO SAU KHI LƯU THÀNH CÔNG
+        return await GetFriendshipDtoAsync(friendship.Id);
     }
 
     // Chấp nhận lời mời

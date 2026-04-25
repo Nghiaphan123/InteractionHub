@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj": {}
+    "C:\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj": {
+    "C:\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj",
+        "projectUniqueName": "C:\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj",
         "projectName": "InteractHub.API",
-        "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj",
+        "projectPath": "C:\\InteractionHub\\InteractHub.API\\InteractHub.API.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.API\\obj\\",
+        "outputPath": "C:\\InteractionHub\\InteractHub.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -20,17 +20,18 @@
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
-                "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj"
+              "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
+                "projectPath": "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj"
               },
-              "C:\\Users\\Admin\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj"
+              "C:\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {
+                "projectPath": "C:\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj"
               }
             }
           }
@@ -515,14 +516,14 @@
         }
       }
     },
-    "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
+    "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+        "projectUniqueName": "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
         "projectName": "InteractHub.Core",
-        "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+        "projectPath": "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\obj\\",
+        "outputPath": "C:\\InteractionHub\\InteractHub.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -531,6 +532,7 @@
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -872,14 +874,14 @@
         }
       }
     },
-    "C:\\Users\\Admin\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {
+    "C:\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
+        "projectUniqueName": "C:\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
         "projectName": "InteractHub.Infrastructure",
-        "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
+        "projectPath": "C:\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Infrastructure\\obj\\",
+        "outputPath": "C:\\InteractionHub\\InteractHub.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -888,14 +890,15 @@
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
-                "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj"
+              "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
+                "projectPath": "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj"
               }
             }
           }

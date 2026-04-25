@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RYKJ6JgY8HY=",
+  "dgSpecHash": "qp93gL8TKoA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
+  "projectFilePath": "C:\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

@@ -4202,11 +4202,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+      "projectUniqueName": "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
       "projectName": "InteractHub.Core",
-      "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+      "projectPath": "C:\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\obj\\",
+      "outputPath": "C:\\InteractionHub\\InteractHub.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -4215,6 +4215,7 @@
         "net10.0"
       ],
       "sources": {
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
