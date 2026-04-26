@@ -1,0 +1,170 @@
+{
+  "applicationSettings": {
+    "name": "interacthub-api",
+    "description": "InteractHub Social Network Backend API",
+    "version": "1.0.0",
+    "environment": "staging"
+  },
+  "appSettings": {
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft": "Warning",
+        "System": "Warning"
+      },
+      "ApplicationInsights": {
+        "LogLevel": {
+          "Default": "Information"
+        }
+      }
+    },
+    "Jwt": {
+      "Issuer": "https://interacthub-api.azurewebsites.net",
+      "Audience": "InteractHub",
+      "ExpirationMinutes": 1440
+    },
+    "CORS": {
+      "AllowedOrigins": [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://interacthub-staging.azurewebsites.net",
+        "https://interacthub.azurewebsites.net"
+      ],
+      "AllowedMethods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+      "AllowedHeaders": ["Content-Type", "Authorization"]
+    },
+    "Database": {
+      "EnableRetryOnFailure": true,
+      "MaxRetryDelaySeconds": 30,
+      "MaxRetryCount": 3,
+      "CommandTimeout": 30
+    },
+    "Cache": {
+      "Enabled": true,
+      "DefaultExpiration": 3600,
+      "RedisCacheEndpoint": "localhost:6379"
+    },
+    "RateLimiting": {
+      "Enabled": true,
+      "RequestsPerMinute": 100,
+      "RequestsPerHour": 1000
+    },
+    "FileUpload": {
+      "MaxFileSize": 104857600,
+      "AllowedExtensions": [".jpg", ".jpeg", ".png", ".gif", ".mp4", ".avi"],
+      "StoragePath": "/uploads",
+      "PublicUrl": "https://interacthub-storage.blob.core.windows.net"
+    },
+    "Authentication": {
+      "EnableMultiFactor": false,
+      "PasswordPolicy": {
+        "MinimumLength": 8,
+        "RequireUppercase": true,
+        "RequireLowercase": true,
+        "RequireNumbers": true,
+        "RequireSpecialCharacters": true
+      },
+      "SessionTimeout": 1440,
+      "RememberMeExpiration": 2592000
+    },
+    "Email": {
+      "Enabled": false,
+      "SmtpServer": "smtp.gmail.com",
+      "SmtpPort": 587,
+      "EnableSsl": true,
+      "FromAddress": "noreply@interacthub.com"
+    },
+    "Notifications": {
+      "Enabled": true,
+      "PushNotifications": {
+        "Enabled": false,
+        "Provider": "OneSignal"
+      },
+      "EmailNotifications": {
+        "Enabled": false
+      }
+    },
+    "Security": {
+      "EnableHttpsRedirect": true,
+      "MinimumTlsVersion": "1.2",
+      "RequireHttps": true,
+      "ContentSecurityPolicy": {
+        "Enabled": true,
+        "Default-src": "'self'",
+        "Script-src": "'self' 'unsafe-inline'",
+        "Style-src": "'self' 'unsafe-inline'",
+        "Img-src": "'self' https:",
+        "Font-src": "'self'",
+        "Connect-src": "'self' https:"
+      },
+      "CrossOriginEmbedderPolicy": {
+        "Enabled": true
+      },
+      "CrossOriginOpenerPolicy": {
+        "Enabled": true
+      }
+    },
+    "ApiVersioning": {
+      "Enabled": true,
+      "DefaultVersion": "1.0",
+      "VersionHeader": "api-version",
+      "VersionQueryParameter": "api-version"
+    },
+    "Swagger": {
+      "Enabled": true,
+      "Title": "InteractHub API",
+      "Description": "Social Network Backend API",
+      "Version": "v1",
+      "Contact": {
+        "Name": "InteractHub Team",
+        "Email": "support@interacthub.com"
+      }
+    }
+  },
+  "connectionStrings": {
+    "DefaultConnection": "Server=(local);Database=InteractHub;Trusted_Connection=true;Encrypt=false;"
+  },
+  "azureKeyVault": {
+    "Enabled": true,
+    "VaultUri": "https://interacthub-kv.vault.azure.net/",
+    "UseManagedIdentity": true
+  },
+  "applicationInsights": {
+    "InstrumentationKey": "",
+    "EnableAdaptiveSampling": true,
+    "SamplingRate": 0.1,
+    "CollectDependencyTelemetry": true,
+    "CollectPageViewTelemetry": true,
+    "CollectExceptionTelemetry": true,
+    "CollectRequestTelemetry": true
+  },
+  "blobStorage": {
+    "ConnectionString": "",
+    "ContainerName": "uploads",
+    "EnableCdnCaching": true,
+    "CacheDurationDays": 365
+  },
+  "monitoring": {
+    "EnableDetailedLogging": true,
+    "EnablePerformanceProfiling": true,
+    "EnableAnomalyDetection": true,
+    "HealthCheckInterval": 60,
+    "HealthCheckPath": "/api/health"
+  },
+  "deployment": {
+    "Environment": "staging",
+    "Region": "eastus",
+    "AppServicePlan": "B2",
+    "SqlServerTier": "S0",
+    "AutoScale": false,
+    "MinInstances": 1,
+    "MaxInstances": 3
+  },
+  "features": {
+    "EnableSignalR": false,
+    "EnableGraphQL": false,
+    "EnableCaching": true,
+    "EnableCompression": true,
+    "EnableResponsePaging": true
+  }
+}

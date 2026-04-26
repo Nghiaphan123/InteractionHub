@@ -4197,19 +4197,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\nghia\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+      "projectUniqueName": "C:\\Users\\nghia\\Desktop\\Visual_CSharp\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
       "projectName": "InteractHub.Core",
-      "projectPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\InteractionHub\\InteractHub.Core\\obj\\",
+      "projectPath": "C:\\Users\\nghia\\Desktop\\Visual_CSharp\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+      "packagesPath": "C:\\Users\\nghia\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nghia\\Desktop\\Visual_CSharp\\InteractionHub\\InteractHub.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\nghia\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -4278,7 +4278,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

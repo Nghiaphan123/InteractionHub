@@ -33,3 +33,12 @@ C:\Users\Admin\Desktop\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.pdb
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.genruntimeconfig.cache
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\ref\InteractHub.Infrastructure.dll
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.AssemblyInfo.cs
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.sourcelink.json
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.dll
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\refint\InteractHub.Infrastructure.dll
+C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Infrastructure\obj\Debug\net10.0\InteractHub.Infrastructure.pdb
