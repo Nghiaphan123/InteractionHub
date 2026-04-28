@@ -150,7 +150,7 @@ export default function Login() {
 
         <button
           className="register-btn"
-          onClick={() => setShowRegister(true)}
+          onClick={() => setShowRegister(true)} 
         >
           Tạo tài khoản mới
         </button>
