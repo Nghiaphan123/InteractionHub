@@ -131,3 +131,15 @@ body {
 .login-box input,
 .login-box select {
 }
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+input::-webkit-credentials-auto-fill-button,
+input::-webkit-password-toggle-button {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none;
+}

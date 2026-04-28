@@ -1,87 +1,69 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { registerAPI } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function Register({ onBack }: any) {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-
-  const [gender, setGender] = useState("");
-  const [email, setEmail] = useState("");
-
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>();
 
-  const validate = () => {
-    const e: Record<string, string> = {};
+  const password = watch("password");
 
-    if (!firstName.trim()) e.firstName = "Nhập tên";
-    if (!lastName.trim()) e.lastName = "Nhập họ";
-
-    if (!day || !month || !year) e.dob = "Chọn ngày sinh";
-    else {
-      const age = new Date().getFullYear() - Number(year);
-      if (age < 13) e.dob = "Chưa đủ 13 tuổi";
-    }
-
-    if (!gender) e.gender = "Chọn giới tính";
-    if (!email.trim()) e.email = "Nhập email hoặc SĐT";
-
-    if (!password) e.password = "Nhập mật khẩu";
-    else if (password.length < 6) e.password = "Ít nhất 6 ký tự";
-
-    if (!confirmPassword) e.confirmPassword = "Nhập lại mật khẩu";
-    else if (confirmPassword !== password)
-      e.confirmPassword = "Mật khẩu không khớp";
-
-    return e;
+  const getPasswordStrength = (pw: string) => {
+    if (!pw) return "";
+    if (pw.length < 6) return "Yếu";
+    if (pw.match(/[A-Z]/) && pw.match(/[0-9]/)) return "Mạnh";
+    return "Trung bình";
   };
 
-  const handleRegister = async () => {
-    const e = validate();
-    setErrors(e);
-    if (Object.keys(e).length) return;
-
+  const onSubmit = async (data: FormData) => {
+    console.log("REGISTER SUBMIT OK");
+    console.log("FORM DATA:", data);
+    
     setLoading(true);
+    setApiError("");
 
     try {
-      await registerAPI({
-        firstName,
-        lastName,
-        day,
-        month,
-        year,
-        gender,
-        email,
-        password,
+      const payload = {
+        username: data.email,
+        email: data.email,
+        password: data.password,
+        fullName: `${data.lastName} ${data.firstName}`,
+      };
+
+      await registerAPI(payload);
+
+      await login({
+        email: data.email,
+        password: data.password,
       });
 
-      // auto login
-      await login({ email, password });
-
-      // redirect sau đăng ký
       navigate("/");
     } catch (err: any) {
       console.error(err);
-
-      setErrors({
-        ...e,
-        email: err.response?.data?.message || "Đăng ký thất bại",
-      });
+      setApiError(err?.message || "Đăng ký thất bại");
     } finally {
       setLoading(false);
     }
@@ -107,122 +89,103 @@ export default function Register({ onBack }: any) {
       <div className="login-box">
         <h2>Tạo tài khoản</h2>
 
-        <div style={{ display: "flex", gap: "10px" }}>
-          <div style={{ flex: 1 }}>
-            <input
-              placeholder="Họ"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className={errors.lastName ? "input error" : "input"}
-              onKeyDown={(e) => e.key === "Enter" && handleRegister()}
-            />
-            {errors.lastName && <p className="error-text">{errors.lastName}</p>}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ flex: 1 }}>
+              <input
+                placeholder="Họ"
+                {...register("lastName", { required: "Nhập họ" })}
+                className={errors.lastName ? "input error" : "input"}
+              />
+              {errors.lastName && <p className="error-text">{errors.lastName.message}</p>}
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <input
+                placeholder="Tên"
+                {...register("firstName", { required: "Nhập tên" })}
+                className={errors.firstName ? "input error" : "input"}
+              />
+              {errors.firstName && <p className="error-text">{errors.firstName.message}</p>}
+            </div>
           </div>
 
-          <div style={{ flex: 1 }}>
+          <input
+            placeholder="Email"
+            {...register("email", {
+              required: "Nhập email",
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: "Email không hợp lệ",
+              },
+            })}
+            className={errors.email ? "input error" : "input"}
+          />
+          {errors.email && <p className="error-text">{errors.email.message}</p>}
+
+          {/* PASSWORD */}
+          <div className="password-wrapper">
             <input
-              placeholder="Tên"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className={errors.firstName ? "input error" : "input"}
-              onKeyDown={(e) => e.key === "Enter" && handleRegister()}
+              type={showPassword ? "text" : "password"}
+              placeholder="Mật khẩu"
+              {...register("password", {
+                required: "Nhập mật khẩu",
+                minLength: {
+                  value: 6,
+                  message: "Ít nhất 6 ký tự",
+                },
+              })}
+              className={errors.password ? "input error" : "input"}
             />
-            {errors.firstName && <p className="error-text">{errors.firstName}</p>}
+
+            {password && (
+              <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
+                <Eye open={showPassword} />
+              </span>
+            )}
           </div>
-        </div>
 
-        <div className="dob-row">
-          <select value={day} onChange={(e) => setDay(e.target.value)}>
-            <option value="">Ngày</option>
-            {[...Array(31)].map((_, i) => (
-              <option key={i + 1} value={i + 1}>{i + 1}</option>
-            ))}
-          </select>
-
-          <select value={month} onChange={(e) => setMonth(e.target.value)}>
-            <option value="">Tháng</option>
-            {[...Array(12)].map((_, i) => (
-              <option key={i + 1} value={i + 1}>{i + 1}</option>
-            ))}
-          </select>
-
-          <select value={year} onChange={(e) => setYear(e.target.value)}>
-            <option value="">Năm</option>
-            {[...Array(100)].map((_, i) => (
-              <option key={i} value={new Date().getFullYear() - i}>
-                {new Date().getFullYear() - i}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {errors.dob && <p className="error-text">{errors.dob}</p>}
-
-        <select value={gender} onChange={(e) => setGender(e.target.value)}>
-          <option value="">Giới tính</option>
-          <option value="male">Nam</option>
-          <option value="female">Nữ</option>
-          <option value="other">Khác</option>
-        </select>
-
-        {errors.gender && <p className="error-text">{errors.gender}</p>}
-
-        <input
-          placeholder="Email hoặc SĐT"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={errors.email ? "input error" : "input"}
-          onKeyDown={(e) => e.key === "Enter" && handleRegister()}
-        />
-        {errors.email && <p className="error-text">{errors.email}</p>}
-
-        <div className="password-wrapper">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Mật khẩu"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={errors.password ? "input error" : "input"}
-            onKeyDown={(e) => e.key === "Enter" && handleRegister()}
-          />
-
-          {password.length > 0 && (
-            <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
-              <Eye open={showPassword} />
-            </span>
+          {password && (
+            <p className="text-sm">
+              Độ mạnh: <b>{getPasswordStrength(password)}</b>
+            </p>
           )}
-        </div>
 
-        {errors.password && <p className="error-text">{errors.password}</p>}
+          {errors.password && <p className="error-text">{errors.password.message}</p>}
 
-        <div className="password-wrapper">
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            placeholder="Nhập lại mật khẩu"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className={errors.confirmPassword ? "input error" : "input"}
-            onKeyDown={(e) => e.key === "Enter" && handleRegister()}
-          />
+          {/* CONFIRM PASSWORD */}
+          <div className="password-wrapper">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Nhập lại mật khẩu"
+              {...register("confirmPassword", {
+                required: "Nhập lại mật khẩu",
+                validate: (value) =>
+                  value === password || "Mật khẩu không khớp",
+              })}
+              className={errors.confirmPassword ? "input error" : "input"}
+            />
 
-          {confirmPassword.length > 0 && (
-            <span className="eye-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-              <Eye open={showConfirmPassword} />
-            </span>
+            {watch("confirmPassword") && (
+              <span
+                className="eye-icon"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                <Eye open={showConfirmPassword} />
+              </span>
+            )}
+          </div>
+
+          {errors.confirmPassword && (
+            <p className="error-text">{errors.confirmPassword.message}</p>
           )}
-        </div>
 
-        {errors.confirmPassword && (
-          <p className="error-text">{errors.confirmPassword}</p>
-        )}
+          {apiError && <p className="error-text">{apiError}</p>}
 
-        <button
-          className="login-btn"
-          onClick={handleRegister}
-          disabled={loading}
-        >
-          {loading ? "Đang đăng ký..." : "Đăng ký"}
-        </button>
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "Đang đăng ký..." : "Đăng ký"}
+          </button>
+        </form>
 
         <p className="forgot" onClick={onBack}>
           Đã có tài khoản?

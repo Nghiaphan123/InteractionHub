@@ -21,25 +21,23 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Restore session
   useEffect(() => {
     const initAuth = async () => {
-      const savedToken = localStorage.getItem("token");
-
-      if (!savedToken) {
+      if (!token) {
         setLoading(false);
         return;
       }
 
-      setToken(savedToken);
-
       try {
-        const res = await getMeAPI();
-        setUser(res.data);
+        const userData = await getMeAPI();
+        setUser(userData);
       } catch (err) {
         console.error("Restore failed:", err);
         logout();
@@ -49,7 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initAuth();
-  }, []);
+  }, [token]);
 
   // LOGIN
   const login = async (data: { email: string; password: string }) => {
@@ -59,8 +57,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const res = await loginAPI(data);
 
-      const token = res.data?.token;
-      const user = res.data?.user;
+      const token = res?.token;
+      const user = res?.user;
 
       if (!token) throw new Error("No token returned");
 
@@ -71,7 +69,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     } catch (err: any) {
       console.error("LOGIN ERROR:", err);
-      setError(err.response?.data?.message || "Login failed");
+      setError(err?.message || "Login failed");
       throw err;
     } finally {
       setLoading(false);

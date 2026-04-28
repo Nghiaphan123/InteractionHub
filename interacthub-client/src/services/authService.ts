@@ -1,14 +1,39 @@
 import axios from "../api/axios";
 
-export const loginAPI = (data: { email: string; password: string }) => {
-  return axios.post("/auth/login", data);
+type LoginPayload = {
+  email: string;
+  password: string;
 };
 
-export const registerAPI = async (data: any) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log("REGISTER DATA:", data);
-      resolve({ success: true });
-    }, 500);
-  });
+type RegisterPayload = {
+  username: string;
+  email: string;
+  password: string;
+  fullName: string;
+};
+
+// LOGIN
+export const loginAPI = async (data: LoginPayload) => {
+  try {
+    const res = await axios.post("/auth/login", data);
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || { message: "Login failed" };
+  }
+};
+
+// REGISTER
+export const registerAPI = async (data: RegisterPayload) => {
+  try {
+    const res = await axios.post("/auth/register", data);
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || { message: "Đăng ký thất bại" };
+  }
+};
+
+export const getMeAPI = () => {
+  return axios.get("/auth/me");
 };

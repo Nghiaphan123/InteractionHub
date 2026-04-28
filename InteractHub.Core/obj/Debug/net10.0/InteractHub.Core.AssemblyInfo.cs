@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InteractHub.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c27b026125597697b2404a00229815d3327df94")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6779456491b73bbe97ef0d1935b9223fe91f8a49")]
 [assembly: System.Reflection.AssemblyProductAttribute("InteractHub.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InteractHub.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
