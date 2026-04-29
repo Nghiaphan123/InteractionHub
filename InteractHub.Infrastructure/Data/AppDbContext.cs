@@ -172,5 +172,16 @@ public class AppDbContext : IdentityDbContext<User>
                 NormalizedName = "USER"
             }
         );
+        builder.Entity<User>().HasData(
+            new User
+            {
+            Id = "user-1",
+            UserName = "john_doe",
+            Email = "john@example.com",
+            FullName = "John Doe",
+            CreatedAt = DateTime.UtcNow,
+            PasswordHash = "hashed_password_here" // Use BCrypt to hash
+             }
+        );
     }
 }

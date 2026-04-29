@@ -95,6 +95,23 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Error handling middleware
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionHandlerPathFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+        var exception = exceptionHandlerPathFeature?.Error;
+
+        Console.WriteLine($"ERROR: {exception?.Message}");
+        Console.WriteLine($"STACK TRACE: {exception?.StackTrace}");
+
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(new { message = exception?.Message, stackTrace = exception?.StackTrace });
+    });
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
