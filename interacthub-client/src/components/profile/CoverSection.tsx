@@ -1,10 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { User } from '../../types/user';
-
-interface CoverSectionProps {
-  user: User;
-  onUpdateImage?: (field: 'avatarUrl' | 'coverUrl', url: string) => void;
-}
 
 const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (field: 'avatarUrl' | 'coverUrl', url: string) => void }) => {
   const { isOwnProfile, friendStatus } = user;

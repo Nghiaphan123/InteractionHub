@@ -77,6 +77,7 @@ public class PostService : IPostService
         var post = new Post
         {
             Content = dto.Content,
+            ImageUrl = dto.ImageUrl,
             UserId = userId,
             CreatedAt = DateTime.UtcNow
         };

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { registerAPI } from "../services/authService";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 export default function Register({ onBack }: any) {
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -59,28 +60,44 @@ export default function Register({ onBack }: any) {
     setLoading(true);
 
     try {
+      console.log("📝 [Register] Creating account for:", email);
       await registerAPI({
-        firstName,
-        lastName,
-        day,
-        month,
-        year,
-        gender,
+        username: `${firstName}.${lastName}`.replace(/\s+/g, "").toLowerCase().slice(0, 50),
         email,
         password,
+        fullName: `${firstName} ${lastName}`.trim(),
       });
 
-      // auto login
+      console.log("✅ [Register] Account created, auto-logging in...");
+      // Đăng ký thành công -> tự động login
       await login({ email, password });
-
-      // redirect sau đăng ký
-      navigate("/");
+      
+      console.log("✅ [Register] Login successful, waiting before navigate...");
+      // Đợi state updates hoàn toàn trước khi navigate
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Chỉ navigate nếu onBack không được cung cấp
+      if (!onBack) {
+        console.log("🚀 [Register] Navigating to /");
+        navigate("/");
+      } else {
+        console.log("🔙 [Register] Calling onBack callback");
+        onBack();
+      }
     } catch (err: any) {
-      console.error(err);
+      console.error("❌ [Register] Error:", err);
+      let registerError = "Đăng ký thất bại";
+      if (axios.isAxiosError(err)) {
+        const data = err.response?.data as any;
+        if (data?.message) {
+          registerError = data.message;
+        } else if (Array.isArray(data?.errors) && data.errors.length > 0) {
+          registerError = data.errors.join(", ");
+        }
+      }
 
       setErrors({
-        ...e,
-        email: err.response?.data?.message || "Đăng ký thất bại",
+        email: registerError,
       });
     } finally {
       setLoading(false);

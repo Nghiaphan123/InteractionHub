@@ -16,7 +16,6 @@ const Navbar = ({ onSelectChat }: NavbarProps) => {
   const isMobile = useWindowSize();
   
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isNotifyOpen, setIsNotifyOpen] = useState(false); 
 
   const mockChats: ChatMessage[] = [
     { 
@@ -45,7 +44,6 @@ const Navbar = ({ onSelectChat }: NavbarProps) => {
   useEffect(() => {
     const handleScroll = () => {
       setIsChatOpen(false);
-      setIsNotifyOpen(false);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -53,7 +51,6 @@ const Navbar = ({ onSelectChat }: NavbarProps) => {
 
   const closeAllMenus = () => {
     setIsChatOpen(false);
-    setIsNotifyOpen(false);
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CURRENT_USER } from '../services/auth';
 import CoverSection from '../components/profile/CoverSection.tsx';
@@ -40,13 +40,6 @@ const ProfilePage = () => {
     }
   };
 
-  // Hàm này giúp cập nhật ảnh lên giao diện ngay lập tức
-  const handleUpdateImage = (field: 'avatarUrl' | 'coverUrl', url: string) => {
-    setUserData(prev => prev ? { ...prev, [field]: url } : null);
-    
-    // Lưu vào localStorage để khi F5 không bị mất
-    localStorage.setItem(`user_${field}`, url);
-  };
   const handleCreatePost = (content: string, imageFile: File | null) => {
     const newPost: Post = {
       id: Date.now().toString(),
@@ -66,17 +59,6 @@ const ProfilePage = () => {
     setPosts(prev => [newPost, ...prev]);
   };
 
-  // Hàm xử lý khi chọn file ảnh đại diện hoặc ảnh bìa
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, field: 'avatarUrl' | 'coverUrl') => {
-    const file = e.target.files?.[0];
-    if (file && userData) {
-      const imageUrl = URL.createObjectURL(file);
-      // Cập nhật giao diện ngay lập tức
-      setUserData({ ...userData, [field]: imageUrl });
-      // Nếu muốn lưu lâu dài thì ông có thể lưu vào localStorage như Bio
-      localStorage.setItem(`user_${field}`, imageUrl);
-    }
-  };
   const handleDeletePost = (postId: string) => {
     setPosts(prev => prev.filter(p => p.id !== postId));
   };
@@ -86,7 +68,6 @@ const ProfilePage = () => {
     const fetchUserData = () => {
     const savedAvatar = localStorage.getItem('user_avatarUrl');
     const savedCover = localStorage.getItem('user_coverUrl');
-    const savedBio = localStorage.getItem('user_bio');
 
     let data: User | null = null; // Gán mặc định là null ở đây
 
@@ -255,7 +236,7 @@ const ProfilePage = () => {
                       key={post.id} 
                       post={post} 
                       onDelete={handleDeletePost}
-                      currentUser={{ fullName: CURRENT_USER.fullName }} 
+                      currentUser={{ id: CURRENT_USER.id, fullName: CURRENT_USER.fullName }} 
                     />
                   ))
                 ) : (

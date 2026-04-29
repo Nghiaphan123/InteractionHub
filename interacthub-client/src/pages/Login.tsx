@@ -49,10 +49,20 @@ export default function Login() {
     }
 
     try {
+      console.log("🔐 [Login Page] Calling login()...");
       await login({ email, password });
-      navigate("/"); // redirect sau login
-    } catch {
-      setPasswordError("Mật khẩu không chính xác");
+      
+      console.log("✅ [Login Page] Login successful, waiting before navigate...");
+      // Đợi state updates hoàn toàn trước khi navigate
+      // Sử dụng setTimeout để đảm bảo React render cycle hoàn thành
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      console.log("🚀 [Login Page] Navigating to /");
+      navigate("/");
+    } catch (err: any) {
+      console.error("❌ [Login Page] Login failed:", err);
+      const errorMsg = err?.response?.data?.message || "Mật khẩu không chính xác";
+      setPasswordError(errorMsg);
     }
   };
 

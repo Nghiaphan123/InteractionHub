@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { getPostsAPI } from '../services/postService';
+import { createPostAPI, deletePostAPI, getPostsAPI } from '../services/postService';
 import CreatePost from '../components/CreatePost';
 import PostCard from '../components/PostCard';
+import { uploadImageAPI } from '../services/uploadService';
 import type { Post } from '../types/post';
 
 export default function Home() {
@@ -33,37 +34,31 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  const handleDeletePost = (postId: string) => {
-    setPosts(posts.filter(p => p.id !== postId));
+  const handleDeletePost = async (postId: string) => {
+    try {
+      await deletePostAPI(postId);
+      setPosts((prev) => prev.filter((p) => p.id !== postId));
+    } catch (err) {
+      console.error("Error deleting post:", err);
+      setError("Không thể xoá bài viết");
+    }
   };
 
   const handlePostCreated = async (content: string, imageFile: File | null) => {
     try {
-      const formData = new FormData();
-      formData.append('content', content);
+      setError(null);
+
+      let imageUrl: string | undefined = undefined;
       if (imageFile) {
-        formData.append('imageFile', imageFile);
+        const uploadRes = await uploadImageAPI(imageFile);
+        imageUrl = uploadRes.data.imageUrl;
       }
-      
-      // Create a new post object
-      const newPost: Post = {
-        id: `${Date.now()}`,
-        author: {
-          id: user?.id || '',
-          fullName: user?.name || 'User',
-          avatarUrl: '',
-          username: user?.email || '',
-        },
-        content,
-        imageUrl: imageFile ? URL.createObjectURL(imageFile) : undefined,
-        createdAt: new Date().toISOString(),
-        likesCount: 0,
-        commentsCount: 0,
-        isLiked: false,
-      };
-      setPosts([newPost, ...posts]);
+
+      const createdPost = await createPostAPI({ content, imageUrl });
+      setPosts((prev) => [createdPost, ...prev]);
     } catch (err) {
       console.error("Error creating post:", err);
+      setError("Không thể đăng bài");
     }
   };
 
@@ -102,7 +97,8 @@ export default function Home() {
                 post={post}
                 onDelete={handleDeletePost}
                 currentUser={{
-                  fullName: user?.name || 'User',
+                  id: user?.id || '',
+                  fullName: user?.fullName || user?.name || 'User',
                 }}
               />
             ))

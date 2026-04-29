@@ -1,5 +1,5 @@
 // src/components/chat/ChatBox.tsx
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Image, FileText, ThumbsUp, Send, Smile, PlusCircle } from 'lucide-react';
 
 interface Message {

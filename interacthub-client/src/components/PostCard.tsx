@@ -5,12 +5,28 @@ import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import type { Post } from '../types/post';
 import TimeAgo from './TimeAgo';
+import {
+  addCommentAPI,
+  deleteCommentAPI,
+  getCommentsAPI,
+  likePostAPI,
+  unlikePostAPI,
+} from '../services/postService';
 
 interface PostProps {
   post: Post;
   onDelete?: (id: string) => void;
-  currentUser: { fullName: string };
+  currentUser: { id: string; fullName: string };
 }
+
+type Comment = {
+  id: number;
+  content: string;
+  createdAt: string;
+  userId: string;
+  username: string;
+  avatarUrl?: string | null;
+};
 
 const CommentMenuPortal = ({ 
   anchorRect, 
@@ -75,15 +91,33 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null); // Ref cho menu bài viết
   
-  const isMyPost = post.author.fullName === currentUser.fullName;
-  const [comments, setComments] = useState<string[]>(() => {
-    const savedComments = localStorage.getItem(`comments-${post.id}`);
-    return savedComments ? JSON.parse(savedComments) : [];
-  });
+  const isMyPost = post.author.id === currentUser.id;
+
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [loadingComments, setLoadingComments] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(`comments-${post.id}`, JSON.stringify(comments));
-  }, [comments, post.id]);
+    if (!showCommentInput) return;
+
+    let cancelled = false;
+    setLoadingComments(true);
+    getCommentsAPI(post.id)
+      .then((data) => {
+        if (cancelled) return;
+        setComments(data as Comment[]);
+      })
+      .catch((err) => {
+        console.error("Failed to load comments:", err);
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setLoadingComments(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [showCommentInput, post.id]);
 
   // Logic đóng mọi menu khi scroll hoặc click ra ngoài
   useEffect(() => {
@@ -107,9 +141,22 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
     };
   }, [isMenuOpen, openCommentMenuIndex]);
 
-  const handleLike = () => {
-    setLiked(!liked);
-    setLikeCount(prev => liked ? prev - 1 : prev + 1);
+  const handleLike = async () => {
+    const currentLiked = liked;
+    const nextLiked = !currentLiked;
+
+    setLiked(nextLiked);
+    setLikeCount((prev) => prev + (nextLiked ? 1 : -1));
+
+    try {
+      if (nextLiked) await likePostAPI(post.id);
+      else await unlikePostAPI(post.id);
+    } catch (err) {
+      // Revert optimistic UI if the request fails.
+      setLiked(currentLiked);
+      setLikeCount((prev) => prev + (currentLiked ? 1 : -1));
+      console.error("Failed to toggle like:", err);
+    }
   };
 
   const handleToggleComment = () => {
@@ -117,10 +164,23 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
     setTimeout(() => inputRef.current?.focus(), 100);
   };
 
-  const handleSendComment = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && commentText.trim() !== "") {
-      setComments([...comments, commentText.trim()]);
-      setCommentText("");
+  const handleSendComment = async (e: React.KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+
+    const trimmed = commentText.trim();
+    if (!trimmed) return;
+
+    e.preventDefault();
+    setCommentText("");
+
+    try {
+      const res = await addCommentAPI(post.id, { content: trimmed });
+      // Backend returns the created comment DTO.
+      setComments((prev) => [res.data as Comment, ...prev]);
+    } catch (err) {
+      console.error("Failed to add comment:", err);
+      // Put the text back so the user can retry.
+      setCommentText(trimmed);
     }
   };
 
@@ -203,16 +263,19 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
       {showCommentInput && (
         <div className="space-y-4 pt-2">
           <div className="max-h-60 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
-            {comments.map((text, index) => {
-              const isMyComment = index % 2 !== 0; 
+            {loadingComments ? (
+              <div className="text-xs text-slate-500 py-4">Đang tải bình luận...</div>
+            ) : (
+              comments.map((c, index) => {
+              const isMyComment = c.userId === currentUser.id;
               return (
-                <div key={index} className="flex items-start space-x-2 group relative">
+                <div key={c.id} className="flex items-start space-x-2 group relative">
                   <Avatar size="sm" />
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <div className="bg-slate-100 px-3 py-2 rounded-2xl shadow-sm">
                         <p className="text-[11px] font-bold text-slate-900">{isMyComment ? "Bạn" : "Người dùng khác"}</p>
-                        <p className="text-sm text-slate-700">{text}</p>
+                        <p className="text-sm text-slate-700">{c.content}</p>
                       </div>
                       <div className="relative">
                         <button 
@@ -231,8 +294,15 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
                             onClose={() => setOpenCommentMenuIndex(null)}
                             isMyComment={isMyComment}
                             onDelete={() => {
-                              setComments(comments.filter((_, i) => i !== index));
-                              setOpenCommentMenuIndex(null);
+                              // Fire-and-forget; UI updates immediately after API call succeeds.
+                              deleteCommentAPI(post.id, String(c.id))
+                                .then(() => {
+                                  setComments((prev) => prev.filter((x) => x.id !== c.id));
+                                  setOpenCommentMenuIndex(null);
+                                })
+                                .catch((err) => {
+                                  console.error("Failed to delete comment:", err);
+                                });
                             }}
                           />
                         )}
@@ -241,7 +311,8 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
                   </div>
                 </div>
               );
-            })}
+              })
+            )}
           </div>
           <div className="flex items-center space-x-2 pt-2 border-t border-slate-50">
             <Avatar size="sm" />

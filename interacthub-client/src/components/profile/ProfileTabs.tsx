@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // 1. Định nghĩa Props để nhận hàm và biến từ Profile.tsx
 interface ProfileTabsProps {

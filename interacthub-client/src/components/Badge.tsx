@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Sửa Interface: Đổi text thành content
 interface BadgeProps {
   content: string | number; 

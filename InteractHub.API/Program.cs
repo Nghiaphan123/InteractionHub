@@ -48,7 +48,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Vite dev server
+        policy.WithOrigins("http://localhost:5173","http://localhost:5174") // Vite dev server
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -119,8 +119,78 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowReactApp");
+app.UseStaticFiles(); // for serving uploaded images from /wwwroot/uploads
 app.UseAuthentication(); // phải trước UseAuthorization
 app.UseAuthorization();
 app.MapControllers();
+
+// Seed user test
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    
+    var testUser = await userManager.FindByEmailAsync("test@example.com");
+    if (testUser == null)
+    {
+        var newUser = new User
+        {
+            Id = Guid.NewGuid().ToString(),
+            UserName = "testuser",
+            Email = "test@example.com",
+            FullName = "Test User",
+            NormalizedUserName = "TESTUSER",
+            NormalizedEmail = "TEST@EXAMPLE.COM",
+            EmailConfirmed = true
+        };
+        
+        var result = await userManager.CreateAsync(newUser, "Test@123");
+        if (result.Succeeded)
+        {
+            Console.WriteLine("✅ Test user created: test@example.com / Test@123");
+        }
+        else
+        {
+            Console.WriteLine("❌ Failed to create test user");
+        }
+    }
+    else
+    {
+        Console.WriteLine("✅ Test user already exists: test@example.com");
+    }
+
+    // Create second test user
+    var secondUser = await userManager.FindByEmailAsync("phanvann47@gmail.com");
+    if (secondUser == null)
+    {
+        var newUser = new User
+        {
+            Id = Guid.NewGuid().ToString(),
+            UserName = "phanvan",
+            Email = "phanvann47@gmail.com",
+            FullName = "Phan Van",
+            NormalizedUserName = "PHANVAN",
+            NormalizedEmail = "PHANVANN47@GMAIL.COM",
+            EmailConfirmed = true
+        };
+        
+        var result = await userManager.CreateAsync(newUser, "Phan@123");
+        if (result.Succeeded)
+        {
+            Console.WriteLine("✅ Second user created: phanvann47@gmail.com / Phan@123");
+        }
+        else
+        {
+            Console.WriteLine("❌ Failed to create second user");
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine($"   Error: {error.Code} - {error.Description}");
+            }
+        }
+    }
+    else
+    {
+        Console.WriteLine("✅ Second user already exists: phanvann47@gmail.com");
+    }
+}
 
 app.Run();

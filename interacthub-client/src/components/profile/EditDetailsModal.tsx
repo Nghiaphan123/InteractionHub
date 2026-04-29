@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { UserDetail } from '../../types/user';
 
 interface Props {
@@ -47,17 +47,6 @@ const EditDetailsModal = ({ isOpen, onClose, details, onSave }: Props) => {
     setInputStatus('current');
     setAddingType(null);
     setEditingId(null);
-  };
-  
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'Ly hôn': return '💔';
-      case 'Đã kết hôn': return '💞'; // Hai trái tim dính vào nhau
-      case 'Độc thân': return '🤍'; // Trái tim trắng cho sự khởi đầu
-      case 'Hẹn hò': return '💖'; // Trái tim lấp lánh cho tình yêu
-      case 'Đang ly thân': return '🖤'; // Trái tim đen cho nỗi buồn
-      default: return '❤️'; // Icon mặc định
-    }
   };
   
   const renderSection = (title: string, type: UserDetail['type'], icon: string, labelPast: string, labelCurrent: string, hasTick: boolean = true) => (

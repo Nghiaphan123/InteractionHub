@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FriendRequest from '../FriendRequest';
 
 type FriendsTab = 'requests' | 'suggestions' | 'all';

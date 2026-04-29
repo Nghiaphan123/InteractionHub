@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Pencil, X, Check, Trash2, MoreHorizontal } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Pencil, Trash2, MoreHorizontal } from 'lucide-react';
 
 interface MessageProps {
   initialContent: string;
@@ -51,7 +51,10 @@ const MessageItem: React.FC<MessageProps> = ({
   };
 
   return (
-    <div className={`flex flex-col mb-4 ${isMe ? 'items-end' : 'items-start'} group relative`}>
+    <div
+      className={`flex flex-col mb-4 ${isMe ? 'items-end' : 'items-start'} group relative`}
+      data-sender={sender}
+    >
       <div className="flex items-start gap-2 max-w-[80%]">
         
         {/* Menu 3 chấm xuất hiện khi hover (Giống FB) */}

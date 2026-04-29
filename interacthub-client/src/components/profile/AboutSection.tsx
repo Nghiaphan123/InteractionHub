@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { UserDetail, AboutTabType } from '../../types/user';
 
 interface Props {
