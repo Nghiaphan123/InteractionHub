@@ -143,3 +143,11 @@ input::-webkit-password-toggle-button {
   visibility: hidden;
   pointer-events: none;
 }
+
+body:has(.login-container) nav,
+body:has(.login-container) header,
+body:has(.login-container) .navbar,
+body:has(.login-container) .chatbox,
+body:has(.login-container) .chat-box {
+  display: none !important;
+}

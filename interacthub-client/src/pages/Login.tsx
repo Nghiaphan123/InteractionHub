@@ -128,7 +128,12 @@ export default function Login() {
           </button>
         </form>
 
-        <p className="forgot">Quên mật khẩu?</p>
+        <p
+          onClick={() => navigate("/forgot-password")}
+          style={{ color: "#1877f2", cursor: "pointer" }}
+        >
+          Quên mật khẩu?
+        </p>
 
         <button
           className="register-btn"
