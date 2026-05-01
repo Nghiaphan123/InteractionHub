@@ -16,15 +16,15 @@ public class FriendService : IFriendService
     }
 
     // Gửi lời mời kết bạn
-   public async Task SendFriendRequestAsync(string senderId, string receiverId)
+    public async Task<FriendResponseDto?> SendFriendRequestAsync(string senderId, string receiverId)
     {
         // Kiểm tra receiver có tồn tại không
-        var receiverExists = await _userManager.FindByIdAsync(receiverId);
+        var receiverExists = await _context.Users.FindAsync(receiverId);
         if (receiverExists == null)
             throw new Exception("Receiver user does not exist.");
 
         // Kiểm tra sender có tồn tại không (optional nhưng nên có)
-        var senderExists = await _userManager.FindByIdAsync(senderId);
+        var senderExists = await _context.Users.FindAsync(senderId);
         if (senderExists == null)
             throw new Exception("Sender user does not exist.");
 
@@ -42,7 +42,9 @@ public class FriendService : IFriendService
         };
 
         _context.Friendships.Add(friendship);
-        await _context.SaveChangesAsync(); 
+        await _context.SaveChangesAsync();
+
+        return await GetFriendshipDtoAsync(friendship.Id);
     }
 
     // Chấp nhận lời mời
