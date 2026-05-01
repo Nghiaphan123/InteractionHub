@@ -13,7 +13,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InteractHub.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29b11edf842d77ecef16433f14852e7425730ea1")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7fad9cb5557f8a24eca1e907ae6914aa4ab8e3bf")]
+>>>>>>> origin/lehieu
 [assembly: System.Reflection.AssemblyProductAttribute("InteractHub.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InteractHub.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

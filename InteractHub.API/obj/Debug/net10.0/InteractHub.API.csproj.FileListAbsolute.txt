@@ -338,6 +338,7 @@ C:\Users\Admin\Desktop\InteractionHub\InteractHub.API\obj\Debug\net10.0\swae.bui
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.API\obj\Debug\net10.0\Interact.91BC2A48.Up2Date
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.API\obj\Debug\net10.0\InteractHub.API.genruntimeconfig.cache
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.API\obj\Debug\net10.0\ref\InteractHub.API.dll
+<<<<<<< HEAD
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\obj\Debug\net10.0\InteractHub.API.dll
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\obj\Debug\net10.0\refint\InteractHub.API.dll
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\obj\Debug\net10.0\InteractHub.API.pdb
@@ -509,3 +510,8 @@ C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\obj\Debug\ne
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\obj\Debug\net10.0\Interact.91BC2A48.Up2Date
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\obj\Debug\net10.0\InteractHub.API.genruntimeconfig.cache
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\obj\Debug\net10.0\ref\InteractHub.API.dll
+=======
+C:\hieu\test\InteractionHub\InteractHub.API\obj\Debug\net10.0\InteractHub.API.dll
+C:\hieu\test\InteractionHub\InteractHub.API\obj\Debug\net10.0\refint\InteractHub.API.dll
+C:\hieu\test\InteractionHub\InteractHub.API\obj\Debug\net10.0\InteractHub.API.pdb
+>>>>>>> origin/lehieu

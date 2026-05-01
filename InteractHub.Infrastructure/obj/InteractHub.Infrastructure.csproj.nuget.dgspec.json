@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\nghia\\Desktop\\Visual_CSharp\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nghia\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+    "C:\\hieu\\test\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {}
+  },
+  "projects": {
+    "C:\\hieu\\test\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\hieu\\test\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+        "projectName": "InteractHub.Core",
+        "projectPath": "C:\\hieu\\test\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj",
+        "packagesPath": "C:\\Users\\lengo\\.nuget\\packages\\",
+        "outputPath": "C:\\hieu\\test\\InteractionHub\\InteractHub.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\lengo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> origin/lehieu
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -38,7 +55,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net10.0": {
@@ -83,7 +100,11 @@
               "privateAssets": "all"
             }
           },
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+>>>>>>> origin/lehieu
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -361,6 +382,7 @@
         }
       }
     },
+<<<<<<< HEAD
     "C:\\Users\\nghia\\Desktop\\Visual_CSharp\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -372,6 +394,19 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nghia\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+    "C:\\hieu\\test\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\hieu\\test\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
+        "projectName": "InteractHub.Infrastructure",
+        "projectPath": "C:\\hieu\\test\\InteractionHub\\InteractHub.Infrastructure\\InteractHub.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\lengo\\.nuget\\packages\\",
+        "outputPath": "C:\\hieu\\test\\InteractionHub\\InteractHub.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\lengo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> origin/lehieu
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -383,8 +418,13 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
+<<<<<<< HEAD
               "C:\\Users\\nghia\\Desktop\\Visual_CSharp\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
                 "projectPath": "C:\\Users\\nghia\\Desktop\\Visual_CSharp\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj"
+=======
+              "C:\\hieu\\test\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj": {
+                "projectPath": "C:\\hieu\\test\\InteractionHub\\InteractHub.Core\\InteractHub.Core.csproj"
+>>>>>>> origin/lehieu
               }
             }
           }
@@ -399,7 +439,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net10.0": {
@@ -444,7 +484,11 @@
               "privateAssets": "all"
             }
           },
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.107/PortableRuntimeIdentifierGraph.json",
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+>>>>>>> origin/lehieu
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

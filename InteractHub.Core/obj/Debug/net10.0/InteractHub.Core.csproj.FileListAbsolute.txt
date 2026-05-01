@@ -27,6 +27,7 @@ C:\Users\Admin\Desktop\InteractionHub\InteractHub.Core\obj\Debug\net10.0\refint\
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.pdb
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.genruntimeconfig.cache
 C:\Users\Admin\Desktop\InteractionHub\InteractHub.Core\obj\Debug\net10.0\ref\InteractHub.Core.dll
+<<<<<<< HEAD
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Core\bin\Debug\net10.0\InteractHub.Core.deps.json
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Core\bin\Debug\net10.0\InteractHub.Core.runtimeconfig.json
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Core\bin\Debug\net10.0\InteractHub.Core.dll
@@ -42,3 +43,20 @@ C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Core\obj\Debug\n
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.pdb
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.genruntimeconfig.cache
 C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.Core\obj\Debug\net10.0\ref\InteractHub.Core.dll
+=======
+C:\hieu\test\InteractionHub\InteractHub.Core\bin\Debug\net10.0\InteractHub.Core.deps.json
+C:\hieu\test\InteractionHub\InteractHub.Core\bin\Debug\net10.0\InteractHub.Core.runtimeconfig.json
+C:\hieu\test\InteractionHub\InteractHub.Core\bin\Debug\net10.0\InteractHub.Core.dll
+C:\hieu\test\InteractionHub\InteractHub.Core\bin\Debug\net10.0\InteractHub.Core.pdb
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.csproj.AssemblyReference.cache
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.AssemblyInfoInputs.cache
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.AssemblyInfo.cs
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.csproj.CoreCompileInputs.cache
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.sourcelink.json
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.dll
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\refint\InteractHub.Core.dll
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.pdb
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\InteractHub.Core.genruntimeconfig.cache
+C:\hieu\test\InteractionHub\InteractHub.Core\obj\Debug\net10.0\ref\InteractHub.Core.dll
+>>>>>>> origin/lehieu
