@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5162/api",
+  baseURL: "http://127.0.0.1:5162/api"
 });
 
 // REQUEST: gắn JWT
