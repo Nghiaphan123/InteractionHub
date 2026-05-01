@@ -20,6 +20,10 @@ public class UploadsController : ControllerBase
     // POST /api/uploads/image
     [HttpPost("image")]
     [Authorize]
+    [Consumes("multipart/form-data")]
+    [ProducesResponseType(typeof(UploadImageResponse), 200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
     public async Task<IActionResult> UploadImage([FromForm] IFormFile imageFile)
     {
         if (imageFile == null || imageFile.Length == 0)
@@ -43,7 +47,12 @@ public class UploadsController : ControllerBase
 
         // Served by app.UseStaticFiles() from /wwwroot/uploads
         var imageUrl = $"/uploads/{fileName}";
-        return Ok(new { imageUrl });
+        return Ok(new UploadImageResponse { ImageUrl = imageUrl });
     }
+}
+
+public class UploadImageResponse
+{
+    public string ImageUrl { get; set; }
 }
 
