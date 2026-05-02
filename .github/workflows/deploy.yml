@@ -1,295 +1,75 @@
-name: Build and Deploy to Azure
+name: Deploy InteractHub to AWS
 
 on:
   push:
-    branches:
-      - main
-      - develop
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-  AZURE_RESOURCE_GROUP: interacthub-rg
-  AZURE_REGION: eastus
+    branches: [ main ]
 
 jobs:
-  # =============== BACKEND BUILD & TEST ===============
-  backend-build:
+  deploy-backend:
     runs-on: ubuntu-latest
-    name: Backend - Build & Test
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
-      - name: Restore backend dependencies
+      - name: Publish
         run: |
-          cd InteractionHub
-          dotnet restore
-        working-directory: ${{ github.workspace }}
+          dotnet publish InteractHub.API/InteractHub.API.csproj \
+            -c Release -r linux-x64 --self-contained true \
+            -o ./publish-sc
+          echo "web: ./InteractHub.API --urls http://0.0.0.0:5000" > ./publish-sc/Procfile
 
-      - name: Build backend
-        run: |
-          cd InteractionHub
-          dotnet build --configuration Release --no-restore
-        working-directory: ${{ github.workspace }}
+      - name: Zip artifact
+        run: cd publish-sc && zip -r ../interacthub-api.zip .
 
-      - name: Run backend tests
-        run: |
-          cd InteractionHub
-          dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
-        working-directory: ${{ github.workspace }}
-        continue-on-error: true
-
-      - name: Publish test results
-        uses: dorny/test-reporter@v1
-        if: always()
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          name: Backend Test Results
-          path: '**/test-results.trx'
-          reporter: 'dotnet-trx'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1
 
-  # =============== FRONTEND BUILD & TEST ===============
-  frontend-build:
+      - name: Upload to S3
+        run: aws s3 cp interacthub-api.zip s3://interacthub-uploads/deploys/interacthub-api-${{ github.sha }}.zip
+
+      - name: Deploy to Elastic Beanstalk
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name interacthub \
+            --version-label ${{ github.sha }} \
+            --source-bundle S3Bucket=interacthub-uploads,S3Key=deploys/interacthub-api-${{ github.sha }}.zip
+          aws elasticbeanstalk update-environment \
+            --environment-name interacthub-staging \
+            --version-label ${{ github.sha }}
+
+  deploy-frontend:
     runs-on: ubuntu-latest
-    name: Frontend - Build & Test
-    
+    needs: deploy-backend
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          cache: 'npm'
-          cache-dependency-path: 'InteractionHub/interacthub-client/package-lock.json'
+          node-version: "20"
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: InteractionHub/interacthub-client
-
-      - name: Run linter
-        run: npm run lint
-        working-directory: InteractionHub/interacthub-client
-        continue-on-error: true
-
-      - name: Build frontend
-        run: npm run build
-        working-directory: InteractionHub/interacthub-client
-
-      - name: Upload frontend build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: frontend-build
-          path: InteractionHub/interacthub-client/dist
-
-  # =============== SECURITY SCANNING ===============
-  security-scan:
-    runs-on: ubuntu-latest
-    name: Security Scan
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
+      - name: Build React
         run: |
-          cd InteractionHub
-          dotnet restore
-        working-directory: ${{ github.workspace }}
+          cd interacthub-client
+          npm ci
+          npm run build
+        env:
+          VITE_API_URL: http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com/api
 
-      - name: Run security analysis
-        run: |
-          cd InteractionHub
-          dotnet build --configuration Release /p:TreatWarningsAsErrors=true /p:EnforceCodeStyleInBuild=true
-        working-directory: ${{ github.workspace }}
-        continue-on-error: true
-
-  # =============== DEPLOY TO STAGING (Development) ===============
-  deploy-staging:
-    runs-on: ubuntu-latest
-    name: Deploy to Staging
-    needs: [backend-build, frontend-build]
-    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
-    
-    environment:
-      name: Staging
-      url: ${{ steps.deploy.outputs.url }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Azure Login
-        uses: azure/login@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1
 
-      - name: Download frontend artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: frontend-build
-          path: frontend-dist
-
-      - name: Create resource group
-        run: |
-          az group create \
-            --name "${{ env.AZURE_RESOURCE_GROUP }}-staging" \
-            --location "${{ env.AZURE_REGION }}"
-
-      - name: Deploy infrastructure (Bicep)
-        run: |
-          az deployment group create \
-            --resource-group "${{ env.AZURE_RESOURCE_GROUP }}-staging" \
-            --template-file azure/bicep/main.bicep \
-            --parameters \
-              environment=staging \
-              appName=interacthub-staging \
-              location="${{ env.AZURE_REGION }}"
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Publish backend
-        run: |
-          cd InteractionHub/InteractHub.API
-          dotnet publish -c Release -o ${{ runner.temp }}/publish
-
-      - name: Deploy backend to App Service
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: interacthub-api-staging
-          package: ${{ runner.temp }}/publish
-
-      - name: Deploy frontend to Static Web App
-        uses: azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_STAGING }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
-          app_location: frontend-dist
-          skip_app_build: true
-
-  # =============== DEPLOY TO PRODUCTION ===============
-  deploy-production:
-    runs-on: ubuntu-latest
-    name: Deploy to Production
-    needs: [backend-build, frontend-build, security-scan]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
-    environment:
-      name: Production
-      url: ${{ steps.deploy.outputs.url }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Download frontend artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: frontend-build
-          path: frontend-dist
-
-      - name: Create resource group
-        run: |
-          az group create \
-            --name "${{ env.AZURE_RESOURCE_GROUP }}" \
-            --location "${{ env.AZURE_REGION }}"
-
-      - name: Deploy infrastructure (Bicep)
-        run: |
-          az deployment group create \
-            --resource-group "${{ env.AZURE_RESOURCE_GROUP }}" \
-            --template-file azure/bicep/main.bicep \
-            --parameters \
-              environment=production \
-              appName=interacthub \
-              location="${{ env.AZURE_REGION }}"
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Publish backend
-        run: |
-          cd InteractionHub/InteractHub.API
-          dotnet publish -c Release -o ${{ runner.temp }}/publish
-
-      - name: Deploy backend to App Service
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: interacthub-api
-          package: ${{ runner.temp }}/publish
-
-      - name: Deploy frontend to Static Web App
-        uses: azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
-          app_location: frontend-dist
-          skip_app_build: true
-
-      - name: Configure Application Insights
-        run: |
-          az monitor app-insights component create \
-            --app interacthub-insights \
-            --resource-group "${{ env.AZURE_RESOURCE_GROUP }}" \
-            --location "${{ env.AZURE_REGION }}" \
-            --application-type web
-        continue-on-error: true
-
-  # =============== NOTIFICATION ===============
-  notify:
-    runs-on: ubuntu-latest
-    name: Send Notification
-    needs: [backend-build, frontend-build, deploy-staging, deploy-production]
-    if: always()
-    
-    steps:
-      - name: Determine status
-        id: status
-        run: |
-          if [ "${{ needs.backend-build.result }}" = "failure" ] || [ "${{ needs.frontend-build.result }}" = "failure" ]; then
-            echo "status=❌ FAILED" >> $GITHUB_OUTPUT
-          else
-            echo "status=✅ SUCCESS" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Send Slack notification
-        uses: 8398a7/action-slack@v3
-        if: always()
-        with:
-          status: ${{ job.status }}
-          text: |
-            InteractHub CI/CD Pipeline
-            Status: ${{ steps.status.outputs.status }}
-            Branch: ${{ github.ref }}
-            Commit: ${{ github.sha }}
-            Author: ${{ github.actor }}
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-        continue-on-error: true
+      - name: Deploy frontend to S3
+        run: aws s3 sync ./interacthub-client/dist s3://interacthub-frontend --delete
