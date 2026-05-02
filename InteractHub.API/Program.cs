@@ -18,10 +18,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         .GetConnectionString("DefaultConnection")));
 
 // Identity
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
-
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    options.User.AllowedUserNameCharacters = null; // cho phép dấu tiếng Việt
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+builder.Services.AddScoped<IUserValidator<User>, NoOpUsernameValidator<User>>();
 // JWT Authentication
 builder.Services.AddAuthentication(options =>
 {

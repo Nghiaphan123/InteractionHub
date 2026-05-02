@@ -12,7 +12,7 @@ import ChatBox from './components/ChatBox.tsx';
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
-  const [activeChatUser, setActiveChatUser] = useState<{fullName: string, avatarUrl: string} | null>(null);
+  const [activeChatUser, setActiveChatUser] = useState<{ fullName: string, avatarUrl: string } | null>(null);
 
   if (loading) {
     return (
@@ -26,10 +26,13 @@ function App() {
     <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-900 dark:text-white transition-colors duration-300">
       {isAuthenticated && <Navbar onSelectChat={(user) => setActiveChatUser(user)} />}
       <Routes>
-        {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        
+        <Route path="/login" element={
+          isAuthenticated ? <Navigate to="/" replace /> : <Login />
+        } />
+        <Route path="/register" element={
+          isAuthenticated ? <Navigate to="/" replace /> : <Register />
+        } />
+
         {/* Protected Routes */}
         <Route path="/" element={
           <ProtectedRoute>
@@ -51,14 +54,14 @@ function App() {
             <Profile />
           </ProtectedRoute>
         } />
-        
+
         {/* Redirect unknown routes */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />} />
       </Routes>
       {isAuthenticated && activeChatUser && (
-        <ChatBox 
-          contact={activeChatUser} 
-          onClose={() => setActiveChatUser(null)} 
+        <ChatBox
+          contact={activeChatUser}
+          onClose={() => setActiveChatUser(null)}
         />
       )}
     </div>
