@@ -4,9 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import { updateProfileAPI } from '../services/userService';
 import CoverSection from '../components/profile/CoverSection.tsx';
 import ProfileTabs from '../components/profile/ProfileTabs.tsx';
-import EditDetailsModal from '../components/profile/EditDetailsModal.tsx'; 
+import EditDetailsModal from '../components/profile/EditDetailsModal.tsx';
 import AboutSection from '../components/profile/AboutSection.tsx';
 import FriendsSection from '../components/profile/FriendsSection.tsx';
+import axiosClient from '../api/axios';
+import { getPostsByUserAPI, createPostAPI, deletePostAPI } from '../services/postService';
+import { uploadImageAPI } from '../services/uploadService';
 
 // Import đúng component bài viết
 import CreatePost from '../components/CreatePost.tsx';
@@ -23,18 +26,15 @@ const ProfilePage = () => {
   const [mainTab, setMainTab] = useState<'posts' | 'about' | 'friends' | 'photos'>('posts');
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [bioDraft, setBioDraft] = useState("");
-  
+
   const [posts, setPosts] = useState<Post[]>([]);
 
   const [details, setDetails] = useState<UserDetail[]>(() => {
     const saved = localStorage.getItem('user_details_data');
-    return saved ? JSON.parse(saved) : [
-      { id: '1', content: 'Đại học Sài Gòn (SGU)', type: 'education', subStatus: 'current', isVisible: true },
-      { id: '2', content: 'TP. Hồ Chí Minh', type: 'location', isVisible: true }
-    ];
+    return saved ? JSON.parse(saved) : [];
   });
 
-    const handleSaveBio = () => {
+  const handleSaveBio = () => {
     if (userData) {
       setUserData({ ...userData, bio: bioDraft });
       localStorage.setItem('user_bio', bioDraft);
@@ -42,75 +42,97 @@ const ProfilePage = () => {
     }
   };
 
-  const handleCreatePost = (content: string, imageFile: File | null) => {
-    if (!currentUser) return;
-    
-    const newPost: Post = {
-      id: Date.now().toString(),
-      author: {
-        id: currentUser.id,
-        fullName: currentUser.fullName || "",
-        avatarUrl: currentUser.avatarUrl || '',
-         username: currentUser.username || ""
-      },
-      content: content,
-      imageUrl: imageFile ? URL.createObjectURL(imageFile) : undefined,
-      createdAt: new Date().toISOString(),
-      likesCount: 0,  
-      commentsCount: 0,
-      isLiked: false
-    };
-    setPosts(prev => [newPost, ...prev]);
+  const handleCreatePost = async (content: string, imageFile: File | null) => {
+    try {
+      let imageUrl: string | undefined = undefined;
+      if (imageFile) {
+        const uploadRes = await uploadImageAPI(imageFile);
+        imageUrl = uploadRes.data.imageUrl;
+      }
+      const createdPost = await createPostAPI({ content, imageUrl });
+      setPosts(prev => [createdPost, ...prev]);
+    } catch (err) {
+      console.error("Error creating post:", err);
+    }
   };
 
-  const handleDeletePost = (postId: string) => {
-    setPosts(prev => prev.filter(p => p.id !== postId));
+  // Thêm fetch posts trong useEffect
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const targetId = id || currentUser?.id;
+        if (!targetId) return;
+        const data = await getPostsByUserAPI(targetId);
+        setPosts(data);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      }
+    };
+    fetchPosts();
+  }, [id, currentUser?.id]);
+
+  const handleDeletePost = async (postId: string) => {
+    try {
+      await deletePostAPI(postId);
+      setPosts(prev => prev.filter(p => p.id !== postId));
+    } catch (err) {
+      console.error("Error deleting post:", err);
+    }
   };
 
   useEffect(() => {
     const isMe = !id || id === currentUser?.id;
-    const fetchUserData = () => {
-    const savedAvatar = localStorage.getItem('user_avatarUrl');
-    const savedCover = localStorage.getItem('user_coverUrl');
 
-    let data: User | null = null;
+    const fetchUserData = async () => {
+      const savedAvatar = localStorage.getItem('user_avatarUrl');
+      const savedCover = localStorage.getItem('user_coverUrl');
 
-    if (isMe && currentUser) {
-      data = {
-        id: currentUser.id,
-        fullName: currentUser.fullName || "Người dùng",
-        username: currentUser.username || "user",
-        avatarUrl: savedAvatar || currentUser.avatarUrl || '',  
-         coverUrl: savedCover || "https://picsum.photos/1000/400",
-        bio: "Việc gì cũng có thể thành công nếu cố gắng",
-        friendsCount: 1250,
-        isOwnProfile: true,
-        friendStatus: 'none',
-        location: "TP. Hồ Chí Minh",
-        education: "Đại học Sài Gòn (SGU)",
-        details: details
-      };
-    } else {
-      data = {
-        id: id!,
-        fullName: "Người dùng khác",
-        username: `user.${id}`,
-        avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`,
-        coverUrl: "https://picsum.photos/1000/400",
-        bio: "Chào mừng đến với hồ sơ của tôi!",
-        friendsCount: 500,
-        isOwnProfile: false,
-        friendStatus: 'friend',
-        location: "Chưa cập nhật",
-        education: "Chưa cập nhật",
-        details: []
-      };
-    }
+      let data: User | null = null;
 
-    if (data) {
-      setUserData(data);
-    }
-  };
+      if (isMe && currentUser) {
+        data = {
+          id: currentUser.id,
+          fullName: currentUser.fullName || "Người dùng",
+          username: currentUser.username || "user",
+          avatarUrl: savedAvatar || currentUser.avatarUrl || '',  
+           coverUrl: savedCover || "https://picsum.photos/1000/400",
+          bio: localStorage.getItem('user_bio') || "",
+          friendsCount: 0,
+          isOwnProfile: true,
+          friendStatus: 'none',
+          location: "",
+          education: "",
+          details: details
+        };
+      } else {
+        try {
+          const res = await axiosClient.get(`/users/${id}`);
+          const u = res.data;
+          console.log("friendStatus từ API:", u.friendStatus); 
+          data = {
+            id: u.id,
+            fullName: u.fullName,
+            username: u.username,
+            avatarUrl: u.avatarUrl,
+            coverUrl: u.coverUrl || "https://picsum.photos/1000/400",
+            bio: u.bio || "",
+            friendsCount: u.friendsCount || 0,
+            isOwnProfile: false,
+            friendStatus: u.friendStatus || 'none',
+            location: u.location || "",
+            education: u.education || "",
+            details: []
+          };
+        } catch (err) {
+          console.error("Error fetching user:", err);
+        }
+      }
+
+      if (data) {
+        setUserData(data);
+      }
+    };
+
     fetchUserData();
   }, [id, details, currentUser]);
 
@@ -119,11 +141,11 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-[#18191a]">
       <div className="bg-white dark:bg-[#242526] shadow-sm">
-        <CoverSection 
-          user={userData} 
+        <CoverSection
+          user={userData}
           onUpdateImage={async (field, url) => {
             console.log(`🖼️ [Profile] onUpdateImage called:`, { field, url });
-            
+
             // 1. Cập nhật giao diện ngay lập tức
             console.log(`🔄 [Profile] Updating userData state with ${field}:`, url);
             setUserData(prev => {
@@ -132,11 +154,11 @@ const ProfilePage = () => {
               console.log(`✅ [Profile] userData updated:`, updated);
               return updated;
             });
-            
+
             // 2. Lưu vào localStorage
             localStorage.setItem(`user_${field}`, url);
             console.log(`💾 [Profile] Saved to localStorage[user_${field}]`);
-            
+
             // 3. Nếu là tài khoản của mình, cập nhật lên backend
             if (userData?.isOwnProfile && field === 'avatarUrl') {
               try {
@@ -147,14 +169,14 @@ const ProfilePage = () => {
                 console.error("❌ [Profile] Failed to update avatar on backend:", error);
               }
             }
-          }} 
+          }}
         />
         <div className="max-w-5xl mx-auto px-4">
-          <ProfileTabs 
-            activeTab={mainTab} 
-            setActiveTab={setMainTab} 
-            isOwnProfile={userData.isOwnProfile} 
-            friendStatus={userData.friendStatus} 
+          <ProfileTabs
+            activeTab={mainTab}
+            setActiveTab={setMainTab}
+            isOwnProfile={userData.isOwnProfile}
+            friendStatus={userData.friendStatus}
           />
         </div>
       </div>
@@ -162,17 +184,17 @@ const ProfilePage = () => {
       <div className="max-w-5xl mx-auto px-4 py-4">
         {mainTab === 'posts' ? (
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            
+
             {/* CỘT TRÁI: GIỚI THIỆU */}
             <div className="md:col-span-2 space-y-4">
               <div className="bg-white dark:bg-[#242526] p-4 rounded-xl shadow">
                 <h3 className="text-xl font-bold dark:text-white mb-3">Giới thiệu</h3>
-                
+
                 {/* Phần Tiểu sử (Bio) */}
                 <div className="text-center mb-4 border-b dark:border-zinc-700 pb-4">
                   {isEditingBio ? (
                     <div className="space-y-2">
-                      <textarea 
+                      <textarea
                         value={bioDraft}
                         onChange={(e) => setBioDraft(e.target.value)}
                         className="w-full p-2 rounded-lg border dark:bg-zinc-800 dark:text-white dark:border-zinc-600 outline-none focus:ring-1 focus:ring-blue-500"
@@ -238,8 +260,8 @@ const ProfilePage = () => {
                 </div>
 
                 {userData.isOwnProfile && (
-                  <button 
-                    onClick={() => setIsModalOpen(true)} 
+                  <button
+                    onClick={() => setIsModalOpen(true)}
                     className="w-full py-2 bg-zinc-100 dark:bg-zinc-800 font-bold rounded-lg mt-4 dark:text-white hover:bg-zinc-200 transition"
                   >
                     Chỉnh sửa chi tiết
@@ -257,11 +279,11 @@ const ProfilePage = () => {
               <div className="space-y-4">
                 {posts.length > 0 ? (
                   posts.map(post => (
-                    <PostCard 
-                      key={post.id} 
-                      post={post} 
+                    <PostCard
+                      key={post.id}
+                      post={post}
                       onDelete={handleDeletePost}
-                      currentUser={currentUser ? { id: currentUser.id, fullName: currentUser.fullName || "" } : { id: "", fullName: "" }} 
+                      currentUser={currentUser ? { id: currentUser.id, fullName: currentUser.fullName || "" } : { id: "", fullName: "" }}
                     />
                   ))
                 ) : (
@@ -273,27 +295,27 @@ const ProfilePage = () => {
             </div>
 
           </div>
-        ) :mainTab === 'about' ? (
+        ) : mainTab === 'about' ? (
           <AboutSection details={details} onUpdate={setDetails} isOwnProfile={userData.isOwnProfile} />
-        ): mainTab === 'friends' ? (
+        ) : mainTab === 'friends' ? (
           <div className="bg-white dark:bg-[#242526] rounded-xl shadow min-h-[400px]">
             <FriendsSection />
           </div>
         ) : mainTab === 'photos' ? (
-            <div className="bg-white dark:bg-[#242526] p-4 rounded-xl shadow">
-              <h3 className="text-xl font-bold dark:text-white mb-4">Ảnh</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {/* Render ảnh mẫu ở đây */}
-                <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
-                <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
-              </div>
+          <div className="bg-white dark:bg-[#242526] p-4 rounded-xl shadow">
+            <h3 className="text-xl font-bold dark:text-white mb-4">Ảnh</h3>
+            <div className="grid grid-cols-3 gap-2">
+              {/* Render ảnh mẫu ở đây */}
+              <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+              <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
             </div>
-          ) : (
-            <div className="bg-white dark:bg-[#242526] p-16 rounded-xl shadow text-center dark:text-white italic">
-              Tính năng Video đang được cập nhật...
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="bg-white dark:bg-[#242526] p-16 rounded-xl shadow text-center dark:text-white italic">
+            Tính năng Video đang được cập nhật...
+          </div>
+        )}
+      </div>
 
       <EditDetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} details={details} onSave={setDetails} />
     </div>

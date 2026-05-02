@@ -6,6 +6,7 @@ import "./Login.css";
 
 export default function Login() {
   const { login, loading, error } = useAuth();
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
