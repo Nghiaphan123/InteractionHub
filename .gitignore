@@ -24,6 +24,12 @@ package-lock.json
 .env.local
 .env.*.local
 
+# Application settings (local configuration)
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
 # OS files
 .DS_Store
 Thumbs.db

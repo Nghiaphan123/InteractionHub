@@ -51,11 +51,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-       policy.WithOrigins(
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://interacthub-frontend.s3-website-ap-southeast-1.amazonaws.com"
-);
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "http://localhost:5174",
+            "http://interacthub-frontend.s3-website-ap-southeast-1.amazonaws.com"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
     });
 });
 
