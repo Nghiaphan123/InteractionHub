@@ -6,6 +6,7 @@ import CreatePost from '../components/CreatePost';
 import PostCard from '../components/PostCard';
 import { uploadImageAPI } from '../services/uploadService';
 import type { Post } from '../types/post';
+import StoryBar from '../components/StoryBar';
 
 export default function Home() {
   const { user } = useAuth();
@@ -22,8 +23,8 @@ export default function Home() {
         setPosts(data);
       } catch (err) {
         console.error("Error fetching posts:", err);
-        const message = axios.isAxiosError(err) 
-          ? err.response?.data?.message 
+        const message = axios.isAxiosError(err)
+          ? err.response?.data?.message
           : "Không thể tải bài viết";
         setError(typeof message === 'string' ? message : "Không thể tải bài viết");
       } finally {
@@ -69,9 +70,15 @@ export default function Home() {
         {/* Create Post */}
         {user && (
           <div className="mb-6">
-            <CreatePost 
+            <CreatePost
               onPost={handlePostCreated}
             />
+          </div>
+        )}
+         {/* Story Bar */}
+         {user && (
+          <div className="mb-2">
+            <StoryBar />
           </div>
         )}
 
