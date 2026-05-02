@@ -1,11 +1,33 @@
 import { useState, useRef, useEffect } from 'react';
 import { uploadImageAPI } from '../../services/uploadService';
 import type { User } from '../../types/user';
+import axiosClient from '../../api/axios';
 
-const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (field: 'avatarUrl' | 'coverUrl', url: string) => void }) => {
+const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
+  user: User,
+  onUpdateImage?: (field: 'avatarUrl' | 'coverUrl', url: string) => void,
+  onFriendStatusChange?: (status: string) => void
+}) => {
   const { isOwnProfile, friendStatus } = user;
+  const [currentFriendStatus, setCurrentFriendStatus] = useState(friendStatus);
+  const [friendshipId, setFriendshipId] = useState<number | null>(null);
   const [showFollowMenu, setShowFollowMenu] = useState(false);
-  const followMenuRef = useRef<HTMLDivElement>(null);
+
+  const handleSendRequest = async () => {
+    try {
+      await axiosClient.post('/friends/send-request', { receiverId: user.id });
+      setCurrentFriendStatus('pending');
+      onFriendStatusChange?.('pending');
+    } catch (err) { console.error(err); }
+  };
+
+  const handleUnfriend = async () => {
+    try {
+      await axiosClient.delete(`/friends/${user.id}`);
+      setCurrentFriendStatus('none');
+      onFriendStatusChange?.('none');
+    } catch (err) { console.error(err); }
+  };
 
   // Đóng menu khi bấm ra ngoài
   useEffect(() => {
@@ -17,7 +39,7 @@ const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (fi
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  const followMenuRef = useRef<HTMLDivElement>(null);
   // Hàm xử lý khi chọn file ảnh
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, field: 'avatarUrl' | 'coverUrl') => {
     const file = e.target.files?.[0];
@@ -25,13 +47,13 @@ const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (fi
 
     try {
       console.log(`📤 [CoverSection] Uploading ${field} file:`, file.name);
-      
+
       // Upload file to server
       const response = await uploadImageAPI(file);
       console.log(`📨 [CoverSection] Upload response:`, response.data);
-      
+
       let imageUrl = response.data?.imageUrl || response.data?.url;
-      
+
       // If it's a relative path, convert to full URL
       if (imageUrl && imageUrl.startsWith('/')) {
         const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5162/api';
@@ -40,7 +62,7 @@ const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (fi
         imageUrl = `${serverRoot}${imageUrl}`;
         console.log(`🔗 [CoverSection] Full image URL:`, imageUrl);
       }
-      
+
       if (!imageUrl) {
         console.error("❌ [CoverSection] No image URL returned from server");
         console.error("Response data:", response.data);
@@ -61,22 +83,32 @@ const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (fi
     if (isOwnProfile) return (
       <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold transition">+ Thêm vào tin</button>
     );
-
+  
     const MessageBtn = () => (
       <button className="bg-gray-200 dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-300 dark:hover:bg-zinc-600 transition">💬 Nhắn tin</button>
     );
-
+  
     let PrimaryButton;
-    switch (friendStatus) {
+    switch (currentFriendStatus) { // đổi friendStatus → currentFriendStatus
       case 'friend':
         PrimaryButton = (
-          <button className="bg-gray-200 dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md font-semibold flex items-center gap-2">👤 Bạn bè</button>
+          <button onClick={handleUnfriend}
+            className="bg-gray-200 dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md font-semibold flex items-center gap-2 hover:bg-red-50 hover:text-red-600 transition">
+            👤 Bạn bè
+          </button>
+        );
+        break;
+      case 'pending':
+        PrimaryButton = (
+          <button className="bg-gray-200 px-4 py-2 rounded-md font-semibold text-slate-500 cursor-default">
+            ⏳ Đã gửi lời mời
+          </button>
         );
         break;
       case 'follower':
         PrimaryButton = (
           <div className="relative" ref={followMenuRef}>
-            <button 
+            <button
               onClick={() => setShowFollowMenu(!showFollowMenu)}
               className="bg-gray-200 dark:bg-zinc-700 dark:text-white px-4 py-2 rounded-md font-semibold flex items-center gap-2 hover:bg-gray-300 transition"
             >
@@ -94,12 +126,13 @@ const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (fi
         break;
       default:
         PrimaryButton = (
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold flex items-center gap-2 transition">
-            🔔 Theo dõi
+          <button onClick={handleSendRequest}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold flex items-center gap-2 transition">
+            ➕ Thêm bạn bè
           </button>
         );
     }
-
+  
     return (
       <div className="flex gap-2 mb-2 relative">
         {PrimaryButton}

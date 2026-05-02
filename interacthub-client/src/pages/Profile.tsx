@@ -7,7 +7,7 @@ import ProfileTabs from '../components/profile/ProfileTabs.tsx';
 import EditDetailsModal from '../components/profile/EditDetailsModal.tsx';
 import AboutSection from '../components/profile/AboutSection.tsx';
 import FriendsSection from '../components/profile/FriendsSection.tsx';
-
+import axiosClient from '../api/axios';
 import { getPostsByUserAPI, createPostAPI, deletePostAPI } from '../services/postService';
 import { uploadImageAPI } from '../services/uploadService';
 
@@ -31,7 +31,7 @@ const ProfilePage = () => {
 
   const [details, setDetails] = useState<UserDetail[]>(() => {
     const saved = localStorage.getItem('user_details_data');
-    return saved ? JSON.parse(saved) : []; 
+    return saved ? JSON.parse(saved) : [];
   });
 
   const handleSaveBio = () => {
@@ -82,7 +82,8 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const isMe = !id || id === currentUser?.id;
-    const fetchUserData = () => {
+
+    const fetchUserData = async () => {
       const savedAvatar = localStorage.getItem('user_avatarUrl');
       const savedCover = localStorage.getItem('user_coverUrl');
 
@@ -104,26 +105,33 @@ const ProfilePage = () => {
           details: details
         };
       } else {
-        data = {
-          id: id!,
-          fullName: "Người dùng khác",
-          username: `user.${id}`,
-          avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${id}`,
-          coverUrl: "https://picsum.photos/1000/400",
-          bio: "Chào mừng đến với hồ sơ của tôi!",
-          friendsCount: 500,
-          isOwnProfile: false,
-          friendStatus: 'friend',
-          location: "Chưa cập nhật",
-          education: "Chưa cập nhật",
-          details: []
-        };
+        try {
+          const res = await axiosClient.get(`/users/${id}`);
+          const u = res.data;
+          data = {
+            id: u.id,
+            fullName: u.fullName,
+            username: u.username,
+            avatarUrl: u.avatarUrl,
+            coverUrl: u.coverUrl || "https://picsum.photos/1000/400",
+            bio: u.bio || "",
+            friendsCount: u.friendsCount || 0,
+            isOwnProfile: false,
+            friendStatus: u.friendStatus || 'none',
+            location: u.location || "",
+            education: u.education || "",
+            details: []
+          };
+        } catch (err) {
+          console.error("Error fetching user:", err);
+        }
       }
 
       if (data) {
         setUserData(data);
       }
     };
+
     fetchUserData();
   }, [id, details, currentUser]);
 
