@@ -1,0 +1,420 @@
+----------------------------------------
+/var/log/eb-engine.log
+----------------------------------------
+2026/05/02 13:43:29.522723 [INFO] Fetching environment variables...
+2026/05/02 13:43:29.522923 [INFO] Purge old process...
+2026/05/02 13:43:29.522944 [INFO] Running command: systemctl stop eb-app.target
+2026/05/02 13:43:29.536453 [INFO] Running command: systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+2026/05/02 13:43:29.551331 [INFO] web.service
+
+2026/05/02 13:43:29.551358 [INFO] deregistering process: web
+2026/05/02 13:43:29.551377 [INFO] Running command: systemctl show -p PartOf web.service
+2026/05/02 13:43:29.567018 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:43:29.579595 [INFO] Running command: systemctl disable web.service
+2026/05/02 13:43:30.025890 [INFO] Removed "/etc/systemd/system/multi-user.target.wants/web.service".
+
+2026/05/02 13:43:30.025979 [INFO] Running command: systemctl daemon-reload
+2026/05/02 13:43:30.464594 [INFO] Running command: systemctl reset-failed
+2026/05/02 13:43:30.475775 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:43:30.486890 [INFO] Process web has not been fully terminated
+2026/05/02 13:43:30.486917 [INFO] Some processes have not been fully terminated, sleeping 1 seconds now
+2026/05/02 13:43:31.487038 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:43:31.500268 [INFO] Process web has not been fully terminated
+2026/05/02 13:43:31.500295 [INFO] Some processes have not been fully terminated, sleeping 2 seconds now
+2026/05/02 13:43:33.500435 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:43:33.512246 [INFO] Process web has not been fully terminated
+2026/05/02 13:43:33.512267 [INFO] Some processes have not been fully terminated, sleeping 4 seconds now
+2026/05/02 13:43:37.512432 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:43:37.525355 [INFO] Process web has not been fully terminated
+2026/05/02 13:43:37.525381 [INFO] Some processes have not been fully terminated, sleeping 8 seconds now
+2026/05/02 13:43:45.526392 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:43:45.596817 [INFO] Process web has not been fully terminated
+2026/05/02 13:43:45.596844 [INFO] Some processes have not been fully terminated, sleeping 16 seconds now
+2026/05/02 13:44:01.597084 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:44:01.636602 [INFO] Process web has been fully terminated
+2026/05/02 13:44:01.636630 [INFO] All processes have been fully terminated
+2026/05/02 13:44:01.636635 [INFO] Removing /var/app/current/ if it exists
+2026/05/02 13:44:01.666124 [INFO] Renaming /var/app/staging/ to /var/app/current/
+2026/05/02 13:44:01.666179 [INFO] Register application processes...
+2026/05/02 13:44:01.666184 [INFO] Registering the proc: web
+
+2026/05/02 13:44:01.666194 [INFO] Running command: systemctl show -p PartOf web.service
+2026/05/02 13:44:01.733253 [INFO] Running command: systemctl daemon-reload
+2026/05/02 13:44:02.198876 [INFO] Running command: systemctl reset-failed
+2026/05/02 13:44:02.209177 [INFO] Running command: systemctl is-enabled eb-app.target
+2026/05/02 13:44:02.217922 [INFO] Running command: systemctl enable eb-app.target
+2026/05/02 13:44:02.506948 [INFO] Running command: systemctl start eb-app.target
+2026/05/02 13:44:02.517103 [INFO] Running command: systemctl enable web.service
+2026/05/02 13:44:02.772996 [INFO] Created symlink /etc/systemd/system/multi-user.target.wants/web.service → /etc/systemd/system/web.service.
+
+2026/05/02 13:44:02.773033 [INFO] Running command: systemctl show -p PartOf web.service
+2026/05/02 13:44:02.785190 [INFO] Running command: systemctl is-active web.service
+2026/05/02 13:44:02.793056 [INFO] Running command: systemctl start web.service
+2026/05/02 13:44:04.853854 [INFO] Executing instruction: start X-Ray
+2026/05/02 13:44:04.853883 [INFO] X-Ray is not enabled.
+2026/05/02 13:44:04.853888 [INFO] Executing instruction: FlipProxyForDotNetCore
+2026/05/02 13:44:04.853891 [INFO] cleaning beanstalk iptables rules...
+2026/05/02 13:44:04.853906 [INFO] Running command: iptables-save | grep -v added_by_elasticbeanstalk | iptables-restore
+2026/05/02 13:44:04.882234 [INFO] proxy server is nginx, flip proxy...
+2026/05/02 13:44:04.882289 [INFO] Running command: /usr/sbin/nginx -t -c /var/proxy/staging/nginx/nginx.conf
+2026/05/02 13:44:04.925570 [INFO] nginx: [warn] could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+nginx: the configuration file /var/proxy/staging/nginx/nginx.conf syntax is ok
+nginx: configuration file /var/proxy/staging/nginx/nginx.conf test is successful
+
+2026/05/02 13:44:04.925897 [INFO] Running command: cp -rp /var/proxy/staging/nginx/* /etc/nginx
+2026/05/02 13:44:04.933581 [INFO] Running command: systemctl show -p PartOf nginx.service
+2026/05/02 13:44:04.957390 [INFO] Running command: systemctl daemon-reload
+2026/05/02 13:44:05.336200 [INFO] Running command: systemctl reset-failed
+2026/05/02 13:44:05.371299 [INFO] Running command: systemctl show -p PartOf nginx.service
+2026/05/02 13:44:05.393967 [INFO] Running command: systemctl is-active nginx.service
+2026/05/02 13:44:05.411457 [INFO] Running command: systemctl start nginx.service
+2026/05/02 13:44:05.570669 [INFO] Executing instruction: configureSqsd
+2026/05/02 13:44:05.570690 [INFO] This is a web server environment instance, skip configure sqsd daemon ...
+2026/05/02 13:44:05.570699 [INFO] Executing instruction: startSqsd
+2026/05/02 13:44:05.570702 [INFO] This is a web server environment instance, skip start sqsd daemon ...
+2026/05/02 13:44:05.570706 [INFO] Executing instruction: Track pids in healthd
+2026/05/02 13:44:05.570710 [INFO] This is an enhanced health env...
+2026/05/02 13:44:05.570723 [INFO] Running command: systemctl show -p ConsistsOf aws-eb.target | cut -d= -f2
+2026/05/02 13:44:05.586450 [INFO] healthd.service cfn-hup.service nginx.service
+
+2026/05/02 13:44:05.586486 [INFO] Running command: systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+2026/05/02 13:44:05.601322 [INFO] web.service
+
+2026/05/02 13:44:05.601738 [INFO] Executing instruction: RunAppDeployPostDeployHooks
+2026/05/02 13:44:05.601756 [INFO] No hooks found in .platform/hooks/postdeploy/, skipping
+2026/05/02 13:44:05.601760 [INFO] Executing cleanup logic
+2026/05/02 13:44:05.602474 [INFO] CommandService Response: {"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"Engine execution has succeeded.","returncode":0,"events":[{"msg":"Instance deployment found a self-contained .NET Core application in your source bundle.","timestamp":1777729397578,"severity":"INFO"},{"msg":"Instance deployment completed successfully.","timestamp":1777729445601,"severity":"INFO"}]}]}
+
+2026/05/02 13:44:05.658583 [INFO] Platform Engine finished execution on command: app-deploy
+
+2026/05/02 16:13:38.610848 [INFO] Starting...
+2026/05/02 16:13:38.611466 [INFO] Starting EBPlatform-PlatformEngine
+2026/05/02 16:13:38.611500 [INFO] reading event message file
+2026/05/02 16:13:38.624441 [INFO] Engine received EB command cfn-hup-exec
+
+2026/05/02 16:13:38.813137 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:ap-southeast-1:521486622338:stack/awseb-e-spm3t4mhwi-stack/9fdd50d0-45d8-11f1-9fc0-025d11907e1b -r AWSEBAutoScalingGroup --region ap-southeast-1
+2026/05/02 16:13:39.523959 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:ap-southeast-1:521486622338:stack/awseb-e-spm3t4mhwi-stack/9fdd50d0-45d8-11f1-9fc0-025d11907e1b -r AWSEBBeanstalkMetadata --region ap-southeast-1
+2026/05/02 16:13:39.957938 [INFO] checking whether command tail-log is applicable to this instance...
+2026/05/02 16:13:39.957956 [INFO] this command is applicable to the instance, thus instance should execute command
+2026/05/02 16:13:39.957963 [INFO] Engine command: (tail-log)
+
+2026/05/02 16:13:39.959195 [INFO] Executing instruction: GetTailLogs
+2026/05/02 16:13:39.959211 [INFO] Tail Logs...
+2026/05/02 16:13:39.963596 [INFO] Running command: tail -n 100 /var/log/eb-engine.log
+
+
+----------------------------------------
+/var/log/nginx/access.log
+----------------------------------------
+172.31.35.223 - - [02/May/2026:12:25:33 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (compatible; InternetMeasurement/1.0; +https://internet-measurement.com/)" "185.247.137.92"
+172.31.13.147 - - [02/May/2026:12:28:07 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0" "27.148.196.43"
+172.31.13.147 - - [02/May/2026:12:34:17 +0000] "GET /.env HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "152.232.16.210"
+172.31.13.147 - - [02/May/2026:12:34:18 +0000] "POST / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "152.232.16.210"
+172.31.13.147 - - [02/May/2026:12:38:53 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:12:39:58 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "137.184.149.232"
+172.31.35.223 - - [02/May/2026:12:42:46 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0" "27.148.196.43"
+172.31.13.147 - - [02/May/2026:12:45:08 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:12:51:07 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:12:52:42 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "54.82.48.51"
+172.31.13.147 - - [02/May/2026:12:53:44 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" "43.166.247.155"
+172.31.13.147 - - [02/May/2026:13:00:47 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:07:39 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "157.230.6.114"
+172.31.13.147 - - [02/May/2026:13:08:03 +0000] "GET /.env HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0" "185.242.3.26"
+172.31.13.147 - - [02/May/2026:13:08:03 +0000] "GET /wp-content/ HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0" "185.242.3.26"
+172.31.35.223 - - [02/May/2026:13:08:33 +0000] "GET / HTTP/1.1" 502 150 "-" "-" "176.65.139.156"
+172.31.13.147 - - [02/May/2026:13:09:49 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" "43.166.255.102"
+172.31.13.147 - - [02/May/2026:13:10:15 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:26:01 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:35:50 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:46:48 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:56:26 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:13:59:50 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)" "66.132.195.111"
+172.31.35.223 - - [02/May/2026:14:00:05 +0000] "GET /.well-known/security.txt HTTP/1.1" 502 150 "-" "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)" "66.132.195.111"
+172.31.13.147 - - [02/May/2026:14:03:33 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:14:11:40 +0000] "GET /.env HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "140.99.201.83"
+172.31.35.223 - - [02/May/2026:14:11:41 +0000] "POST / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "140.99.201.83"
+172.31.13.147 - - [02/May/2026:14:12:10 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:14:17:47 +0000] "GET / HTTP/1.1" 502 150 "-" "-" "162.217.248.155"
+172.31.13.147 - - [02/May/2026:14:21:14 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:14:26:36 +0000] "GET / HTTP/1.1" 502 150 "-" "HTTP Banner Detection (https://security.ipip.net)" "103.203.56.1"
+172.31.13.147 - - [02/May/2026:14:34:42 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:14:45:12 +0000] "GET / HTTP/1.1" 502 150 "-" "python-requests/2.32.5" "34.62.196.247"
+172.31.13.147 - - [02/May/2026:14:51:54 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:14:56:46 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" "43.157.150.69"
+172.31.13.147 - - [02/May/2026:14:56:47 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:14:58:02 +0000] "GET /.env HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "92.113.119.248"
+172.31.13.147 - - [02/May/2026:14:58:03 +0000] "POST / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "92.113.119.248"
+172.31.13.147 - - [02/May/2026:15:00:32 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 zgrab/0.x" "20.171.8.85"
+172.31.13.147 - - [02/May/2026:15:06:55 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:15:11:53 +0000] "POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh HTTP/1.1" 400 150 "-" "-" "-"
+172.31.35.223 - - [02/May/2026:15:11:53 +0000] "POST /cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh HTTP/1.1" 400 150 "-" "-" "-"
+172.31.35.223 - - [02/May/2026:15:11:53 +0000] "POST /hello.world?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:54 +0000] "POST /?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:54 +0000] "GET /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:54 +0000] "GET /vendor/phpunit/phpunit/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:54 +0000] "GET /vendor/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:55 +0000] "GET /vendor/phpunit/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:55 +0000] "GET /vendor/phpunit/phpunit/LICENSE/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:55 +0000] "GET /vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:56 +0000] "GET /phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:56 +0000] "GET /phpunit/phpunit/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:56 +0000] "GET /phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:56 +0000] "GET /phpunit/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:57 +0000] "GET /lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:57 +0000] "GET /lib/phpunit/phpunit/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:57 +0000] "GET /lib/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:58 +0000] "GET /lib/phpunit/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:58 +0000] "GET /lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:58 +0000] "GET /laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:58 +0000] "GET /www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:58 +0000] "GET /ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:59 +0000] "GET /yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:59 +0000] "GET /zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:59 +0000] "GET /ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:59 +0000] "GET /V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:11:59 +0000] "GET /tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:00 +0000] "GET /test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:00 +0000] "GET /testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:00 +0000] "GET /api/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:00 +0000] "GET /demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:00 +0000] "GET /cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:01 +0000] "GET /crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:01 +0000] "GET /admin/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:01 +0000] "GET /backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:02 +0000] "GET /blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:02 +0000] "GET /workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:02 +0000] "GET /panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:02 +0000] "GET /public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:03 +0000] "GET /apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:03 +0000] "GET /app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:03 +0000] "GET /index.php?s=/index/\x5Cthink\x5Capp/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=Hello HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:04 +0000] "GET /public/index.php?s=/index/\x5Cthink\x5Capp/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=Hello HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:04 +0000] "GET /index.php?lang=../../../../../../../../usr/local/lib/php/pearcmd&+config-create+/&/<?echo(md5(\x22hi\x22));?>+/tmp/index1.php HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:04 +0000] "GET /index.php?lang=../../../../../../../../tmp/index1 HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:12:04 +0000] "GET /containers/json HTTP/1.1" 502 150 "-" "libredtail-http" "110.35.80.116"
+172.31.35.223 - - [02/May/2026:15:17:05 +0000] "GET / HTTP/1.1" 502 150 "-" "curl/7.64.1" "8.216.4.69"
+172.31.35.223 - - [02/May/2026:15:17:09 +0000] "GET / HTTP/1.1" 502 150 "-" "curl/7.74.0" "8.216.4.69"
+172.31.13.147 - - [02/May/2026:15:19:27 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:15:25:41 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:15:26:40 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36" "185.242.226.113"
+172.31.35.223 - - [02/May/2026:15:28:24 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "123.160.223.75"
+172.31.35.223 - - [02/May/2026:15:37:21 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 zgrab/0.x" "20.15.163.169"
+172.31.13.147 - - [02/May/2026:15:37:28 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:15:42:19 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:15:55:23 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:15:55:27 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "3.86.245.199"
+172.31.35.223 - - [02/May/2026:16:04:59 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" "43.130.67.6"
+172.31.13.147 - - [02/May/2026:16:07:16 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:16:13:19 +0000] "GET /swagger HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.8115" "42.117.250.87"
+
+
+----------------------------------------
+/var/log/nginx/error.log
+----------------------------------------
+2026/05/02 12:52:42 [error] 15667#15667: *2115 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 12:53:44 [error] 15668#15668: *2137 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-52-221-169-241.ap-southeast-1.compute.amazonaws.com"
+2026/05/02 13:00:47 [error] 15667#15667: *2249 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:07:39 [error] 15667#15667: *2337 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:08:03 [error] 15667#15667: *2337 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /.env HTTP/1.1", upstream: "http://127.0.0.1:5000/.env", host: "52.221.169.241"
+2026/05/02 13:08:03 [error] 15667#15667: *2337 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /wp-content/ HTTP/1.1", upstream: "http://127.0.0.1:5000/wp-content/", host: "52.221.169.241"
+2026/05/02 13:08:33 [error] 15668#15668: *2351 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 13:09:49 [error] 15667#15667: *2380 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:10:15 [error] 15667#15667: *2380 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:26:01 [error] 15668#15668: *2613 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:35:50 [error] 15668#15668: *2752 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:44:04 [warn] 33556#33556: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 13:44:05 [warn] 33593#33593: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 13:44:05 [warn] 33594#33594: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 13:46:48 [error] 33596#33596: *30 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:56:26 [error] 33597#33597: *168 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:59:50 [error] 33596#33596: *218 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 14:00:05 [error] 33596#33596: *218 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /.well-known/security.txt HTTP/1.1", upstream: "http://127.0.0.1:5000/.well-known/security.txt", host: "13.213.129.211"
+2026/05/02 14:03:33 [error] 33596#33596: *285 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 14:11:40 [error] 33597#33597: *396 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /.env HTTP/1.1", upstream: "http://127.0.0.1:5000/.env", host: "13.213.129.211"
+2026/05/02 14:11:41 [error] 33597#33597: *396 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "POST / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 14:12:10 [error] 33597#33597: *401 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 14:17:47 [error] 33597#33597: *497 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 14:21:14 [error] 33596#33596: *550 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 14:26:36 [error] 33597#33597: *627 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 14:34:42 [error] 33596#33596: *747 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 14:45:12 [error] 33597#33597: *894 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 14:51:54 [error] 33596#33596: *993 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 14:56:46 [error] 33596#33596: *1060 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 14:56:47 [error] 33596#33596: *1057 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 14:58:02 [error] 33597#33597: *1089 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /.env HTTP/1.1", upstream: "http://127.0.0.1:5000/.env", host: "52.221.169.241"
+2026/05/02 14:58:03 [error] 33597#33597: *1089 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "POST / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:00:32 [error] 33596#33596: *1127 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:06:55 [error] 33597#33597: *1221 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:11:53 [warn] 33596#33596: *1299 using uninitialized "year" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [warn] 33596#33596: *1299 using uninitialized "month" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [warn] 33596#33596: *1299 using uninitialized "day" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [warn] 33596#33596: *1299 using uninitialized "hour" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [warn] 33596#33596: *1305 using uninitialized "year" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [warn] 33596#33596: *1305 using uninitialized "month" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [warn] 33596#33596: *1305 using uninitialized "day" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [warn] 33596#33596: *1305 using uninitialized "hour" variable while logging request, client: 172.31.35.223, server: , request: "POST /cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/bin/sh HTTP/1.1"
+2026/05/02 15:11:53 [error] 33597#33597: *1309 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "POST /hello.world?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input HTTP/1.1", upstream: "http://127.0.0.1:5000/hello.world?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input", host: "13.213.129.211"
+2026/05/02 15:11:54 [error] 33597#33597: *1309 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "POST /?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input HTTP/1.1", upstream: "http://127.0.0.1:5000/?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input", host: "13.213.129.211"
+2026/05/02 15:11:54 [error] 33597#33597: *1309 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:54 [error] 33597#33597: *1317 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /vendor/phpunit/phpunit/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/vendor/phpunit/phpunit/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:54 [error] 33597#33597: *1320 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /vendor/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/vendor/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:55 [error] 33597#33597: *1323 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /vendor/phpunit/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/vendor/phpunit/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:55 [error] 33597#33597: *1326 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /vendor/phpunit/phpunit/LICENSE/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/vendor/phpunit/phpunit/LICENSE/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:55 [error] 33597#33597: *1329 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:56 [error] 33596#33596: *1333 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:56 [error] 33596#33596: *1336 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /phpunit/phpunit/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/phpunit/phpunit/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:56 [error] 33596#33596: *1338 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:56 [error] 33596#33596: *1340 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /phpunit/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/phpunit/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:57 [error] 33596#33596: *1342 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:57 [error] 33596#33596: *1344 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /lib/phpunit/phpunit/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/lib/phpunit/phpunit/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:57 [error] 33596#33596: *1346 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /lib/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/lib/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:58 [error] 33596#33596: *1348 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /lib/phpunit/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/lib/phpunit/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:58 [error] 33596#33596: *1350 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:58 [error] 33597#33597: *1352 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:58 [error] 33597#33597: *1354 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:58 [error] 33597#33597: *1356 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:59 [error] 33597#33597: *1358 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:59 [error] 33597#33597: *1360 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:59 [error] 33597#33597: *1362 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:59 [error] 33597#33597: *1364 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:11:59 [error] 33597#33597: *1366 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:00 [error] 33597#33597: *1368 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:00 [error] 33597#33597: *1370 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:00 [error] 33597#33597: *1372 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /api/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/api/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:00 [error] 33597#33597: *1374 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:00 [error] 33597#33597: *1376 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:01 [error] 33597#33597: *1378 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:01 [error] 33597#33597: *1380 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /admin/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/admin/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:01 [error] 33597#33597: *1382 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:02 [error] 33596#33596: *1384 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:02 [error] 33596#33596: *1386 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:02 [error] 33596#33596: *1388 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:02 [error] 33596#33596: *1390 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:03 [error] 33596#33596: *1393 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:03 [error] 33596#33596: *1395 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php HTTP/1.1", upstream: "http://127.0.0.1:5000/app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php", host: "13.213.129.211"
+2026/05/02 15:12:03 [error] 33596#33596: *1398 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /index.php?s=/index/\think\app/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=Hello HTTP/1.1", upstream: "http://127.0.0.1:5000/index.php?s=/index/\think\app/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=Hello", host: "13.213.129.211"
+2026/05/02 15:12:04 [error] 33596#33596: *1398 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /public/index.php?s=/index/\think\app/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=Hello HTTP/1.1", upstream: "http://127.0.0.1:5000/public/index.php?s=/index/\think\app/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=Hello", host: "13.213.129.211"
+2026/05/02 15:12:04 [error] 33596#33596: *1398 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /index.php?lang=../../../../../../../../usr/local/lib/php/pearcmd&+config-create+/&/<?echo(md5("hi"));?>+/tmp/index1.php HTTP/1.1", upstream: "http://127.0.0.1:5000/index.php?lang=../../../../../../../../usr/local/lib/php/pearcmd&+config-create+/&/<?echo(md5("hi"));?>+/tmp/index1.php", host: "13.213.129.211"
+2026/05/02 15:12:04 [error] 33596#33596: *1398 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /index.php?lang=../../../../../../../../tmp/index1 HTTP/1.1", upstream: "http://127.0.0.1:5000/index.php?lang=../../../../../../../../tmp/index1", host: "13.213.129.211"
+2026/05/02 15:12:04 [error] 33596#33596: *1398 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /containers/json HTTP/1.1", upstream: "http://127.0.0.1:5000/containers/json", host: "13.213.129.211"
+2026/05/02 15:17:05 [error] 33596#33596: *1474 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 15:17:09 [error] 33596#33596: *1474 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 15:19:27 [error] 33596#33596: *1506 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:25:41 [error] 33596#33596: *1601 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:26:40 [error] 33597#33597: *1613 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 15:28:24 [error] 33596#33596: *1637 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 15:37:21 [error] 33596#33596: *1765 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 15:37:28 [error] 33596#33596: *1768 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:42:19 [error] 33597#33597: *1842 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:55:23 [error] 33597#33597: *2038 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 15:55:27 [error] 33597#33597: *2038 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 16:04:59 [error] 33597#33597: *2171 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 16:07:16 [error] 33597#33597: *2205 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 16:13:19 [error] 33596#33596: *2304 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /swagger HTTP/1.1", upstream: "http://127.0.0.1:5000/swagger", host: "interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com"
+
+
+----------------------------------------
+/var/log/web.stdout.log
+----------------------------------------
+May  2 16:13:07 ip-172-31-32-145 web[49434]:   at Program.<Main>$(String[] args) in C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\Program.cs:line 144
+May  2 16:13:07 ip-172-31-32-145 web[49434]:   at Program.<Main>(String[] args)
+May  2 16:13:07 ip-172-31-32-145 web[49434]: ClientConnectionId:786a4390-94ec-47ff-b0cd-89e702b9d260
+May  2 16:13:07 ip-172-31-32-145 web[49434]: Error Number:-2146893019,State:0,Class:20
+May  2 16:13:37 ip-172-31-32-145 web[49467]: ⚠️ Migration failed: A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: TCP Provider, error: 35 - An internal exception was caught) - continuing...
+May  2 16:13:37 ip-172-31-32-145 web[49467]: fail: Microsoft.EntityFrameworkCore.Database.Connection[20004]
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      An error occurred using the connection to database 'InteractHubDB' on server 'interacthub-db.cvcyii42yila.ap-southeast-1.rds.amazonaws.com'.
+May  2 16:13:37 ip-172-31-32-145 web[49467]: fail: Microsoft.EntityFrameworkCore.Query[10100]
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      An exception occurred while iterating over the results of a query for context type 'InteractHub.Infrastructure.Data.AppDbContext'.
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      Microsoft.Data.SqlClient.SqlException (0x80131904): A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: TCP Provider, error: 35 - An internal exception was caught)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:       ---> System.Security.Authentication.AuthenticationException: Certificate failed chain validation. Error(s): 'unable to get local issuer certificate, [Status: PartialChain]
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      '.
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ManagedSni.SniCommon.ValidateSslServerCertificate(Guid connectionId, String targetServerName, String hostNameInCertificate, X509Certificate serverCert, String validationCertFileName, SslPolicyErrors policyErrors)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.ValidateServerCertificate(Object sender, X509Certificate serverCertificate, X509Chain chain, SslPolicyErrors policyErrors)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.VerifyRemoteCertificate(RemoteCertificateValidationCallback remoteCertValidationCallback, SslCertificateTrust trust, ProtocolToken& alertToken, SslPolicyErrors& sslPolicyErrors, X509ChainStatusFlags& chainStatus)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.CompleteHandshake(ProtocolToken& alertToken, SslPolicyErrors& sslPolicyErrors, X509ChainStatusFlags& chainStatus)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.CompleteHandshake(SslAuthenticationOptions sslAuthenticationOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.AuthenticateAsClient(SslClientAuthenticationOptions sslClientAuthenticationOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.EnableSsl(UInt32 options)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 taskCompletionSource, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.SqlConnection.InternalOpenAsync(SqlConnectionOverrides overrides, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      --- End of stack trace from previous location ---
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      ClientConnectionId:1fac4b41-be36-4b16-b477-86c66aacf273
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      Error Number:-2146893019,State:0,Class:20
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      Microsoft.Data.SqlClient.SqlException (0x80131904): A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: TCP Provider, error: 35 - An internal exception was caught)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:       ---> System.Security.Authentication.AuthenticationException: Certificate failed chain validation. Error(s): 'unable to get local issuer certificate, [Status: PartialChain]
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      '.
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ManagedSni.SniCommon.ValidateSslServerCertificate(Guid connectionId, String targetServerName, String hostNameInCertificate, X509Certificate serverCert, String validationCertFileName, SslPolicyErrors policyErrors)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.ValidateServerCertificate(Object sender, X509Certificate serverCertificate, X509Chain chain, SslPolicyErrors policyErrors)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.VerifyRemoteCertificate(RemoteCertificateValidationCallback remoteCertValidationCallback, SslCertificateTrust trust, ProtocolToken& alertToken, SslPolicyErrors& sslPolicyErrors, X509ChainStatusFlags& chainStatus)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.CompleteHandshake(ProtocolToken& alertToken, SslPolicyErrors& sslPolicyErrors, X509ChainStatusFlags& chainStatus)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.CompleteHandshake(SslAuthenticationOptions sslAuthenticationOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at System.Net.Security.SslStream.AuthenticateAsClient(SslClientAuthenticationOptions sslClientAuthenticationOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.EnableSsl(UInt32 options)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 taskCompletionSource, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.Data.SqlClient.SqlConnection.InternalOpenAsync(SqlConnectionOverrides overrides, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      --- End of stack trace from previous location ---
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      ClientConnectionId:1fac4b41-be36-4b16-b477-86c66aacf273
+May  2 16:13:37 ip-172-31-32-145 web[49467]:      Error Number:-2146893019,State:0,Class:20
+May  2 16:13:37 ip-172-31-32-145 web[49467]: Unhandled exception. Microsoft.Data.SqlClient.SqlException (0x80131904): A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: TCP Provider, error: 35 - An internal exception was caught)
+May  2 16:13:37 ip-172-31-32-145 web[49467]: ---> System.Security.Authentication.AuthenticationException: Certificate failed chain validation. Error(s): 'unable to get local issuer certificate, [Status: PartialChain]
+May  2 16:13:37 ip-172-31-32-145 web[49467]: '.
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.SqlClient.ManagedSni.SniCommon.ValidateSslServerCertificate(Guid connectionId, String targetServerName, String hostNameInCertificate, X509Certificate serverCert, String validationCertFileName, SslPolicyErrors policyErrors)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.ValidateServerCertificate(Object sender, X509Certificate serverCertificate, X509Chain chain, SslPolicyErrors policyErrors)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at System.Net.Security.SslStream.VerifyRemoteCertificate(RemoteCertificateValidationCallback remoteCertValidationCallback, SslCertificateTrust trust, ProtocolToken& alertToken, SslPolicyErrors& sslPolicyErrors, X509ChainStatusFlags& chainStatus)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at System.Net.Security.SslStream.CompleteHandshake(ProtocolToken& alertToken, SslPolicyErrors& sslPolicyErrors, X509ChainStatusFlags& chainStatus)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at System.Net.Security.SslStream.CompleteHandshake(SslAuthenticationOptions sslAuthenticationOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at System.Net.Security.SslStream.AuthenticateAsClient(SslClientAuthenticationOptions sslClientAuthenticationOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.EnableSsl(UInt32 options)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 taskCompletionSource, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry, SqlConnectionOverrides overrides)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.Data.SqlClient.SqlConnection.InternalOpenAsync(SqlConnectionOverrides overrides, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]: --- End of stack trace from previous location ---
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Microsoft.AspNetCore.Identity.UserManager`1.FindByEmailAsync(String email)
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Program.<Main>$(String[] args) in C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\Program.cs:line 144
+May  2 16:13:37 ip-172-31-32-145 web[49467]:   at Program.<Main>(String[] args)
+May  2 16:13:37 ip-172-31-32-145 web[49467]: ClientConnectionId:1fac4b41-be36-4b16-b477-86c66aacf273
+May  2 16:13:37 ip-172-31-32-145 web[49467]: Error Number:-2146893019,State:0,Class:20
+
+

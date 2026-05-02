@@ -50,8 +50,8 @@ const ProfilePage = () => {
       author: {
         id: currentUser.id,
         fullName: currentUser.fullName || "",
-        avatarUrl: currentUser.avatarUrl || undefined,
-        username: currentUser.username || ""
+        avatarUrl: currentUser.avatarUrl || '',
+         username: currentUser.username || ""
       },
       content: content,
       imageUrl: imageFile ? URL.createObjectURL(imageFile) : undefined,
@@ -80,8 +80,8 @@ const ProfilePage = () => {
         id: currentUser.id,
         fullName: currentUser.fullName || "Người dùng",
         username: currentUser.username || "user",
-        avatarUrl: savedAvatar || currentUser.avatarUrl,
-        coverUrl: savedCover || "https://picsum.photos/1000/400",
+        avatarUrl: savedAvatar || currentUser.avatarUrl || '',  
+         coverUrl: savedCover || "https://picsum.photos/1000/400",
         bio: "Việc gì cũng có thể thành công nếu cố gắng",
         friendsCount: 1250,
         isOwnProfile: true,
