@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { CURRENT_USER } from '../services/auth';
+import { useAuth } from '../context/AuthContext';
+import { updateProfileAPI } from '../services/userService';
 import CoverSection from '../components/profile/CoverSection.tsx';
 import ProfileTabs from '../components/profile/ProfileTabs.tsx';
 import EditDetailsModal from '../components/profile/EditDetailsModal.tsx'; 
@@ -16,6 +17,7 @@ import type { Post } from '../types/post';
 
 const ProfilePage = () => {
   const { id } = useParams<{ id: string }>();
+  const { user: currentUser } = useAuth();
   const [userData, setUserData] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mainTab, setMainTab] = useState<'posts' | 'about' | 'friends' | 'photos'>('posts');
@@ -41,13 +43,15 @@ const ProfilePage = () => {
   };
 
   const handleCreatePost = (content: string, imageFile: File | null) => {
+    if (!currentUser) return;
+    
     const newPost: Post = {
       id: Date.now().toString(),
       author: {
-        id: CURRENT_USER.id,
-        fullName: CURRENT_USER.fullName,
-        avatarUrl: CURRENT_USER.avatarUrl,
-        username: CURRENT_USER.username || ""
+        id: currentUser.id,
+        fullName: currentUser.fullName || "",
+        avatarUrl: currentUser.avatarUrl || undefined,
+        username: currentUser.username || ""
       },
       content: content,
       imageUrl: imageFile ? URL.createObjectURL(imageFile) : undefined,
@@ -64,17 +68,19 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    const isMe = !id || id === CURRENT_USER.id;
+    const isMe = !id || id === currentUser?.id;
     const fetchUserData = () => {
     const savedAvatar = localStorage.getItem('user_avatarUrl');
     const savedCover = localStorage.getItem('user_coverUrl');
 
-    let data: User | null = null; // Gán mặc định là null ở đây
+    let data: User | null = null;
 
-    if (isMe) {
+    if (isMe && currentUser) {
       data = {
-        ...CURRENT_USER,
-        avatarUrl: savedAvatar || CURRENT_USER.avatarUrl,
+        id: currentUser.id,
+        fullName: currentUser.fullName || "Người dùng",
+        username: currentUser.username || "user",
+        avatarUrl: savedAvatar || currentUser.avatarUrl,
         coverUrl: savedCover || "https://picsum.photos/1000/400",
         bio: "Việc gì cũng có thể thành công nếu cố gắng",
         friendsCount: 1250,
@@ -85,7 +91,6 @@ const ProfilePage = () => {
         details: details
       };
     } else {
-      // Đảm bảo trong phần else cũng phải gán giá trị cho data
       data = {
         id: id!,
         fullName: "Người dùng khác",
@@ -103,11 +108,11 @@ const ProfilePage = () => {
     }
 
     if (data) {
-      setUserData(data); // Chỉ set khi data đã được gán giá trị
+      setUserData(data);
     }
   };
     fetchUserData();
-  }, [id, details]);
+  }, [id, details, currentUser]);
 
   if (!userData) return <div className="p-10 text-center dark:text-white italic">Đang tải...</div>;
 
@@ -116,12 +121,32 @@ const ProfilePage = () => {
       <div className="bg-white dark:bg-[#242526] shadow-sm">
         <CoverSection 
           user={userData} 
-          onUpdateImage={(field, url) => {
-            // 1. Cập nhật giao diện ngay lập tức
-            setUserData(prev => prev ? { ...prev, [field]: url } : null);
+          onUpdateImage={async (field, url) => {
+            console.log(`🖼️ [Profile] onUpdateImage called:`, { field, url });
             
-            // 2. Lưu vào localStorage để F5 không bị mất ảnh
+            // 1. Cập nhật giao diện ngay lập tức
+            console.log(`🔄 [Profile] Updating userData state with ${field}:`, url);
+            setUserData(prev => {
+              if (!prev) return null;
+              const updated = { ...prev, [field]: url };
+              console.log(`✅ [Profile] userData updated:`, updated);
+              return updated;
+            });
+            
+            // 2. Lưu vào localStorage
             localStorage.setItem(`user_${field}`, url);
+            console.log(`💾 [Profile] Saved to localStorage[user_${field}]`);
+            
+            // 3. Nếu là tài khoản của mình, cập nhật lên backend
+            if (userData?.isOwnProfile && field === 'avatarUrl') {
+              try {
+                console.log("📤 [Profile] Updating avatar on backend:", url);
+                await updateProfileAPI({ avatarUrl: url });
+                console.log("✅ [Profile] Avatar updated on backend");
+              } catch (error) {
+                console.error("❌ [Profile] Failed to update avatar on backend:", error);
+              }
+            }
           }} 
         />
         <div className="max-w-5xl mx-auto px-4">
@@ -236,7 +261,7 @@ const ProfilePage = () => {
                       key={post.id} 
                       post={post} 
                       onDelete={handleDeletePost}
-                      currentUser={{ id: CURRENT_USER.id, fullName: CURRENT_USER.fullName }} 
+                      currentUser={currentUser ? { id: currentUser.id, fullName: currentUser.fullName || "" } : { id: "", fullName: "" }} 
                     />
                   ))
                 ) : (

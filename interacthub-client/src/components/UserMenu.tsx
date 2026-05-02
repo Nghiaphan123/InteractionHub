@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { User, Moon, Sun, Globe, LogOut, Check, ChevronRight } from 'lucide-react';
 
 const UserMenu: React.FC = () => {
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [language, setLanguage] = useState<string>('vi');
   const [showLangSub, setShowLangSub] = useState<boolean>(false);
@@ -41,6 +43,11 @@ const UserMenu: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   const handleGoToProfile = () => {
     setIsOpen(false);
     navigate('/profile');
@@ -54,7 +61,7 @@ const UserMenu: React.FC = () => {
 
   return (
     <div className="relative" ref={menuRef}>
-      {/* Nút Hoài An */}
+      {/* Nút user */}
       <button 
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -63,7 +70,7 @@ const UserMenu: React.FC = () => {
         <div className="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center overflow-hidden">
            <User size={20} className="text-blue-600" />
         </div>
-        <span className="font-medium text-gray-700 dark:text-gray-200">Hoài An</span>
+        <span className="font-medium text-gray-700 dark:text-gray-200">{user?.fullName || "User"}</span>
       </button>
 
       {/* Dropdown Menu */}
@@ -129,7 +136,10 @@ const UserMenu: React.FC = () => {
 
           <hr className="my-1 border-gray-100 dark:border-slate-800" />
 
-          <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 transition-colors">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 transition-colors"
+          >
             <LogOut size={18} />
             <span className="font-medium">Đăng xuất</span>
           </button>

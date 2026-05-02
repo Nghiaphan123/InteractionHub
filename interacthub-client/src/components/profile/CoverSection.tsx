@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { uploadImageAPI } from '../../services/uploadService';
 import type { User } from '../../types/user';
 
 const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (field: 'avatarUrl' | 'coverUrl', url: string) => void }) => {
@@ -18,11 +19,41 @@ const CoverSection = ({ user, onUpdateImage }: { user: User, onUpdateImage?: (fi
   }, []);
 
   // Hàm xử lý khi chọn file ảnh
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: 'avatarUrl' | 'coverUrl') => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, field: 'avatarUrl' | 'coverUrl') => {
     const file = e.target.files?.[0];
-    if (file && onUpdateImage) {
-      const imageUrl = URL.createObjectURL(file);
+    if (!file || !onUpdateImage) return;
+
+    try {
+      console.log(`📤 [CoverSection] Uploading ${field} file:`, file.name);
+      
+      // Upload file to server
+      const response = await uploadImageAPI(file);
+      console.log(`📨 [CoverSection] Upload response:`, response.data);
+      
+      let imageUrl = response.data?.imageUrl || response.data?.url;
+      
+      // If it's a relative path, convert to full URL
+      if (imageUrl && imageUrl.startsWith('/')) {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5162/api';
+        // Remove /api from base URL to get server root
+        const serverRoot = baseUrl.replace('/api', '');
+        imageUrl = `${serverRoot}${imageUrl}`;
+        console.log(`🔗 [CoverSection] Full image URL:`, imageUrl);
+      }
+      
+      if (!imageUrl) {
+        console.error("❌ [CoverSection] No image URL returned from server");
+        console.error("Response data:", response.data);
+        alert("Lỗi: Không nhận được URL từ server");
+        return;
+      }
+
+      console.log(`✅ [CoverSection] ${field} uploaded successfully:`, imageUrl);
+      console.log(`🔄 [CoverSection] Calling onUpdateImage with:`, { field, imageUrl });
       onUpdateImage(field, imageUrl);
+    } catch (error) {
+      console.error(`❌ [CoverSection] Failed to upload ${field}:`, error);
+      alert(`Lỗi: Không thể upload ảnh. Vui lòng thử lại.`);
     }
   };
 

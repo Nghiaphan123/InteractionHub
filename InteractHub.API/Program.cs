@@ -112,11 +112,9 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Swagger PHẢI trước CORS
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "InteractHub API v1"));
 
 app.UseCors("AllowReactApp");
 app.UseStaticFiles(); // for serving uploaded images from /wwwroot/uploads
