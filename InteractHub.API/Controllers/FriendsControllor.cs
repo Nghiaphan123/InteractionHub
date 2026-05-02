@@ -38,7 +38,7 @@ public class FriendsController : ControllerBase
     }
 
     // POST /api/friends/request
-   [HttpPost("send-request")]
+    [HttpPost("send-request")]
     public async Task<IActionResult> SendRequest(FriendRequestDto dto)
     {
         try
@@ -49,7 +49,7 @@ public class FriendsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message); 
+            return BadRequest(ex.Message);
         }
     }
 
@@ -97,5 +97,13 @@ public class FriendsController : ControllerBase
         var status = await _friendService.GetFriendshipStatusAsync(
             GetCurrentUserId(), userId);
         return Ok(new { status });
+    }
+
+    // GET /api/friends/sent
+    [HttpGet("sent")]
+    public async Task<IActionResult> GetSentRequests()
+    {
+        var requests = await _friendService.GetSentRequestsAsync(GetCurrentUserId());
+        return Ok(requests);
     }
 }

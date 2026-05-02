@@ -9,6 +9,7 @@ const FriendsSection = () => {
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [friends, setFriends] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [sentRequests, setSentRequests] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,8 +19,10 @@ const FriendsSection = () => {
           axiosClient.get('/friends/pending'),
           axiosClient.get('/friends'),
         ]);
+        const sentRes = await axiosClient.get('/friends/sent');
         setPendingRequests(pendingRes.data);
         setFriends(friendsRes.data);
+        setSentRequests(sentRes.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -63,6 +66,7 @@ const FriendsSection = () => {
       case 'requests':
         return (
           <div className="space-y-8">
+            {/* Lời mời nhận được */}
             <div>
               <h3 className="text-xl font-bold dark:text-white mb-4">
                 Lời mời kết bạn {pendingRequests.length > 0 && `(${pendingRequests.length})`}
@@ -96,6 +100,37 @@ const FriendsSection = () => {
                           Từ chối
                         </button>
                       </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Lời mời đã gửi */}
+            <div className="border-t dark:border-zinc-700 pt-6">
+              <h3 className="text-xl font-bold dark:text-white mb-4">
+                Lời mời đã gửi {sentRequests.length > 0 && `(${sentRequests.length})`}
+              </h3>
+              {sentRequests.length === 0 ? (
+                <p className="text-slate-500 italic">Chưa gửi lời mời nào</p>
+              ) : (
+                <div className="grid grid-cols-1 gap-3">
+                  {sentRequests.map(r => (
+                    <div key={r.id} className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
+                          {r.avatarUrl ? (
+                            <img src={r.avatarUrl.startsWith("http") ? r.avatarUrl : `http://localhost:5162${r.avatarUrl}`} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.fullName?.[0]}</div>
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm dark:text-white">{r.fullName}</p>
+                          <p className="text-xs text-slate-500">@{r.username}</p>
+                        </div>
+                      </div>
+                      <span className="text-xs text-slate-400 italic">⏳ Chờ xác nhận</span>
                     </div>
                   ))}
                 </div>

@@ -108,6 +108,7 @@ const ProfilePage = () => {
         try {
           const res = await axiosClient.get(`/users/${id}`);
           const u = res.data;
+          console.log("friendStatus từ API:", u.friendStatus); 
           data = {
             id: u.id,
             fullName: u.fullName,

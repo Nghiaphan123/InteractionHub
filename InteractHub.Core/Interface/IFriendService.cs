@@ -11,4 +11,5 @@ public interface IFriendService
     Task<List<FriendResponseDto>> GetFriendsAsync(string userId);
     Task<List<FriendResponseDto>> GetPendingRequestsAsync(string userId);
     Task<string> GetFriendshipStatusAsync(string userId, string otherUserId);
+    Task<List<FriendRequestResponseDto>> GetSentRequestsAsync(string userId);
 }

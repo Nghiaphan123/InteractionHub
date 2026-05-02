@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(string id)
     {
-        var user = await _userService.GetUserByIdAsync(id);
+        var user = await _userService.GetUserByIdAsync(id, GetCurrentUserId());
         if (user == null) return NotFound(new { message = "Không tìm thấy user" });
         return Ok(user);
     }

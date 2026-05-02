@@ -10,4 +10,5 @@ public class UserResponseDto
     public DateTime CreatedAt { get; set; }
     public int PostsCount { get; set; }
     public int FriendsCount { get; set; }
+    public string FriendStatus { get; set; } = "none";
 }

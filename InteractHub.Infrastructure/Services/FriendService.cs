@@ -42,8 +42,8 @@ public class FriendService : IFriendService
         };
 
         _context.Friendships.Add(friendship);
-        await _context.SaveChangesAsync(); 
-        
+        await _context.SaveChangesAsync();
+
         // TRẢ VỀ DTO SAU KHI LƯU THÀNH CÔNG
         return await GetFriendshipDtoAsync(friendship.Id);
     }
@@ -161,4 +161,20 @@ public class FriendService : IFriendService
         Status = f.Status.ToString(),
         CreatedAt = f.CreatedAt
     };
+
+    public async Task<List<FriendRequestResponseDto>> GetSentRequestsAsync(string userId)
+    {
+        return await _context.Friendships
+            .Include(f => f.Receiver)
+            .Where(f => f.SenderId == userId && f.Status == FriendshipStatus.Pending)
+            .Select(f => new FriendRequestResponseDto
+            {
+                Id = f.Id,
+                UserId = f.ReceiverId,
+                FullName = f.Receiver.FullName,
+                Username = f.Receiver.UserName!,
+                AvatarUrl = f.Receiver.AvatarUrl
+            })
+            .ToListAsync();
+    }
 }
