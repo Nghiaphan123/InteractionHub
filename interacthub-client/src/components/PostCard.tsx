@@ -28,14 +28,14 @@ type Comment = {
   avatarUrl?: string | null;
 };
 
-const CommentMenuPortal = ({ 
-  anchorRect, 
-  onClose, 
-  isMyComment, 
-  onDelete 
-}: { 
-  anchorRect: DOMRect; 
-  onClose: () => void; 
+const CommentMenuPortal = ({
+  anchorRect,
+  onClose,
+  isMyComment,
+  onDelete
+}: {
+  anchorRect: DOMRect;
+  onClose: () => void;
   isMyComment: boolean;
   onDelete: () => void;
 }) => {
@@ -49,7 +49,7 @@ const CommentMenuPortal = ({
   return ReactDOM.createPortal(
     <>
       <div className="fixed inset-0 z-[9998] bg-transparent" onClick={onClose} />
-      <div 
+      <div
         style={style}
         className="w-44 bg-white border border-slate-200 shadow-xl rounded-xl py-1 z-[9999] animate-in fade-in slide-in-from-top-1 duration-150"
       >
@@ -58,8 +58,8 @@ const CommentMenuPortal = ({
             <button className="w-full text-left px-4 py-2 text-xs hover:bg-slate-50 cursor-pointer flex items-center gap-2 transition">
               ✏️ <span>Sửa bình luận</span>
             </button>
-            <button 
-              onClick={onDelete} 
+            <button
+              onClick={onDelete}
               className="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 cursor-pointer flex items-center gap-2 font-medium transition"
             >
               🗑️ <span>Xoá bình luận</span>
@@ -90,7 +90,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null); // Ref cho menu bài viết
-  
+
   const isMyPost = post.author.id === currentUser.id;
 
   const [comments, setComments] = useState<Comment[]>([]);
@@ -134,7 +134,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
 
     window.addEventListener('scroll', handleScroll, true);
     document.addEventListener('mousedown', handleClickOutside);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll, true);
       document.removeEventListener('mousedown', handleClickOutside);
@@ -196,41 +196,41 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
         <div className="flex items-center space-x-3">
           {/* Click vào Avatar để tới profile */}
           <Link to={`/profile/${post.author.id}`}>
-            <Avatar size="md" src={post.author.avatarUrl}/> 
+            <Avatar size="md" src={post.author.avatarUrl} />
           </Link>
           <div className="flex flex-col">
             {/* Click vào Tên để tới profile */}
             <Link to={`/profile/${post.author.id}`} className="font-bold text-sm text-slate-900 leading-none mb-1 hover:underline hover:text-blue-600 transition">
               {post.author.fullName}
-            </Link>            
+            </Link>
             <div className="leading-none text-xs text-slate-500">
               <TimeAgo date={new Date(post.createdAt)} />
             </div>
           </div>
         </div>
-        
+
         {/* Menu dấu 3 chấm bài viết */}
         <div className="relative" ref={menuRef}>
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="p-2 rounded-full transition cursor-pointer text-slate-400 hover:bg-slate-100"
           >
             •••
           </button>
           {isMenuOpen && (
-             <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 shadow-xl rounded-xl py-2 z-20 animate-in fade-in zoom-in duration-150">
-                <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition">✨ Quan tâm</button>
-                {isMyPost ? (
-                  <button 
-                    onClick={() => onDelete && onDelete(post.id)}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition"
-                  >
-                    🗑️ Xoá bài viết
-                  </button>
-                ) : (
-                  <button className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition">🚩 Báo cáo bài viết</button>
-                )}
-             </div>
+            <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 shadow-xl rounded-xl py-2 z-20 animate-in fade-in zoom-in duration-150">
+              <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition">✨ Quan tâm</button>
+              {isMyPost ? (
+                <button
+                  onClick={() => onDelete && onDelete(post.id)}
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition"
+                >
+                  🗑️ Xoá bài viết
+                </button>
+              ) : (
+                <button className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition">🚩 Báo cáo bài viết</button>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -238,7 +238,11 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
       <p className="text-slate-800 text-sm">{post.content}</p>
       {post.imageUrl && (
         <div className="mt-3 rounded-xl overflow-hidden border border-slate-100">
-          <img src={post.imageUrl} alt="Post content" className="w-full h-auto max-h-[450px] object-cover" />
+          <img
+            src={post.imageUrl.startsWith("http") ? post.imageUrl : `http://localhost:5162${post.imageUrl}`}
+            alt="Post content"
+            className="w-full h-auto max-h-[450px] object-cover"
+          />
         </div>
       )}
 
@@ -267,63 +271,63 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
               <div className="text-xs text-slate-500 py-4">Đang tải bình luận...</div>
             ) : (
               comments.map((c, index) => {
-              const isMyComment = c.userId === currentUser.id;
-              return (
-                <div key={c.id} className="flex items-start space-x-2 group relative">
-                  <Avatar size="sm" />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <div className="bg-slate-100 px-3 py-2 rounded-2xl shadow-sm">
-                        <p className="text-[11px] font-bold text-slate-900">{isMyComment ? "Bạn" : "Người dùng khác"}</p>
-                        <p className="text-sm text-slate-700">{c.content}</p>
-                      </div>
-                      <div className="relative">
-                        <button 
-                          onClick={(e) => handleOpenCommentMenu(e, index)}
-                          className={`p-1 rounded-full transition cursor-pointer 
-                            ${openCommentMenuIndex === index 
-                              ? 'bg-slate-200 text-slate-900 opacity-100' 
-                              : 'opacity-0 group-hover:opacity-100 hover:bg-slate-200 text-slate-400'
-                            }`}
-                        >
-                          •••
-                        </button>
-                        {openCommentMenuIndex === index && anchorRect && (
-                          <CommentMenuPortal 
-                            anchorRect={anchorRect}
-                            onClose={() => setOpenCommentMenuIndex(null)}
-                            isMyComment={isMyComment}
-                            onDelete={() => {
-                              // Fire-and-forget; UI updates immediately after API call succeeds.
-                              deleteCommentAPI(post.id, String(c.id))
-                                .then(() => {
-                                  setComments((prev) => prev.filter((x) => x.id !== c.id));
-                                  setOpenCommentMenuIndex(null);
-                                })
-                                .catch((err) => {
-                                  console.error("Failed to delete comment:", err);
-                                });
-                            }}
-                          />
-                        )}
+                const isMyComment = c.userId === currentUser.id;
+                return (
+                  <div key={c.id} className="flex items-start space-x-2 group relative">
+                    <Avatar size="sm" />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <div className="bg-slate-100 px-3 py-2 rounded-2xl shadow-sm">
+                          <p className="text-[11px] font-bold text-slate-900">{isMyComment ? "Bạn" : "Người dùng khác"}</p>
+                          <p className="text-sm text-slate-700">{c.content}</p>
+                        </div>
+                        <div className="relative">
+                          <button
+                            onClick={(e) => handleOpenCommentMenu(e, index)}
+                            className={`p-1 rounded-full transition cursor-pointer 
+                            ${openCommentMenuIndex === index
+                                ? 'bg-slate-200 text-slate-900 opacity-100'
+                                : 'opacity-0 group-hover:opacity-100 hover:bg-slate-200 text-slate-400'
+                              }`}
+                          >
+                            •••
+                          </button>
+                          {openCommentMenuIndex === index && anchorRect && (
+                            <CommentMenuPortal
+                              anchorRect={anchorRect}
+                              onClose={() => setOpenCommentMenuIndex(null)}
+                              isMyComment={isMyComment}
+                              onDelete={() => {
+                                // Fire-and-forget; UI updates immediately after API call succeeds.
+                                deleteCommentAPI(post.id, String(c.id))
+                                  .then(() => {
+                                    setComments((prev) => prev.filter((x) => x.id !== c.id));
+                                    setOpenCommentMenuIndex(null);
+                                  })
+                                  .catch((err) => {
+                                    console.error("Failed to delete comment:", err);
+                                  });
+                              }}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
+                );
               })
             )}
           </div>
           <div className="flex items-center space-x-2 pt-2 border-t border-slate-50">
             <Avatar size="sm" />
-            <input 
-              ref={inputRef} 
-              type="text" 
-              value={commentText} 
-              onChange={(e) => setCommentText(e.target.value)} 
-              onKeyDown={handleSendComment} 
-              placeholder="Viết bình luận..." 
-              className="flex-1 bg-slate-100 border-none rounded-xl px-4 py-2 text-sm outline-none transition focus:bg-slate-200" 
+            <input
+              ref={inputRef}
+              type="text"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              onKeyDown={handleSendComment}
+              placeholder="Viết bình luận..."
+              className="flex-1 bg-slate-100 border-none rounded-xl px-4 py-2 text-sm outline-none transition focus:bg-slate-200"
             />
           </div>
         </div>

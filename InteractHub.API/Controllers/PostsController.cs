@@ -111,4 +111,13 @@ public class PostsController : ControllerBase
         if (!result) return NotFound(new { message = "Không tìm thấy comment hoặc không có quyền" });
         return NoContent();
     }
+
+    [HttpGet("user/{userId}")]
+    [Authorize]
+    public async Task<IActionResult> GetPostsByUser(string userId)
+    {
+        var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+        var posts = await _postService.GetPostsByUserIdAsync(userId, currentUserId);
+        return Ok(posts);
+    }
 }

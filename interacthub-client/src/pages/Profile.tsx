@@ -8,6 +8,9 @@ import EditDetailsModal from '../components/profile/EditDetailsModal.tsx';
 import AboutSection from '../components/profile/AboutSection.tsx';
 import FriendsSection from '../components/profile/FriendsSection.tsx';
 
+import { getPostsByUserAPI, createPostAPI, deletePostAPI } from '../services/postService';
+import { uploadImageAPI } from '../services/uploadService';
+
 // Import đúng component bài viết
 import CreatePost from '../components/CreatePost.tsx';
 import PostCard from '../components/PostCard.tsx';
@@ -42,29 +45,42 @@ const ProfilePage = () => {
     }
   };
 
-  const handleCreatePost = (content: string, imageFile: File | null) => {
-    if (!currentUser) return;
-    
-    const newPost: Post = {
-      id: Date.now().toString(),
-      author: {
-        id: currentUser.id,
-        fullName: currentUser.fullName || "",
-        avatarUrl: currentUser.avatarUrl || undefined,
-        username: currentUser.username || ""
-      },
-      content: content,
-      imageUrl: imageFile ? URL.createObjectURL(imageFile) : undefined,
-      createdAt: new Date().toISOString(),
-      likesCount: 0,  
-      commentsCount: 0,
-      isLiked: false
-    };
-    setPosts(prev => [newPost, ...prev]);
+  const handleCreatePost = async (content: string, imageFile: File | null) => {
+    try {
+      let imageUrl: string | undefined = undefined;
+      if (imageFile) {
+        const uploadRes = await uploadImageAPI(imageFile);
+        imageUrl = uploadRes.data.imageUrl;
+      }
+      const createdPost = await createPostAPI({ content, imageUrl });
+      setPosts(prev => [createdPost, ...prev]);
+    } catch (err) {
+      console.error("Error creating post:", err);
+    }
   };
+  
+  // Thêm fetch posts trong useEffect
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const targetId = id || currentUser?.id;
+        if (!targetId) return;
+        const data = await getPostsByUserAPI(targetId);
+        setPosts(data);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      }
+    };
+    fetchPosts();
+  }, [id, currentUser?.id]);
 
-  const handleDeletePost = (postId: string) => {
-    setPosts(prev => prev.filter(p => p.id !== postId));
+  const handleDeletePost = async (postId: string) => {
+    try {
+      await deletePostAPI(postId);
+      setPosts(prev => prev.filter(p => p.id !== postId));
+    } catch (err) {
+      console.error("Error deleting post:", err);
+    }
   };
 
   useEffect(() => {

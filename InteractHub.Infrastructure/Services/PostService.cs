@@ -71,6 +71,31 @@ public class PostService : IPostService
         };
     }
 
+    public async Task<List<PostResponseDto>> GetPostsByUserIdAsync(string userId, string currentUserId)
+    {
+        return await _context.Posts
+            .Include(p => p.User)
+            .Include(p => p.Likes)
+            .Include(p => p.Comments)
+            .Where(p => p.UserId == userId)
+            .OrderByDescending(p => p.CreatedAt)
+            .Select(p => new PostResponseDto
+            {
+                Id = p.Id,
+                Content = p.Content,
+                ImageUrl = p.ImageUrl,
+                CreatedAt = p.CreatedAt,
+                UserId = p.UserId,
+                Username = p.User.UserName!,
+                FullName = p.User.FullName,
+                AvatarUrl = p.User.AvatarUrl,
+                LikesCount = p.Likes.Count,
+                CommentsCount = p.Comments.Count,
+                IsLikedByCurrentUser = p.Likes.Any(l => l.UserId == currentUserId)
+            })
+            .ToListAsync();
+    }
+
     // Tạo post mới
     public async Task<PostResponseDto> CreatePostAsync(string userId, CreatePostDto dto)
     {

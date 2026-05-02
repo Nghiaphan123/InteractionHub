@@ -34,6 +34,19 @@ export const getPostByIdAPI = async (id: string): Promise<Post> => {
   return mapPostDtoToPost(response.data);
 };
 
+export const getPostsByUserAPI = (userId: string) =>
+  axiosClient.get(`/posts/user/${userId}`).then(r => 
+    r.data.map((p: any) => ({
+      ...p,
+      author: {
+        id: p.userId,
+        fullName: p.fullName,
+        avatarUrl: p.avatarUrl,
+        username: p.username
+      }
+    }))
+  );
+
 export const createPostAPI = async (data: { content: string; imageUrl?: string }): Promise<Post> => {
   const response = await axiosClient.post("/posts", data);
   return mapPostDtoToPost(response.data);

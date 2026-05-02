@@ -8,6 +8,9 @@ public interface IPostService
     // Posts
     Task<List<PostResponseDto>> GetAllPostsAsync(string currentUserId, int page = 1, int pageSize = 10);
     Task<PostResponseDto?> GetPostByIdAsync(int postId, string currentUserId);
+
+    Task<List<PostResponseDto>> GetPostsByUserIdAsync(string userId, string currentUserId);
+    
     Task<PostResponseDto> CreatePostAsync(string userId, CreatePostDto dto);
     Task<PostResponseDto?> UpdatePostAsync(int postId, string userId, UpdatePostDto dto);
     Task<bool> DeletePostAsync(int postId, string userId);
