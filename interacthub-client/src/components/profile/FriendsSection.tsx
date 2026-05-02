@@ -79,15 +79,15 @@ const FriendsSection = () => {
                     <div key={r.id} className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
-                          {r.avatarUrl ? (
-                            <img src={r.avatarUrl.startsWith("http") ? r.avatarUrl : `http://localhost:5162${r.avatarUrl}`} className="w-full h-full object-cover" />
+                          {r.senderAvatarUrl ? (
+                            <img src={r.senderAvatarUrl.startsWith("http") ? r.senderAvatarUrl : `http://localhost:5162${r.senderAvatarUrl}`} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.fullName?.[0]}</div>
+                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.senderFullName?.[0]}</div>
                           )}
                         </div>
                         <div>
-                          <p className="font-semibold text-sm dark:text-white">{r.fullName}</p>
-                          <p className="text-xs text-slate-500">@{r.username}</p>
+                          <p className="font-semibold text-sm dark:text-white">{r.senderFullName}</p>
+                          <p className="text-xs text-slate-500">@{r.senderUsername}</p>
                         </div>
                       </div>
                       <div className="flex gap-2">
@@ -119,15 +119,15 @@ const FriendsSection = () => {
                     <div key={r.id} className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
-                          {r.avatarUrl ? (
-                            <img src={r.avatarUrl.startsWith("http") ? r.avatarUrl : `http://localhost:5162${r.avatarUrl}`} className="w-full h-full object-cover" />
+                          {r.senderAvatarUrl ? (
+                            <img src={r.senderAvatarUrl.startsWith("http") ? r.senderAvatarUrl : `http://localhost:5162${r.senderAvatarUrl}`} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.fullName?.[0]}</div>
+                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.senderFullName?.[0]}</div>
                           )}
                         </div>
                         <div>
-                          <p className="font-semibold text-sm dark:text-white">{r.fullName}</p>
-                          <p className="text-xs text-slate-500">@{r.username}</p>
+                          <p className="font-semibold text-sm dark:text-white">{r.senderFullName}</p>
+                          <p className="text-xs text-slate-500">@{r.senderUsername}</p>
                         </div>
                       </div>
                       <span className="text-xs text-slate-400 italic">⏳ Chờ xác nhận</span>
