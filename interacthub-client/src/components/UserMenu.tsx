@@ -8,15 +8,15 @@ const UserMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [language, setLanguage] = useState<string>('vi');
   const [showLangSub, setShowLangSub] = useState<boolean>(false);
-  
+
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   // --- LOGIC DARK MODE (Chỉ khai báo 1 lần) ---
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') === 'dark' || 
-             document.documentElement.classList.contains('dark');
+      return localStorage.getItem('theme') === 'dark' ||
+        document.documentElement.classList.contains('dark');
     }
     return false;
   });
@@ -62,13 +62,20 @@ const UserMenu: React.FC = () => {
   return (
     <div className="relative" ref={menuRef}>
       {/* Nút user */}
-      <button 
+      <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 px-4 py-2 rounded-full transition-all focus:outline-none"
       >
         <div className="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center overflow-hidden">
-           <User size={20} className="text-blue-600" />
+          {user?.avatarUrl ? (
+            <img
+              src={user.avatarUrl.startsWith("http") ? user.avatarUrl : `http://localhost:5162${user.avatarUrl}`}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <User size={20} className="text-blue-600" />
+          )}
         </div>
         <span className="font-medium text-gray-700 dark:text-gray-200">{user?.fullName || "User"}</span>
       </button>
@@ -76,8 +83,8 @@ const UserMenu: React.FC = () => {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 py-2 z-50">
-          
-          <button 
+
+          <button
             onClick={handleGoToProfile}
             className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors text-gray-700 dark:text-gray-200"
           >
@@ -94,9 +101,9 @@ const UserMenu: React.FC = () => {
               <span>Chế độ tối</span>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
+              <input
+                type="checkbox"
+                className="sr-only peer"
                 checked={isDarkMode}
                 onChange={(e) => setIsDarkMode(e.target.checked)}
               />
@@ -105,7 +112,7 @@ const UserMenu: React.FC = () => {
           </div>
 
           {/* Ngôn ngữ */}
-          <div 
+          <div
             className="relative"
             onMouseEnter={() => setShowLangSub(true)}
             onMouseLeave={() => setShowLangSub(false)}
@@ -136,7 +143,7 @@ const UserMenu: React.FC = () => {
 
           <hr className="my-1 border-gray-100 dark:border-slate-800" />
 
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 transition-colors"
           >

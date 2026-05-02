@@ -1,6 +1,7 @@
 import { useState, useRef, type ChangeEvent } from 'react'; // Thêm ChangeEvent
 import Avatar from './Avatar';
 import Button from './Button';
+import { useAuth } from '../context/AuthContext';
 
 interface CreatePostProps {
   // [SỬA] Cập nhật kiểu dữ liệu: onPost nhận content (string) và file (File)
@@ -8,6 +9,7 @@ interface CreatePostProps {
 }
 
 const CreatePost = ({ onPost }: CreatePostProps) => {
+  const { user } = useAuth();
   const [content, setContent] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,7 +66,9 @@ const CreatePost = ({ onPost }: CreatePostProps) => {
   return (
     <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
       <div className="flex space-x-3 items-start">
-        <Avatar size="md" />
+        <Avatar size="md"
+        src={user?.avatarUrl?.startsWith("http") ? user.avatarUrl : user?.avatarUrl ? `http://localhost:5162${user.avatarUrl}` : undefined} 
+        />
         
         {/* Khu vực ô nhập liệu */}
         <textarea 

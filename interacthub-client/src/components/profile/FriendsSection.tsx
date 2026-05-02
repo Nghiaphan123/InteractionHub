@@ -119,15 +119,15 @@ const FriendsSection = () => {
                     <div key={r.id} className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
-                          {r.senderAvatarUrl ? (
-                            <img src={r.senderAvatarUrl.startsWith("http") ? r.senderAvatarUrl : `http://localhost:5162${r.senderAvatarUrl}`} className="w-full h-full object-cover" />
+                          {r.avatarUrl ? ( // ← đổi thành avatarUrl
+                            <img src={r.avatarUrl.startsWith("http") ? r.avatarUrl : `http://localhost:5162${r.avatarUrl}`} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.senderFullName?.[0]}</div>
+                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.fullName?.[0]}</div>
                           )}
                         </div>
                         <div>
-                          <p className="font-semibold text-sm dark:text-white">{r.senderFullName}</p>
-                          <p className="text-xs text-slate-500">@{r.senderUsername}</p>
+                          <p className="font-semibold text-sm dark:text-white">{r.fullName}</p> {/* ← đổi */}
+                          <p className="text-xs text-slate-500">@{r.username}</p> {/* ← đổi */}
                         </div>
                       </div>
                       <span className="text-xs text-slate-400 italic">⏳ Chờ xác nhận</span>
@@ -149,27 +149,35 @@ const FriendsSection = () => {
               <p className="text-slate-500 italic">Chưa có bạn bè nào</p>
             ) : (
               <div className="grid grid-cols-1 gap-3">
-                {friends.map(f => (
-                  <div key={f.id} className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
-                        {f.avatarUrl ? (
-                          <img src={f.avatarUrl.startsWith("http") ? f.avatarUrl : `http://localhost:5162${f.avatarUrl}`} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{f.fullName?.[0]}</div>
-                        )}
+                {friends.map(f => {
+                  // Lấy thông tin của người kia (không phải mình)
+                  const friendName = f.senderFullName || f.receiverFullName;
+                  const friendUsername = f.senderUsername || f.receiverUsername;
+                  const friendAvatar = f.senderAvatarUrl || f.receiverAvatarUrl;
+                  const friendId = f.senderId || f.receiverId;
+
+                  return (
+                    <div key={f.id} className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
+                          {friendAvatar ? (
+                            <img src={friendAvatar.startsWith("http") ? friendAvatar : `http://localhost:5162${friendAvatar}`} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{friendName?.[0]}</div>
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm dark:text-white">{friendName}</p>
+                          <p className="text-xs text-slate-500">@{friendUsername}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-semibold text-sm dark:text-white">{f.fullName}</p>
-                        <p className="text-xs text-slate-500">@{f.username}</p>
-                      </div>
+                      <button onClick={() => handleUnfriend(friendId)}
+                        className="px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-lg hover:bg-red-100 transition">
+                        Hủy kết bạn
+                      </button>
                     </div>
-                    <button onClick={() => handleUnfriend(f.id)}
-                      className="px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-lg hover:bg-red-100 transition">
-                      Hủy kết bạn
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
