@@ -1,0 +1,322 @@
+----------------------------------------
+/var/log/web.stdout.log
+----------------------------------------
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Microsoft.AspNetCore.Identity.UserManager`1.FindByEmailAsync(String email)
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Program.<Main>$(String[] args) in C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\Program.cs:line 130
+May  2 13:34:36 ip-172-31-32-145 web[32155]:   at Program.<Main>(String[] args)
+May  2 13:34:36 ip-172-31-32-145 web[32155]: ClientConnectionId:00000000-0000-0000-0000-000000000000
+May  2 13:34:36 ip-172-31-32-145 web[32155]: Error Number:258,State:0,Class:20
+May  2 13:35:21 ip-172-31-32-145 web[32193]: fail: Microsoft.EntityFrameworkCore.Database.Connection[20004]
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      An error occurred using the connection to database 'InteractHubDB' on server 'interacthub-db.cvcyii42yila.ap-southeast-1.rds.amazonaws.com'.
+May  2 13:35:21 ip-172-31-32-145 web[32193]: fail: Microsoft.EntityFrameworkCore.Query[10100]
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      An exception occurred while iterating over the results of a query for context type 'InteractHub.Infrastructure.Data.AppDbContext'.
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      Microsoft.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: TCP Provider, error: 35 - An internal exception was caught)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:       ---> System.ComponentModel.Win32Exception (258): The connection attempt timed out.
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.Connect(String serverName, Int32 port, TimeoutTimer timeout, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle..ctor(String serverName, Int32 port, TimeoutTimer timeout, Boolean parallel, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, IDbConnectionPool pool, Func`3 accessTokenCallback)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionPoolGroupProviderInfo poolGroupProviderInfo, IDbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(IDbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.WaitForPendingOpen()
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      --- End of stack trace from previous location ---
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      ClientConnectionId:00000000-0000-0000-0000-000000000000
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      Error Number:258,State:0,Class:20
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      Microsoft.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: TCP Provider, error: 35 - An internal exception was caught)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:       ---> System.ComponentModel.Win32Exception (258): The connection attempt timed out.
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.Connect(String serverName, Int32 port, TimeoutTimer timeout, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle..ctor(String serverName, Int32 port, TimeoutTimer timeout, Boolean parallel, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, IDbConnectionPool pool, Func`3 accessTokenCallback)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionPoolGroupProviderInfo poolGroupProviderInfo, IDbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(IDbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.WaitForPendingOpen()
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      --- End of stack trace from previous location ---
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      ClientConnectionId:00000000-0000-0000-0000-000000000000
+May  2 13:35:21 ip-172-31-32-145 web[32193]:      Error Number:258,State:0,Class:20
+May  2 13:35:21 ip-172-31-32-145 web[32193]: Unhandled exception. Microsoft.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: TCP Provider, error: 35 - An internal exception was caught)
+May  2 13:35:21 ip-172-31-32-145 web[32193]: ---> System.ComponentModel.Win32Exception (258): The connection attempt timed out.
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle.Connect(String serverName, Int32 port, TimeoutTimer timeout, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.ManagedSni.SniTcpHandle..ctor(String serverName, Int32 port, TimeoutTimer timeout, Boolean parallel, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, SqlCommand command, Boolean callerHasConnectionLock, Boolean asyncClose)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, IDbConnectionPool pool, Func`3 accessTokenCallback)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionPoolGroupProviderInfo poolGroupProviderInfo, IDbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(IDbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.WaitForPendingOpen()
+May  2 13:35:21 ip-172-31-32-145 web[32193]: --- End of stack trace from previous location ---
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Microsoft.AspNetCore.Identity.UserManager`1.FindByEmailAsync(String email)
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Program.<Main>$(String[] args) in C:\Users\nghia\Desktop\Visual_CSharp\InteractionHub\InteractHub.API\Program.cs:line 130
+May  2 13:35:21 ip-172-31-32-145 web[32193]:   at Program.<Main>(String[] args)
+May  2 13:35:21 ip-172-31-32-145 web[32193]: ClientConnectionId:00000000-0000-0000-0000-000000000000
+May  2 13:35:21 ip-172-31-32-145 web[32193]: Error Number:258,State:0,Class:20
+
+
+----------------------------------------
+/var/log/eb-engine.log
+----------------------------------------
+2026/05/02 10:29:16.280909 [WARN] stopProcess Warning: process xray is not registered 
+2026/05/02 10:29:16.280940 [INFO] Running command: systemctl stop xray.service
+2026/05/02 10:29:16.295557 [INFO] Executing instruction: stop proxy
+2026/05/02 10:29:16.295603 [INFO] Running command: systemctl show -p PartOf httpd.service
+2026/05/02 10:29:16.305734 [WARN] deregisterProcess Warning: process httpd is not registered, skipping...
+
+2026/05/02 10:29:16.305795 [INFO] Running command: systemctl show -p PartOf nginx.service
+2026/05/02 10:29:16.317382 [INFO] Running command: systemctl is-active nginx.service
+2026/05/02 10:29:16.324754 [INFO] Running command: systemctl show -p PartOf nginx.service
+2026/05/02 10:29:16.334851 [INFO] Running command: systemctl stop nginx.service
+2026/05/02 10:29:21.706160 [INFO] Running command: systemctl disable nginx.service
+2026/05/02 10:29:21.993632 [INFO] Running command: systemctl daemon-reload
+2026/05/02 10:29:22.231292 [INFO] Running command: systemctl reset-failed
+2026/05/02 10:29:22.240582 [INFO] Executing instruction: FlipApplication
+2026/05/02 10:29:22.240606 [INFO] Fetching environment variables...
+2026/05/02 10:29:22.240903 [INFO] Purge old process...
+2026/05/02 10:29:22.240922 [INFO] Running command: systemctl stop eb-app.target
+2026/05/02 10:29:22.249368 [INFO] Running command: systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+2026/05/02 10:29:22.260345 [INFO] web.service
+
+2026/05/02 10:29:22.260366 [INFO] deregistering process: web
+2026/05/02 10:29:22.260376 [INFO] Running command: systemctl show -p PartOf web.service
+2026/05/02 10:29:22.270348 [INFO] Running command: systemctl is-active web.service
+2026/05/02 10:29:22.278885 [INFO] Running command: systemctl disable web.service
+2026/05/02 10:29:22.511286 [INFO] Removed "/etc/systemd/system/multi-user.target.wants/web.service".
+
+2026/05/02 10:29:22.511356 [INFO] Running command: systemctl daemon-reload
+2026/05/02 10:29:22.744265 [INFO] Running command: systemctl reset-failed
+2026/05/02 10:29:22.752973 [INFO] Running command: systemctl is-active web.service
+2026/05/02 10:29:22.760327 [INFO] Process web has been fully terminated
+2026/05/02 10:29:22.760350 [INFO] All processes have been fully terminated
+2026/05/02 10:29:22.760355 [INFO] Removing /var/app/current/ if it exists
+2026/05/02 10:29:22.764734 [INFO] Renaming /var/app/staging/ to /var/app/current/
+2026/05/02 10:29:22.764892 [INFO] Register application processes...
+2026/05/02 10:29:22.764898 [INFO] Registering the proc: web
+
+2026/05/02 10:29:22.764907 [INFO] Running command: systemctl show -p PartOf web.service
+2026/05/02 10:29:22.777898 [INFO] Running command: systemctl daemon-reload
+2026/05/02 10:29:23.060681 [INFO] Running command: systemctl reset-failed
+2026/05/02 10:29:23.069465 [INFO] Running command: systemctl is-enabled eb-app.target
+2026/05/02 10:29:23.077447 [INFO] Running command: systemctl enable eb-app.target
+2026/05/02 10:29:23.330612 [INFO] Running command: systemctl start eb-app.target
+2026/05/02 10:29:23.340587 [INFO] Running command: systemctl enable web.service
+2026/05/02 10:29:23.571940 [INFO] Created symlink /etc/systemd/system/multi-user.target.wants/web.service → /etc/systemd/system/web.service.
+
+2026/05/02 10:29:23.571976 [INFO] Running command: systemctl show -p PartOf web.service
+2026/05/02 10:29:23.583558 [INFO] Running command: systemctl is-active web.service
+2026/05/02 10:29:23.591251 [INFO] Running command: systemctl start web.service
+2026/05/02 10:29:25.685620 [INFO] Executing instruction: start X-Ray
+2026/05/02 10:29:25.685643 [INFO] X-Ray is not enabled.
+2026/05/02 10:29:25.685646 [INFO] Executing instruction: FlipProxyForDotNetCore
+2026/05/02 10:29:25.685649 [INFO] cleaning beanstalk iptables rules...
+2026/05/02 10:29:25.685659 [INFO] Running command: iptables-save | grep -v added_by_elasticbeanstalk | iptables-restore
+2026/05/02 10:29:25.692711 [INFO] proxy server is nginx, flip proxy...
+2026/05/02 10:29:25.692809 [INFO] Running command: /usr/sbin/nginx -t -c /var/proxy/staging/nginx/nginx.conf
+2026/05/02 10:29:25.711249 [INFO] nginx: [warn] could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+nginx: the configuration file /var/proxy/staging/nginx/nginx.conf syntax is ok
+nginx: configuration file /var/proxy/staging/nginx/nginx.conf test is successful
+
+2026/05/02 10:29:25.711579 [INFO] Running command: cp -rp /var/proxy/staging/nginx/* /etc/nginx
+2026/05/02 10:29:25.715275 [INFO] Running command: systemctl show -p PartOf nginx.service
+2026/05/02 10:29:25.732571 [INFO] Running command: systemctl daemon-reload
+2026/05/02 10:29:25.984988 [INFO] Running command: systemctl reset-failed
+2026/05/02 10:29:25.994379 [INFO] Running command: systemctl show -p PartOf nginx.service
+2026/05/02 10:29:26.007043 [INFO] Running command: systemctl is-active nginx.service
+2026/05/02 10:29:26.015456 [INFO] Running command: systemctl start nginx.service
+2026/05/02 10:29:26.133162 [INFO] Executing instruction: configureSqsd
+2026/05/02 10:29:26.133181 [INFO] This is a web server environment instance, skip configure sqsd daemon ...
+2026/05/02 10:29:26.133186 [INFO] Executing instruction: startSqsd
+2026/05/02 10:29:26.133189 [INFO] This is a web server environment instance, skip start sqsd daemon ...
+2026/05/02 10:29:26.133193 [INFO] Executing instruction: Track pids in healthd
+2026/05/02 10:29:26.133196 [INFO] This is an enhanced health env...
+2026/05/02 10:29:26.133209 [INFO] Running command: systemctl show -p ConsistsOf aws-eb.target | cut -d= -f2
+2026/05/02 10:29:26.144702 [INFO] healthd.service cfn-hup.service nginx.service
+
+2026/05/02 10:29:26.144806 [INFO] Running command: systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+2026/05/02 10:29:26.155309 [INFO] web.service
+
+2026/05/02 10:29:26.155673 [INFO] Executing instruction: RunAppDeployPostDeployHooks
+2026/05/02 10:29:26.155685 [INFO] No hooks found in .platform/hooks/postdeploy/, skipping
+2026/05/02 10:29:26.155688 [INFO] Executing cleanup logic
+2026/05/02 10:29:26.155776 [INFO] CommandService Response: {"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"Engine execution has succeeded.","returncode":0,"events":[{"msg":"Instance deployment found a self-contained .NET Core application in your source bundle.","timestamp":1777717753003,"severity":"INFO"},{"msg":"Instance deployment completed successfully.","timestamp":1777717766155,"severity":"INFO"}]}]}
+
+2026/05/02 10:29:26.194517 [INFO] Platform Engine finished execution on command: app-deploy
+
+2026/05/02 13:35:59.553750 [INFO] Starting...
+2026/05/02 13:35:59.554439 [INFO] Starting EBPlatform-PlatformEngine
+2026/05/02 13:35:59.554487 [INFO] reading event message file
+2026/05/02 13:35:59.564134 [INFO] Engine received EB command cfn-hup-exec
+
+2026/05/02 13:35:59.736244 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:ap-southeast-1:521486622338:stack/awseb-e-spm3t4mhwi-stack/9fdd50d0-45d8-11f1-9fc0-025d11907e1b -r AWSEBAutoScalingGroup --region ap-southeast-1
+2026/05/02 13:36:00.394118 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:ap-southeast-1:521486622338:stack/awseb-e-spm3t4mhwi-stack/9fdd50d0-45d8-11f1-9fc0-025d11907e1b -r AWSEBBeanstalkMetadata --region ap-southeast-1
+2026/05/02 13:36:00.684215 [INFO] checking whether command tail-log is applicable to this instance...
+2026/05/02 13:36:00.684242 [INFO] this command is applicable to the instance, thus instance should execute command
+2026/05/02 13:36:00.684247 [INFO] Engine command: (tail-log)
+
+2026/05/02 13:36:00.685544 [INFO] Executing instruction: GetTailLogs
+2026/05/02 13:36:00.685552 [INFO] Tail Logs...
+2026/05/02 13:36:00.689816 [INFO] Running command: tail -n 100 /var/log/web.stdout.log
+2026/05/02 13:36:00.692246 [INFO] Running command: tail -n 100 /var/log/eb-engine.log
+
+
+----------------------------------------
+/var/log/nginx/access.log
+----------------------------------------
+172.31.13.147 - - [02/May/2026:10:31:05 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:10:34:50 +0000] "GET /api/health HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.8115" "42.117.250.87"
+172.31.13.147 - - [02/May/2026:10:43:52 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:10:55:44 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:11:02:11 +0000] "GET /developmentserver/metadatauploader HTTP/1.1" 502 150 "-" "Mozilla/5.0 zgrab/0.x" "20.102.115.137"
+172.31.35.223 - - [02/May/2026:11:03:14 +0000] "GET /developmentserver/metadatauploader HTTP/1.1" 502 150 "-" "Mozilla/5.0 zgrab/0.x" "20.64.106.71"
+172.31.13.147 - - [02/May/2026:11:05:04 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:11:12:11 +0000] "GET /.git/config HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Linux; Android 9; SM-G955F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.111 Mobile Safari/537.36" "34.163.123.221"
+172.31.13.147 - - [02/May/2026:11:16:13 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:11:18:14 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" "43.157.98.187"
+172.31.35.223 - - [02/May/2026:11:20:44 +0000] "GET / HTTP/1.1" 502 150 "-" "-" "35.220.183.209"
+172.31.13.147 - - [02/May/2026:11:22:37 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:11:32:25 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:11:41:39 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:11:42:23 +0000] "GET / HTTP/1.1" 502 150 "-" "-" "176.65.139.156"
+172.31.35.223 - - [02/May/2026:11:45:43 +0000] "HEAD /robots.txt HTTP/1.1" 502 0 "-" "-" "147.135.252.181"
+172.31.13.147 - - [02/May/2026:11:51:48 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:11:59:15 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:12:08:08 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:12:11:03 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36" "185.242.226.113"
+172.31.13.147 - - [02/May/2026:12:16:34 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:12:16:50 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36" "66.240.192.138"
+172.31.13.147 - - [02/May/2026:12:16:51 +0000] "GET /robots.txt HTTP/1.1" 502 150 "-" "-" "66.240.192.138"
+172.31.13.147 - - [02/May/2026:12:16:52 +0000] "GET /sitemap.xml HTTP/1.1" 502 150 "-" "-" "66.240.192.138"
+172.31.13.147 - - [02/May/2026:12:16:52 +0000] "GET /.well-known/security.txt HTTP/1.1" 502 150 "-" "-" "66.240.192.138"
+172.31.13.147 - - [02/May/2026:12:16:53 +0000] "GET /favicon.ico HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36" "66.240.192.138"
+172.31.13.147 - - [02/May/2026:12:24:26 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" "66.228.53.162"
+172.31.13.147 - - [02/May/2026:12:24:53 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:12:25:33 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (compatible; InternetMeasurement/1.0; +https://internet-measurement.com/)" "185.247.137.92"
+172.31.13.147 - - [02/May/2026:12:28:07 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0" "27.148.196.43"
+172.31.13.147 - - [02/May/2026:12:34:17 +0000] "GET /.env HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "152.232.16.210"
+172.31.13.147 - - [02/May/2026:12:34:18 +0000] "POST / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36" "152.232.16.210"
+172.31.13.147 - - [02/May/2026:12:38:53 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:12:39:58 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "137.184.149.232"
+172.31.35.223 - - [02/May/2026:12:42:46 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0" "27.148.196.43"
+172.31.13.147 - - [02/May/2026:12:45:08 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:12:51:07 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.35.223 - - [02/May/2026:12:52:42 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "54.82.48.51"
+172.31.13.147 - - [02/May/2026:12:53:44 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" "43.166.247.155"
+172.31.13.147 - - [02/May/2026:13:00:47 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:07:39 +0000] "GET / HTTP/1.1" 502 552 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "157.230.6.114"
+172.31.13.147 - - [02/May/2026:13:08:03 +0000] "GET /.env HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0" "185.242.3.26"
+172.31.13.147 - - [02/May/2026:13:08:03 +0000] "GET /wp-content/ HTTP/1.1" 502 150 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0" "185.242.3.26"
+172.31.35.223 - - [02/May/2026:13:08:33 +0000] "GET / HTTP/1.1" 502 150 "-" "-" "176.65.139.156"
+172.31.13.147 - - [02/May/2026:13:09:49 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1" "43.166.255.102"
+172.31.13.147 - - [02/May/2026:13:10:15 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:26:01 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+172.31.13.147 - - [02/May/2026:13:35:50 +0000] "GET / HTTP/1.1" 502 150 "-" "Mozilla/5.0" "204.76.203.206"
+
+
+----------------------------------------
+/var/log/nginx/error.log
+----------------------------------------
+2026/05/02 10:22:13 [warn] 14898#14898: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 10:22:14 [warn] 14932#14932: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 10:22:14 [warn] 14933#14933: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 10:29:25 [warn] 15631#15631: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 10:29:26 [warn] 15664#15664: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 10:29:26 [warn] 15665#15665: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2026/05/02 10:31:05 [error] 15668#15668: *16 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 10:34:50 [error] 15668#15668: *70 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /api/health HTTP/1.1", upstream: "http://127.0.0.1:5000/api/health", host: "interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com"
+2026/05/02 10:43:52 [error] 15668#15668: *209 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 10:55:44 [error] 15668#15668: *367 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:02:11 [error] 15668#15668: *468 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /developmentserver/metadatauploader HTTP/1.1", upstream: "http://127.0.0.1:5000/developmentserver/metadatauploader", host: "52.221.169.241"
+2026/05/02 11:03:14 [error] 15667#15667: *480 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /developmentserver/metadatauploader HTTP/1.1", upstream: "http://127.0.0.1:5000/developmentserver/metadatauploader", host: "13.213.129.211"
+2026/05/02 11:05:04 [error] 15668#15668: *506 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:12:11 [error] 15667#15667: *611 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET /.git/config HTTP/1.1", upstream: "http://127.0.0.1:5000/.git/config", host: "13.213.129.211"
+2026/05/02 11:16:13 [error] 15667#15667: *681 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:18:14 [error] 15667#15667: *713 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 11:20:44 [error] 15667#15667: *748 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 11:22:37 [error] 15667#15667: *779 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:32:25 [error] 15668#15668: *913 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:41:39 [error] 15668#15668: *1054 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:42:23 [error] 15668#15668: *1054 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:45:43 [error] 15668#15668: *1107 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "HEAD /robots.txt HTTP/1.1", upstream: "http://127.0.0.1:5000/robots.txt", host: "172.31.35.223"
+2026/05/02 11:51:48 [error] 15668#15668: *1204 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 11:59:15 [error] 15668#15668: *1311 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:08:08 [error] 15668#15668: *1433 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:11:03 [error] 15667#15667: *1484 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 12:16:34 [error] 15668#15668: *1564 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:16:50 [error] 15668#15668: *1564 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:16:51 [error] 15668#15668: *1564 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /robots.txt HTTP/1.1", upstream: "http://127.0.0.1:5000/robots.txt", host: "52.221.169.241"
+2026/05/02 12:16:52 [error] 15668#15668: *1564 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /sitemap.xml HTTP/1.1", upstream: "http://127.0.0.1:5000/sitemap.xml", host: "52.221.169.241"
+2026/05/02 12:16:52 [error] 15668#15668: *1564 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /.well-known/security.txt HTTP/1.1", upstream: "http://127.0.0.1:5000/.well-known/security.txt", host: "52.221.169.241"
+2026/05/02 12:16:53 [error] 15668#15668: *1564 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /favicon.ico HTTP/1.1", upstream: "http://127.0.0.1:5000/favicon.ico", host: "52.221.169.241"
+2026/05/02 12:24:26 [error] 15667#15667: *1689 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:24:53 [error] 15667#15667: *1689 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:25:33 [error] 15668#15668: *1709 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 12:28:07 [error] 15667#15667: *1753 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:34:17 [error] 15667#15667: *1845 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /.env HTTP/1.1", upstream: "http://127.0.0.1:5000/.env", host: "52.221.169.241"
+2026/05/02 12:34:18 [error] 15667#15667: *1845 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "POST / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:38:53 [error] 15667#15667: *1910 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:39:58 [error] 15668#15668: *1930 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 12:42:46 [error] 15668#15668: *1969 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 12:45:08 [error] 15667#15667: *2014 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:51:07 [error] 15668#15668: *2090 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 12:52:42 [error] 15667#15667: *2115 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 12:53:44 [error] 15668#15668: *2137 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-52-221-169-241.ap-southeast-1.compute.amazonaws.com"
+2026/05/02 13:00:47 [error] 15667#15667: *2249 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:07:39 [error] 15667#15667: *2337 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:08:03 [error] 15667#15667: *2337 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /.env HTTP/1.1", upstream: "http://127.0.0.1:5000/.env", host: "52.221.169.241"
+2026/05/02 13:08:03 [error] 15667#15667: *2337 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET /wp-content/ HTTP/1.1", upstream: "http://127.0.0.1:5000/wp-content/", host: "52.221.169.241"
+2026/05/02 13:08:33 [error] 15668#15668: *2351 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.35.223, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "13.213.129.211"
+2026/05/02 13:09:49 [error] 15667#15667: *2380 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:10:15 [error] 15667#15667: *2380 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:26:01 [error] 15668#15668: *2613 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+2026/05/02 13:35:50 [error] 15668#15668: *2752 connect() failed (111: Connection refused) while connecting to upstream, client: 172.31.13.147, server: , request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "52.221.169.241"
+
+

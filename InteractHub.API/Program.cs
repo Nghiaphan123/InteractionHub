@@ -51,9 +51,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173","http://localhost:5174") // Vite dev server
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "http://localhost:5174",
+            "http://interacthub-frontend.s3-website-ap-southeast-1.amazonaws.com"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
     });
 });
 
@@ -97,6 +102,18 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+try
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+    Console.WriteLine("✅ Database migration successful");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"⚠️ Migration failed: {ex.Message} - continuing...");
+}
 
 // Error handling middleware
 app.UseExceptionHandler(errorApp =>
