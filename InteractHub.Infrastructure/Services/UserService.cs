@@ -2,6 +2,7 @@ using InteractHub.Core.DTOs.Users;
 using InteractHub.Core.Interfaces;
 using InteractHub.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using InteractHub.Core.Entities;
 
 namespace InteractHub.Infrastructure.Services;
 
@@ -33,7 +34,8 @@ public class UserService : IUserService
             AvatarUrl = user.AvatarUrl,
             CreatedAt = user.CreatedAt,
             PostsCount = user.Posts.Count,
-            FriendsCount = user.SentFriendships.Count + user.ReceivedFriendships.Count
+            FriendsCount = user.SentFriendships.Count(f => f.Status == FriendshipStatus.Accepted) + 
+               user.ReceivedFriendships.Count(f => f.Status == FriendshipStatus.Accepted)
         };
     }
 
@@ -104,7 +106,8 @@ public class UserService : IUserService
             AvatarUrl = user.AvatarUrl,
             CreatedAt = user.CreatedAt,
             PostsCount = user.Posts.Count,
-            FriendsCount = user.SentFriendships.Count + user.ReceivedFriendships.Count,
+           FriendsCount = user.SentFriendships.Count(f => f.Status == FriendshipStatus.Accepted) + 
+               user.ReceivedFriendships.Count(f => f.Status == FriendshipStatus.Accepted),
             FriendStatus = friendStatus
         };
     }
