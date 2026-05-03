@@ -10,7 +10,6 @@ const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
 }) => {
   const { isOwnProfile, friendStatus } = user;
   const [currentFriendStatus, setCurrentFriendStatus] = useState(friendStatus);
-  const [friendshipId, setFriendshipId] = useState<number | null>(null);
   const [showFollowMenu, setShowFollowMenu] = useState(false);
   useEffect(() => {
     setCurrentFriendStatus(friendStatus);

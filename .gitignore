@@ -60,3 +60,6 @@ pids/
 .cache/
 temp/
 tmp/
+
+# Uploaded files
+InteractHub.API/wwwroot/uploads/
