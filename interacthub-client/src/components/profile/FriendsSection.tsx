@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import FriendRequest from '../FriendRequest';
 import axiosClient from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 
