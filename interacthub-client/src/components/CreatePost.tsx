@@ -67,7 +67,7 @@ const CreatePost = ({ onPost }: CreatePostProps) => {
     <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
       <div className="flex space-x-3 items-start">
         <Avatar size="md"
-        src={user?.avatarUrl?.startsWith("http") ? user.avatarUrl : user?.avatarUrl ? `http://localhost:5162${user.avatarUrl}` : undefined} 
+        src={user?.avatarUrl?.startsWith("http") ? user.avatarUrl : user?.avatarUrl ? `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${user.avatarUrl}` : undefined} 
         />
         
         {/* Khu vực ô nhập liệu */}

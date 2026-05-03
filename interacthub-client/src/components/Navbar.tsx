@@ -120,7 +120,7 @@ const Navbar = ({ onSelectChat }: NavbarProps) => {
                       >
                         <div className="w-9 h-9 rounded-full overflow-hidden bg-blue-100 flex-shrink-0">
                           {u.avatarUrl ? (
-                            <img src={u.avatarUrl.startsWith("http") ? u.avatarUrl : `http://localhost:5162${u.avatarUrl}`} className="w-full h-full object-cover" />
+                            <img src={u.avatarUrl.startsWith("http") ? u.avatarUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${u.avatarUrl}`} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold text-sm">
                               {u.fullName?.[0]}

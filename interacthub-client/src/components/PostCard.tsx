@@ -12,7 +12,9 @@ import {
   likePostAPI,
   unlikePostAPI,
   updatePostAPI
+  updatePostAPI
 } from '../services/postService';
+import { useAuth } from '../context/AuthContext';
 import { useAuth } from '../context/AuthContext';
 interface PostProps {
   post: Post;
@@ -279,7 +281,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
       {post.imageUrl && (
         <div className="mt-3 rounded-xl overflow-hidden border border-slate-100">
           <img
-            src={post.imageUrl.startsWith("http") ? post.imageUrl : `http://localhost:5162${post.imageUrl}`}
+            src={post.imageUrl.startsWith("http") ? post.imageUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${post.imageUrl}`}
             alt="Post content"
             className="w-full h-auto max-h-[450px] object-cover"
           />
@@ -314,7 +316,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
                 const isMyComment = c.userId === currentUser.id;
                 return (
                   <div key={c.id} className="flex items-start space-x-2 group relative">
-                    <Avatar size="sm" src={c.avatarUrl?.startsWith("http") ? c.avatarUrl : c.avatarUrl ? `http://localhost:5162${c.avatarUrl}` : undefined} />
+                    <Avatar size="sm" />
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <div className="bg-slate-100 px-3 py-2 rounded-2xl shadow-sm">
@@ -359,7 +361,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
             )}
           </div>
           <div className="flex items-center space-x-2 pt-2 border-t border-slate-50">
-            <Avatar size="sm" src={user?.avatarUrl?.startsWith("http") ? user.avatarUrl : user?.avatarUrl ? `http://localhost:5162${user.avatarUrl}` : undefined} />
+            <Avatar size="sm" />
             <input
               ref={inputRef}
               type="text"
