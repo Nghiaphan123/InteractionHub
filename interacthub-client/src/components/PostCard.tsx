@@ -11,8 +11,9 @@ import {
   getCommentsAPI,
   likePostAPI,
   unlikePostAPI,
+  updatePostAPI
 } from '../services/postService';
-
+import { useAuth } from '../context/AuthContext';
 interface PostProps {
   post: Post;
   onDelete?: (id: string) => void;
@@ -91,7 +92,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
   const [editContent, setEditContent] = useState(post.content);
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null); // Ref cho menu bài viết
-
+  const { user } = useAuth();
   const isMyPost = post.author.id === currentUser.id;
 
   const [comments, setComments] = useState<Comment[]>([]);
@@ -231,12 +232,12 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
           {isMenuOpen && (
             <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 shadow-xl rounded-xl py-2 z-20 animate-in fade-in zoom-in duration-150">
               <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition">✨ Quan tâm</button>
-              <button
-                onClick={() => { setIsEditing(true); setIsMenuOpen(false); }}
-                className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition"
-              >
-                ✏️ Chỉnh sửa bài viết
-              </button>
+              {isMyPost && (
+                <button onClick={() => { setIsEditing(true); setIsMenuOpen(false); }}
+                  className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition">
+                  ✏️ Chỉnh sửa bài viết
+                </button>
+              )}
               {isMyPost ? (
                 <button
                   onClick={() => onDelete && onDelete(post.id)}
@@ -270,7 +271,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
               ) : (
                 <p className="text-slate-800 text-sm">{post.content}</p>
               )}
-              
+
             </div>
           )}
         </div>
@@ -315,7 +316,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
                 const isMyComment = c.userId === currentUser.id;
                 return (
                   <div key={c.id} className="flex items-start space-x-2 group relative">
-                    <Avatar size="sm" />
+                    <Avatar size="sm" src={c.avatarUrl?.startsWith("http") ? c.avatarUrl : c.avatarUrl ? `http://localhost:5162${c.avatarUrl}` : undefined} />
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <div className="bg-slate-100 px-3 py-2 rounded-2xl shadow-sm">
@@ -360,7 +361,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
             )}
           </div>
           <div className="flex items-center space-x-2 pt-2 border-t border-slate-50">
-            <Avatar size="sm" />
+            <Avatar size="sm" src={user?.avatarUrl?.startsWith("http") ? user.avatarUrl : user?.avatarUrl ? `http://localhost:5162${user.avatarUrl}` : undefined} />
             <input
               ref={inputRef}
               type="text"
