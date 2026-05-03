@@ -248,36 +248,34 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
               ) : (
                 <button className="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50 transition">🚩 Báo cáo bài viết</button>
               )}
-
-              {isEditing ? (
-                <div className="space-y-2">
-                  <textarea
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                    className="w-full p-3 border border-slate-200 rounded-xl outline-none resize-none text-sm focus:ring-2 focus:ring-blue-500/30"
-                    rows={3}
-                  />
-                  <div className="flex gap-2 justify-end">
-                    <button onClick={() => setIsEditing(false)}
-                      className="px-3 py-1 bg-slate-100 rounded-lg text-sm font-bold hover:bg-slate-200 transition">
-                      Hủy
-                    </button>
-                    <button onClick={handleEditPost}
-                      className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition">
-                      Lưu
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-slate-800 text-sm">{post.content}</p>
-              )}
-
             </div>
           )}
         </div>
       </div>
 
-      <p className="text-slate-800 text-sm">{post.content}</p>
+      {isEditing ? (
+        <div className="space-y-2">
+          <textarea
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            className="w-full p-3 border border-slate-200 rounded-xl outline-none resize-none text-sm focus:ring-2 focus:ring-blue-500/30"
+            rows={3}
+          />
+          <div className="flex gap-2 justify-end">
+            <button onClick={() => setIsEditing(false)}
+              className="px-3 py-1 bg-slate-100 rounded-lg text-sm font-bold hover:bg-slate-200 transition">
+              Hủy
+            </button>
+            <button onClick={handleEditPost}
+              className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+              Lưu
+            </button>
+          </div>
+        </div>
+      ) : (
+        <p className="text-slate-800 text-sm">{post.content}</p>
+      )}
+      
       {post.imageUrl && (
         <div className="mt-3 rounded-xl overflow-hidden border border-slate-100">
           <img
