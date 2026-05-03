@@ -69,7 +69,7 @@ export default function StoryBar({ autoOpenCreate = false }: {
   const handleUploadStory = async (file: File) => {
     try {
       const res = await uploadImageAPI(file);
-      const imageUrl = `${API_BASE}${res.data.imageUrl}`;
+      const imageUrl = res.data.imageUrl;
       const newStory = await createStoryAPI({ imageUrl });
       setStories((prev) => [newStory, ...prev]);
       setShowCreate(false);
