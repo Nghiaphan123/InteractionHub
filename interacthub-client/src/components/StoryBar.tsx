@@ -30,17 +30,19 @@ const createStoryAPI = (data: { imageUrl?: string; content?: string; backgroundC
     body: JSON.stringify(data),
   }).then((r) => r.json());
 
-export default function StoryBar() {
+export default function StoryBar({ autoOpenCreate = false, onClose }: {
+  autoOpenCreate?: boolean,
+  onClose?: () => void
+} = {}) {
   const { user } = useAuth();
   const [stories, setStories] = useState<Story[]>([]);
   const [viewing, setViewing] = useState<Story | null>(null);
   const [progress, setProgress] = useState(0);
-  const [showCreate, setShowCreate] = useState(false);
+  const [showCreate, setShowCreate] = useState(autoOpenCreate); // thay false thành autoOpenCreate
   const [textContent, setTextContent] = useState("");
   const [bgColor, setBgColor] = useState("#1877f2");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<any>(null);
-
   useEffect(() => {
     getStoriesAPI().then(setStories).catch(console.error);
   }, []);

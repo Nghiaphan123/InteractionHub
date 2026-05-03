@@ -28,7 +28,6 @@ const ProfilePage = () => {
   const [bioDraft, setBioDraft] = useState("");
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [showStoryCreate, setShowStoryCreate] = useState(false);
   const [details, setDetails] = useState<UserDetail[]>(() => {
     const saved = localStorage.getItem('user_details_data');
     return saved ? JSON.parse(saved) : [];
