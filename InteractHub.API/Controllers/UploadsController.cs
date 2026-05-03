@@ -11,10 +11,12 @@ namespace InteractHub.API.Controllers;
 public class UploadsController : ControllerBase
 {
     private readonly IWebHostEnvironment _env;
+    private readonly Amazon.S3.IAmazonS3 _s3Client;
 
-    public UploadsController(IWebHostEnvironment env)
+    public UploadsController(IWebHostEnvironment env, Amazon.S3.IAmazonS3 s3Client)
     {
         _env = env;
+        _s3Client = s3Client;
     }
 
     // POST /api/uploads/image
@@ -29,24 +31,26 @@ public class UploadsController : ControllerBase
         if (imageFile == null || imageFile.Length == 0)
             return BadRequest(new { message = "No file uploaded" });
 
-        var webRoot = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
-        var uploadsPath = Path.Combine(webRoot, "uploads");
-        Directory.CreateDirectory(uploadsPath);
-
         var ext = Path.GetExtension(imageFile.FileName);
         if (string.IsNullOrWhiteSpace(ext))
             ext = ".png";
 
-        var fileName = $"{Guid.NewGuid()}{ext}";
-        var filePath = Path.Combine(uploadsPath, fileName);
+        var fileName = $"images/{Guid.NewGuid()}{ext}";
 
-        await using (var stream = System.IO.File.Create(filePath))
+        using var stream = imageFile.OpenReadStream();
+        var uploadRequest = new Amazon.S3.Transfer.TransferUtilityUploadRequest
         {
-            await imageFile.CopyToAsync(stream);
-        }
+            InputStream = stream,
+            Key = fileName,
+            BucketName = "interacthub-uploads",
+            ContentType = imageFile.ContentType,
+            CannedACL = Amazon.S3.S3CannedACL.PublicRead
+        };
 
-        // Served by app.UseStaticFiles() from /wwwroot/uploads
-        var imageUrl = $"/uploads/{fileName}";
+        var transferUtility = new Amazon.S3.Transfer.TransferUtility(_s3Client);
+        await transferUtility.UploadAsync(uploadRequest);
+
+        var imageUrl = $"https://interacthub-uploads.s3.ap-southeast-1.amazonaws.com/{fileName}";
         return Ok(new UploadImageResponse { ImageUrl = imageUrl });
     }
 }

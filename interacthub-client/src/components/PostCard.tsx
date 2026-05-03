@@ -12,10 +12,9 @@ import {
   likePostAPI,
   unlikePostAPI,
   updatePostAPI,
-  updatePostAPI,
 } from '../services/postService';
-import { useAuth } from '../context/AuthContext';
-import { useAuth } from '../context/AuthContext';
+
+
 interface PostProps {
   post: Post;
   onDelete?: (id: string) => void;
@@ -94,7 +93,6 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
   const [editContent, setEditContent] = useState(post.content);
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null); // Ref cho menu bài viết
-  const { user } = useAuth();
   const isMyPost = post.author.id === currentUser.id;
 
   const [comments, setComments] = useState<Comment[]>([]);
@@ -281,7 +279,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
       {post.imageUrl && (
         <div className="mt-3 rounded-xl overflow-hidden border border-slate-100">
           <img
-            src={post.imageUrl.startsWith("http") ? post.imageUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${post.imageUrl}`}
+            src={post.imageUrl.startsWith("http") ? post.imageUrl :  `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${post.imageUrl}`}
             alt="Post content"
             className="w-full h-auto max-h-[450px] object-cover"
           />

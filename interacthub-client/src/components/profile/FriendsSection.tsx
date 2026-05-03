@@ -82,7 +82,7 @@ const FriendsSection = () => {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
                           {r.senderAvatarUrl ? (
-                            <img src={r.senderAvatarUrl.startsWith("http") ? r.senderAvatarUrl : `http://localhost:5162${r.senderAvatarUrl}`} className="w-full h-full object-cover" />
+                            <img src={r.senderAvatarUrl.startsWith("http") ? r.senderAvatarUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${r.senderAvatarUrl}`} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.senderFullName?.[0]}</div>
                           )}
@@ -122,7 +122,7 @@ const FriendsSection = () => {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
                           {r.avatarUrl ? ( // ← đổi thành avatarUrl
-                            <img src={r.avatarUrl.startsWith("http") ? r.avatarUrl : `http://localhost:5162${r.avatarUrl}`} className="w-full h-full object-cover" />
+                            <img src={r.avatarUrl.startsWith("http") ? r.avatarUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${r.avatarUrl}`} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{r.fullName?.[0]}</div>
                           )}
@@ -163,7 +163,7 @@ const FriendsSection = () => {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden">
                           {friendAvatar ? (
-                            <img src={friendAvatar.startsWith("http") ? friendAvatar : `http://localhost:5162${friendAvatar}`} className="w-full h-full object-cover" />
+                            <img src={friendAvatar.startsWith("http") ? friendAvatar : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${friendAvatar}`} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold">{friendName?.[0]}</div>
                           )}

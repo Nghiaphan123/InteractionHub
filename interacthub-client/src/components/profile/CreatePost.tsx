@@ -10,7 +10,7 @@ const CreatePost = ({ user }: Props) => {
       {/* Phần trên: Avatar + Input */}
       <div className="flex items-center gap-2 mb-3 px-1 pt-1">
         <img 
-          src={user.avatarUrl?.startsWith("http") ? user.avatarUrl : `http://localhost:5162${user.avatarUrl}`} 
+          src={user.avatarUrl?.startsWith("http") ? user.avatarUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${user.avatarUrl}`} 
           alt="avatar" 
           className="w-10 h-10 rounded-full object-cover cursor-pointer hover:opacity-90"
         />

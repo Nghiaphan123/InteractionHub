@@ -9,6 +9,8 @@ using InteractHub.Infrastructure.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models;
 using InteractHub.Core.Interfaces;
+using Microsoft.AspNetCore.Server.IIS;
+using Amazon.S3;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +64,17 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Tăng giới hạn upload lên 50MB
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = 52428800; // 50MB
+});
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 52428800; // 50MB
+});
+
 // JwtService
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddControllers();
@@ -71,6 +84,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
 builder.Services.AddScoped<IStoryService, StoryService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+
+// AWS S3
+builder.Services.AddAWSService<IAmazonS3>();
 
 // Swagger với JWT support
 builder.Services.AddSwaggerGen(c =>

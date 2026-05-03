@@ -67,7 +67,7 @@ const CoverSection = ({ user, onUpdateImage, onFriendStatusChange, onCreateStory
 
       // If it's a relative path, convert to full URL
       if (imageUrl && imageUrl.startsWith('/')) {
-        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5162/api';
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com/api';
         // Remove /api from base URL to get server root
         const serverRoot = baseUrl.replace('/api', '');
         imageUrl = `${serverRoot}${imageUrl}`;

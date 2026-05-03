@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { uploadImageAPI } from "../services/uploadService";
 
-const API_BASE = "http://localhost:5162";
+const API_BASE = "http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com";
 
 type Story = {
   id: number;
@@ -14,7 +14,6 @@ type Story = {
   backgroundColor?: string;
   createdAt: string;
 };
-
 const getStoriesAPI = () =>
   fetch(`${API_BASE}/api/stories`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -30,7 +29,9 @@ const createStoryAPI = (data: { imageUrl?: string; content?: string; backgroundC
     body: JSON.stringify(data),
   }).then((r) => r.json());
 
-export default function StoryBar({ autoOpenCreate = false, onClose }: {
+
+
+export default function StoryBar({ autoOpenCreate = false }: {
   autoOpenCreate?: boolean,
   onClose?: () => void
 } = {}) {

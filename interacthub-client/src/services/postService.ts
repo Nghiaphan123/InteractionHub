@@ -47,13 +47,49 @@ export const getPostsByUserAPI = (userId: string) =>
     }))
   );
 
-export const createPostAPI = async (data: { content: string; imageUrl?: string }): Promise<Post> => {
-  const response = await axiosClient.post("/posts", data);
-  return mapPostDtoToPost(response.data);
-};
+/* ================== FIX CHÍNH Ở ĐÂY ================== */
+export const createPostAPI = async (data: { content?: string; imageUrl?: string }): Promise<Post> => {
+  // ❗ chặn trường hợp cả 2 đều rỗng
+  if (!data.content?.trim() && !data.imageUrl) {
+    throw new Error("Post must have content or image");
+  }
 
-export const updatePostAPI = async (id: string, data: { content: string; imageUrl?: string }): Promise<Post> => {
-  const response = await axiosClient.put(`/posts/${id}`, data);
+  // ❗ chỉ gửi field có giá trị (tránh backend reject)
+  const payload: any = {};
+
+  if (data.content?.trim()) {
+    payload.content = data.content.trim();
+  }
+
+  if (data.imageUrl) {
+    payload.imageUrl = data.imageUrl;
+  }
+
+  // Debug để xem gửi gì lên server
+  console.log("CREATE POST PAYLOAD:", payload);
+
+  try {
+    const response = await axiosClient.post("/posts", payload);
+    return mapPostDtoToPost(response.data);
+  } catch (error: any) {
+    console.error("CREATE POST ERROR:", error.response?.data);
+    throw error;
+  }
+};
+/* ==================================================== */
+
+export const updatePostAPI = async (id: string, data: { content?: string; imageUrl?: string }): Promise<Post> => {
+  const payload: any = {};
+
+  if (data.content?.trim()) {
+    payload.content = data.content.trim();
+  }
+
+  if (data.imageUrl) {
+    payload.imageUrl = data.imageUrl;
+  }
+
+  const response = await axiosClient.put(`/posts/${id}`, payload);
   return mapPostDtoToPost(response.data);
 };
 

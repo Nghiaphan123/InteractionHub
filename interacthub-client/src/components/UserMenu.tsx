@@ -70,7 +70,7 @@ const UserMenu: React.FC = () => {
         <div className="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center overflow-hidden">
           {user?.avatarUrl ? (
             <img
-              src={user.avatarUrl.startsWith("http") ? user.avatarUrl : `http://localhost:5162${user.avatarUrl}`}
+              src={user.avatarUrl.startsWith("http") ? user.avatarUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${user.avatarUrl}`}
               className="w-full h-full object-cover"
             />
           ) : (

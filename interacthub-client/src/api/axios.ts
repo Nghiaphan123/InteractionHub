@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5162/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com/api";
 
 // Main axios client with interceptors
 const axiosClient = axios.create({
