@@ -11,8 +11,9 @@ import {
   getCommentsAPI,
   likePostAPI,
   unlikePostAPI,
+  updatePostAPI
 } from '../services/postService';
-
+import { useAuth } from '../context/AuthContext';
 interface PostProps {
   post: Post;
   onDelete?: (id: string) => void;
@@ -87,10 +88,11 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openCommentMenuIndex, setOpenCommentMenuIndex] = useState<number | null>(null);
   const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(post.content);
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null); // Ref cho menu bài viết
-
+  const { user } = useAuth();
   const isMyPost = post.author.id === currentUser.id;
 
   const [comments, setComments] = useState<Comment[]>([]);
@@ -190,6 +192,16 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
     setOpenCommentMenuIndex(index);
   };
 
+  const handleEditPost = async () => {
+    try {
+      await updatePostAPI(post.id, { content: editContent });
+      post.content = editContent; // cập nhật local
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Failed to edit post:", err);
+    }
+  };
+
   return (
     <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
       <div className="flex items-center justify-between relative">
@@ -220,6 +232,12 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
           {isMenuOpen && (
             <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 shadow-xl rounded-xl py-2 z-20 animate-in fade-in zoom-in duration-150">
               <button className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition">✨ Quan tâm</button>
+              {isMyPost && (
+                <button onClick={() => { setIsEditing(true); setIsMenuOpen(false); }}
+                  className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition">
+                  ✏️ Chỉnh sửa bài viết
+                </button>
+              )}
               {isMyPost ? (
                 <button
                   onClick={() => onDelete && onDelete(post.id)}
@@ -235,11 +253,33 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
         </div>
       </div>
 
-      <p className="text-slate-800 text-sm">{post.content}</p>
+      {isEditing ? (
+        <div className="space-y-2">
+          <textarea
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            className="w-full p-3 border border-slate-200 rounded-xl outline-none resize-none text-sm focus:ring-2 focus:ring-blue-500/30"
+            rows={3}
+          />
+          <div className="flex gap-2 justify-end">
+            <button onClick={() => setIsEditing(false)}
+              className="px-3 py-1 bg-slate-100 rounded-lg text-sm font-bold hover:bg-slate-200 transition">
+              Hủy
+            </button>
+            <button onClick={handleEditPost}
+              className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+              Lưu
+            </button>
+          </div>
+        </div>
+      ) : (
+        <p className="text-slate-800 text-sm">{post.content}</p>
+      )}
+      
       {post.imageUrl && (
         <div className="mt-3 rounded-xl overflow-hidden border border-slate-100">
           <img
-            src={post.imageUrl.startsWith("http") ? post.imageUrl : `http://localhost:5162${post.imageUrl}`}
+            src={post.imageUrl.startsWith("http") ? post.imageUrl : `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${post.imageUrl}`}
             alt="Post content"
             className="w-full h-auto max-h-[450px] object-cover"
           />
@@ -274,7 +314,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
                 const isMyComment = c.userId === currentUser.id;
                 return (
                   <div key={c.id} className="flex items-start space-x-2 group relative">
-                    <Avatar size="sm" />
+                    <Avatar size="sm" src={c.avatarUrl?.startsWith("http") ? c.avatarUrl : c.avatarUrl ? `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${c.avatarUrl}` : undefined} />
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <div className="bg-slate-100 px-3 py-2 rounded-2xl shadow-sm">
@@ -319,7 +359,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
             )}
           </div>
           <div className="flex items-center space-x-2 pt-2 border-t border-slate-50">
-            <Avatar size="sm" />
+            <Avatar size="sm" src={user?.avatarUrl?.startsWith("http") ? user.avatarUrl : user?.avatarUrl ? `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${user.avatarUrl}` : undefined} />
             <input
               ref={inputRef}
               type="text"

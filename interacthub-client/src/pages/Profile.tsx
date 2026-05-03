@@ -10,7 +10,7 @@ import FriendsSection from '../components/profile/FriendsSection.tsx';
 import axiosClient from '../api/axios';
 import { getPostsByUserAPI, createPostAPI, deletePostAPI } from '../services/postService';
 import { uploadImageAPI } from '../services/uploadService';
-
+import StoryBar from '../components/StoryBar.tsx';
 // Import đúng component bài viết
 import CreatePost from '../components/CreatePost.tsx';
 import PostCard from '../components/PostCard.tsx';
@@ -26,9 +26,9 @@ const ProfilePage = () => {
   const [mainTab, setMainTab] = useState<'posts' | 'about' | 'friends' | 'photos'>('posts');
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [bioDraft, setBioDraft] = useState("");
-
+  const [showStoryModal, setShowStoryModal] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
-
+  const [showStoryCreate, setShowStoryCreate] = useState(false);
   const [details, setDetails] = useState<UserDetail[]>(() => {
     const saved = localStorage.getItem('user_details_data');
     return saved ? JSON.parse(saved) : [];
@@ -90,25 +90,32 @@ const ProfilePage = () => {
       let data: User | null = null;
 
       if (isMe && currentUser) {
-        data = {
-          id: currentUser.id,
-          fullName: currentUser.fullName || "Người dùng",
-          username: currentUser.username || "user",
-          avatarUrl: savedAvatar || currentUser.avatarUrl || '',  
-           coverUrl: savedCover || "https://picsum.photos/1000/400",
-          bio: localStorage.getItem('user_bio') || "",
-          friendsCount: 0,
-          isOwnProfile: true,
-          friendStatus: 'none',
-          location: "",
-          education: "",
-          details: details
-        };
+        // Fetch friendsCount từ API
+        try {
+          const res = await axiosClient.get(`/users/${currentUser.id}`);
+          const u = res.data;
+          data = {
+            id: currentUser.id,
+            fullName: currentUser.fullName || "Người dùng",
+            username: currentUser.username || "user",
+            avatarUrl: savedAvatar || currentUser.avatarUrl || '',
+            coverUrl: savedCover || "https://picsum.photos/1000/400",
+            bio: localStorage.getItem('user_bio') || "",
+            friendsCount: u.friendsCount || 0, // lấy từ API
+            isOwnProfile: true,
+            friendStatus: 'none',
+            location: "",
+            education: "",
+            details: details
+          };
+        } catch (err) {
+          console.error(err);
+        }
       } else {
         try {
           const res = await axiosClient.get(`/users/${id}`);
           const u = res.data;
-          console.log("friendStatus từ API:", u.friendStatus); 
+          console.log("friendStatus từ API:", u.friendStatus);
           data = {
             id: u.id,
             fullName: u.fullName,
@@ -170,6 +177,7 @@ const ProfilePage = () => {
               }
             }
           }}
+          onCreateStory={() => setShowStoryModal(true)}
         />
         <div className="max-w-5xl mx-auto px-4">
           <ProfileTabs
@@ -316,7 +324,13 @@ const ProfilePage = () => {
           </div>
         )}
       </div>
-
+      {showStoryModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center" onClick={() => setShowStoryModal(false)}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <StoryBar autoOpenCreate onClose={() => setShowStoryModal(false)} />
+          </div>
+        </div>
+      )}
       <EditDetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} details={details} onSave={setDetails} />
     </div>
   );

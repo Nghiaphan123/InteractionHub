@@ -3,10 +3,11 @@ import { uploadImageAPI } from '../../services/uploadService';
 import type { User } from '../../types/user';
 import axiosClient from '../../api/axios';
 
-const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
+const CoverSection = ({ user, onUpdateImage, onFriendStatusChange, onCreateStory }: {
   user: User,
   onUpdateImage?: (field: 'avatarUrl' | 'coverUrl', url: string) => void,
-  onFriendStatusChange?: (status: string) => void
+  onFriendStatusChange?: (status: string) => void,
+  onCreateStory?: () => void
 }) => {
   const { isOwnProfile, friendStatus } = user;
   const [currentFriendStatus, setCurrentFriendStatus] = useState(friendStatus);
@@ -31,6 +32,14 @@ const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
     } catch (err) { console.error(err); }
   };
 
+  const handleCancelRequest = async () => {
+    try {
+      await axiosClient.delete(`/friends/cancel/${user.id}`);
+      setCurrentFriendStatus('none');
+      onFriendStatusChange?.('none');
+    } catch (err) { console.error(err); }
+  };
+  
   // Đóng menu khi bấm ra ngoài
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -83,7 +92,8 @@ const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
 
   const renderActionButtons = () => {
     if (isOwnProfile) return (
-      <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold transition">+ Thêm vào tin</button>
+      <button onClick={onCreateStory}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold transition">+ Thêm vào tin</button>
     );
   
     const MessageBtn = () => (
@@ -102,7 +112,8 @@ const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
         break;
       case 'pending':
         PrimaryButton = (
-          <button className="bg-gray-200 px-4 py-2 rounded-md font-semibold text-slate-500 cursor-default">
+          <button  onClick={handleCancelRequest}
+          className="bg-gray-200 px-4 py-2 rounded-md font-semibold text-slate-500 cursor-default">
             ⏳ Đã gửi lời mời
           </button>
         );
