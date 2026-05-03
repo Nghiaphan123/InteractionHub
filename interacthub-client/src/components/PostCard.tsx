@@ -11,8 +11,8 @@ import {
   getCommentsAPI,
   likePostAPI,
   unlikePostAPI,
-  updatePostAPI
-  updatePostAPI
+  updatePostAPI,
+  updatePostAPI,
 } from '../services/postService';
 import { useAuth } from '../context/AuthContext';
 import { useAuth } from '../context/AuthContext';
