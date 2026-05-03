@@ -12,7 +12,9 @@ import {
   likePostAPI,
   unlikePostAPI,
   updatePostAPI
+  updatePostAPI
 } from '../services/postService';
+import { useAuth } from '../context/AuthContext';
 import { useAuth } from '../context/AuthContext';
 interface PostProps {
   post: Post;
@@ -314,7 +316,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
                 const isMyComment = c.userId === currentUser.id;
                 return (
                   <div key={c.id} className="flex items-start space-x-2 group relative">
-                    <Avatar size="sm" src={c.avatarUrl?.startsWith("http") ? c.avatarUrl : c.avatarUrl ? `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${c.avatarUrl}` : undefined} />
+                    <Avatar size="sm" />
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <div className="bg-slate-100 px-3 py-2 rounded-2xl shadow-sm">
@@ -359,7 +361,7 @@ const PostCard = ({ post, onDelete, currentUser }: PostProps) => {
             )}
           </div>
           <div className="flex items-center space-x-2 pt-2 border-t border-slate-50">
-            <Avatar size="sm" src={user?.avatarUrl?.startsWith("http") ? user.avatarUrl : user?.avatarUrl ? `http://interacthub-staging.eba-wgfffkes.ap-southeast-1.elasticbeanstalk.com${user.avatarUrl}` : undefined} />
+            <Avatar size="sm" />
             <input
               ref={inputRef}
               type="text"
