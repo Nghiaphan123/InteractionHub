@@ -1,30 +1,35 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "http://127.0.0.1:5162/api"
+  baseURL: "http://127.0.0.1:5162/api",
 });
 
-// REQUEST: gắn JWT
-axiosClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+// ================= REQUEST =================
+axiosClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    if (!config.headers) {
-      config.headers = {};
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-  return config;
-});
-
-// RESPONSE
+// ================= RESPONSE =================
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
     const originalRequest = error.config;
+
+    console.error("API ERROR:", {
+      url: originalRequest?.url,
+      status,
+      data: error.response?.data,
+    });
 
     if (
       status === 401 &&
@@ -33,7 +38,7 @@ axiosClient.interceptors.response.use(
     ) {
       localStorage.removeItem("token");
 
-      window.location.href = "/login";
+      window.location.replace("/login");
     }
 
     return Promise.reject(error);

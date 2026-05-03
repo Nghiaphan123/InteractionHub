@@ -1,55 +1,40 @@
 import axios from "../api/axios";
 
-// LOGIN
-export const loginAPI = async (data: { email: string; password: string }) => {
-  const res = await axios.post("/auth/login", data);
-  return res.data;
-};
+export const loginAPI = (data: { email: string; password: string }) =>
+  axios.post("/auth/login", data).then(r => r.data);
 
-// REGISTER
-export const registerAPI = async (data: {
+export const registerAPI = (data: {
   username: string;
   email: string;
   password: string;
   fullName: string;
-}) => {
-  const res = await axios.post("/auth/register", data);
-  return res.data;
-};
+}) =>
+  axios.post("/auth/register", data).then(r => r.data);
 
-// GET ME
-export const getMeAPI = async () => {
-  const res = await axios.get("/auth/me");
-  return res.data;
-};
+export const getMeAPI = () =>
+  axios.get("/auth/me").then(r => r.data);
 
-// FIND ACCOUNT
-export const findAccountAPI = async (data: { email: string }) => {
-  const res = await axios.post("/auth/find-account", data);
-  return res.data;
-};
+// ================= RECOVERY FLOW =================
 
-// SEND CODE
-export const sendRecoveryCodeAPI = async (data: { value: string }) => {
-  const res = await axios.post("/auth/send-recovery-code", data);
-  return res.data;
-};
+// tìm tài khoản
+export const findAccountAPI = (data: { email: string }) =>
+  axios.post("/auth/find-account", data).then(r => r.data);
 
-// VERIFY CODE
-export const verifyRecoveryCodeAPI = async (data: {
-  value: string;
+// gửi mã
+export const sendResetCodeAPI = (data: { email: string }) =>
+  axios.post("/auth/send-reset-code", data).then(r => r.data);
+
+// verify mã
+export const verifyResetCodeAPI = (data: {
+  email: string;
   code: string;
-}) => {
-  const res = await axios.post("/auth/verify-recovery-code", data);
-  return res.data;
-};
+}) =>
+  axios.post("/auth/verify-reset-code", data).then(r => r.data);
 
-// RESET PASSWORD
-export const resetPasswordAPI = async (data: {
-  value: string;
+// reset password
+export const resetPasswordAPI = (data: {
+  email: string;
   code: string;
   newPassword: string;
-}) => {
-  const res = await axios.post("/auth/reset-password", data);
-  return res.data;
-};
+}) =>
+  axios.post("/auth/reset-password", data).then(r => r.data);

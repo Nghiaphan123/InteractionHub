@@ -1,37 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { findAccountAPI } from "../services/authService";
+import { findAccountAPI, sendResetCodeAPI } from "../services/authService";
 import "./Login.css";
 
 export default function ForgotPassword() {
   const [input, setInput] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const nav = performance.getEntriesByType("navigation")[0] as any;
+
+    if (nav?.type === "reload") {
+      localStorage.clear();
+      window.location.href = "/login";
+    }
+  }, []);
+
   const handleContinue = async () => {
-    if (!input) return;
+    setError("");
+
+    if (!input) {
+      setError("Vui lòng nhập email");
+      return;
+    }
 
     try {
-      const account = await findAccountAPI({
-        email: input,
-      });
+      setLoading(true);
 
-      localStorage.setItem(
-        "recoveryAccount",
-        JSON.stringify(account)
-      );
+      const res = await findAccountAPI({ email: input });
 
       localStorage.setItem("recoveryInput", input);
 
+      await sendResetCodeAPI({ email: input });
+      
+      localStorage.setItem("recoveryAccount", JSON.stringify(res));
+
       navigate("/choose-recovery");
-    } catch (error) {
-      console.log(error);
+
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Không tìm thấy tài khoản");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-container">
       <div className="login-box" style={{ position: "relative" }}>
+
         <button
           onClick={() => navigate("/login")}
           style={{
@@ -43,10 +63,6 @@ export default function ForgotPassword() {
             border: "1px solid #ddd",
             borderRadius: "10px",
             background: "#fff",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
           }}
         >
           <ArrowLeft size={22} />
@@ -57,20 +73,27 @@ export default function ForgotPassword() {
         </h2>
 
         <p style={{ marginBottom: "20px" }}>
-          Nhập số điện thoại hoặc email liên kết.
+          Nhập email của bạn
         </p>
 
         <input
           type="text"
-          placeholder="Số điện thoại hoặc email"
+          placeholder="Email"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="input"
         />
 
-        <button onClick={handleContinue} className="login-btn">
-          Tiếp tục
+        {error && <p className="error-text">{error}</p>}
+
+        <button
+          onClick={handleContinue}
+          className="login-btn"
+          disabled={loading}
+        >
+          {loading ? "Đang xử lý..." : "Tiếp tục"}
         </button>
+
       </div>
     </div>
   );

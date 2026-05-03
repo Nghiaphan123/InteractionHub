@@ -27,18 +27,11 @@ export default function Login() {
 
   const password = watch("password");
 
-  const validateEmailOrPhone = (value: string) => {
-    if (!value) return "Vui lòng nhập email hoặc số điện thoại";
+  const validateEmail = (value: string) => {
+    if (!value) return "Vui lòng nhập email";
 
-    const isEmail = value.includes("@");
-
-    if (isEmail) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) return "Thông tin không hợp lệ";
-    } else {
-      const phoneRegex = /^[0-9]{10}$/;
-      if (!phoneRegex.test(value)) return "Thông tin không hợp lệ";
-    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) return "Email không hợp lệ";
 
     return true;
   };
@@ -54,7 +47,7 @@ export default function Login() {
 
       navigate("/");
     } catch {
-      setLocalError("Mật khẩu không chính xác");
+      setLocalError("Thông tin đăng nhập không chính xác");
     }
   };
 
@@ -70,9 +63,9 @@ export default function Login() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type="text"
-            placeholder="Email hoặc số di động"
+            placeholder="Email"
             {...register("email", {
-              validate: validateEmailOrPhone,
+              validate: validateEmail,
             })}
             className={errors.email ? "input error" : "input"}
           />
@@ -116,7 +109,6 @@ export default function Login() {
             <p className="error-text">{errors.password.message}</p>
           )}
 
-          {/* lỗi sai pass */}
           {localError && <p className="error-text">{localError}</p>}
 
           <button

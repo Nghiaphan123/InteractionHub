@@ -62,9 +62,23 @@ export default function Register({ onBack }: any) {
 
       navigate("/");
     } catch (err: any) {
-      console.error(err);
-      setApiError(err?.message || "Đăng ký thất bại");
-    } finally {
+        console.error(err);
+
+        if (err.response) {
+          const data = err.response.data;
+
+          if (data.errors) {
+            const messages = Object.values(data.errors).flat();
+            setApiError(messages.join(", "));
+          } else if (data.message) {
+            setApiError(data.message);
+          } else {
+            setApiError("Đăng ký thất bại");
+          }
+        } else {
+          setApiError("Không kết nối được server");
+        }
+      } finally {
       setLoading(false);
     }
   };
@@ -123,7 +137,6 @@ export default function Register({ onBack }: any) {
           />
           {errors.email && <p className="error-text">{errors.email.message}</p>}
 
-          {/* PASSWORD */}
           <div className="password-wrapper">
             <input
               type={showPassword ? "text" : "password"}
@@ -153,7 +166,6 @@ export default function Register({ onBack }: any) {
 
           {errors.password && <p className="error-text">{errors.password.message}</p>}
 
-          {/* CONFIRM PASSWORD */}
           <div className="password-wrapper">
             <input
               type={showConfirmPassword ? "text" : "password"}

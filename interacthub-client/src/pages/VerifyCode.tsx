@@ -1,27 +1,79 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { verifyRecoveryCodeAPI } from "../services/authService";
+import { verifyResetCodeAPI } from "../services/authService";
 import "./Login.css";
 
 export default function VerifyCode() {
   const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const nav = performance.getEntriesByType("navigation")[0] as any;
+
+    if (nav?.type === "reload") {
+      localStorage.clear();
+      window.location.href = "/login";
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+      .replace(/\D/g, "")
+      .slice(0, 6);
+
+    setCode(value);
+  };
+
   const handleContinue = async () => {
+    setError("");
+
     const target = localStorage.getItem("selectedRecovery");
 
-    if (!target || !code) return;
+    const cleanCode = code.trim();
+
+    if (!target) {
+      setError("Thiếu thông tin tài khoản");
+      return;
+    }
+
+    if (cleanCode.length !== 6) {
+      setError("Mã phải gồm đúng 6 chữ số");
+      return;
+    }
 
     try {
-      await verifyRecoveryCodeAPI({
-        value: target,
-        code,
+      setLoading(true);
+
+      await verifyResetCodeAPI({
+        email: target,
+        code: cleanCode,
       });
 
+      localStorage.setItem("verifyCode", cleanCode);
+
       navigate("/reset-password");
-    } catch (error) {
-      console.log(error);
+    } catch (err: any) {
+      console.error(err);
+
+      const message = err.response?.data?.message;
+
+      if (message === "INVALID") {
+        setError("Mã xác nhận không đúng");
+        return;
+      }
+
+      if (message) {
+        setError(message);
+        return;
+      }
+
+    setError("Mã không đúng hoặc đã hết hạn");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,14 +110,22 @@ export default function VerifyCode() {
 
         <input
           type="text"
-          placeholder="Nhập mã"
+          placeholder="Nhập mã 6 số"
           value={code}
-          onChange={(e) => setCode(e.target.value)}
+          onChange={handleChange}
           className="input"
+          inputMode="numeric"
+          maxLength={6}
         />
 
-        <button onClick={handleContinue} className="login-btn">
-          Tiếp tục
+        {error && <p className="error-text">{error}</p>}
+
+        <button
+          onClick={handleContinue}
+          className="login-btn"
+          disabled={loading}
+        >
+          {loading ? "Đang xác thực..." : "Tiếp tục"}
         </button>
       </div>
     </div>

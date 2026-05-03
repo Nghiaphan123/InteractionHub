@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { resetPasswordAPI } from "../services/authService";
@@ -8,37 +8,103 @@ export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleReset = async () => {
-    if (!password || !confirmPassword) return;
-    if (password !== confirmPassword) return;
+  useEffect(() => {
+    const nav = performance.getEntriesByType("navigation")[0] as any;
+    if (nav?.type === "reload") {
+      localStorage.clear();
+      window.location.href = "/login";
+    }
+  }, []);
 
-    const value = localStorage.getItem("selectedRecovery") || "";
+  const handleReset = async () => {
+    setError("");
+
+    if (!password || !confirmPassword) {
+      setError("Vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Mật khẩu phải ít nhất 6 ký tự");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Mật khẩu không khớp");
+      return;
+    }
+
+    const email = localStorage.getItem("selectedRecovery") || "";
     const code = localStorage.getItem("verifyCode") || "";
 
-    if (!value || !code) return;
+    if (!email || !code) {
+      setError("Thiếu mã xác thực, vui lòng quay lại bước trước");
+      return;
+    }
 
     try {
+      setLoading(true);
+
       await resetPasswordAPI({
-        value,
+        email,
         code,
         newPassword: password,
       });
 
-      localStorage.removeItem("recoveryAccount");
       localStorage.removeItem("selectedRecovery");
       localStorage.removeItem("verifyCode");
 
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
+      setTimeout(() => navigate("/login"), 1200);
+    } catch (err: any) {
+      console.log("RESET ERROR:", err);
+
+      const apiMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.errors?.Password?.[0];
+
+      if (apiMessage) {
+        if (apiMessage.includes("non alphanumeric")) {
+          setError("Mật khẩu phải có ký tự đặc biệt (vd: @, #, !)");
+        } else if (apiMessage.includes("FAIL")) {
+          setError("Không thể đổi mật khẩu, vui lòng thử lại");
+        } else {
+          setError(apiMessage);
+        }
+      } else {
+        setError("Đổi mật khẩu thất bại");
+      }
+    } finally {
+      setLoading(false);
     }
   };
+
+  const Eye = ({ open }: { open: boolean }) =>
+    open ? (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3L21 21" stroke="currentColor" strokeWidth="2" />
+        <path d="M10.58 10.58A2 2 0 0013.42 13.42" stroke="currentColor" strokeWidth="2"/>
+        <path d="M9.88 5.08A10.94 10.94 0 0121 12" stroke="currentColor" strokeWidth="2"/>
+        <path d="M3 12a10.94 10.94 0 005.12 6.92" stroke="currentColor" strokeWidth="2"/>
+      </svg>
+    ) : (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M1 12C1 12 5 5 12 5s11 7 11 7-4 7-11 7S1 12 1 12z" stroke="currentColor" strokeWidth="2"/>
+        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+      </svg>
+    );
 
   return (
     <div className="login-container">
       <div className="login-box" style={{ position: "relative" }}>
+
         <button
           onClick={() => navigate(-1)}
           style={{
@@ -63,24 +129,56 @@ export default function ResetPassword() {
           Đặt lại mật khẩu
         </h2>
 
-        <input
-          type="password"
-          placeholder="Mật khẩu mới"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="input"
-        />
+        {/* PASSWORD */}
+        <div className="password-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Mật khẩu mới"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input"
+          />
 
-        <input
-          type="password"
-          placeholder="Xác nhận mật khẩu"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="input"
-        />
+          {password && (
+            <span
+              className="eye-icon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <Eye open={showPassword} />
+            </span>
+          )}
+        </div>
 
-        <button onClick={handleReset} className="login-btn">
-          Đổi mật khẩu
+        {/* CONFIRM PASSWORD */}
+        <div className="password-wrapper">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Xác nhận mật khẩu"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="input"
+          />
+
+          {confirmPassword && (
+            <span
+              className="eye-icon"
+              onClick={() =>
+                setShowConfirmPassword(!showConfirmPassword)
+              }
+            >
+              <Eye open={showConfirmPassword} />
+            </span>
+          )}
+        </div>
+
+        {error && <p className="error-text">{error}</p>}
+
+        <button
+          onClick={handleReset}
+          className="login-btn"
+          disabled={loading}
+        >
+          {loading ? "Đang xử lý..." : "Đổi mật khẩu"}
         </button>
       </div>
     </div>

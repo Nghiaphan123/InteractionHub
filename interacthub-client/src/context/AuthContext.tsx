@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const initAuth = async () => {
       if (!token) {
+        setUser(null);
         setLoading(false);
         return;
       }
@@ -81,9 +82,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
+    setUser(null);
+    setLoading(false);
   };
 
-  const isAuthenticated = !!token;
+  const isAuthenticated = !!token && !!user;
 
   return (
     <AuthContext.Provider

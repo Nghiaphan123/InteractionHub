@@ -2,7 +2,6 @@ using InteractHub.Core.DTOs.Friends;
 using InteractHub.Core.Entities;
 using InteractHub.Core.Interfaces;
 using InteractHub.Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace InteractHub.Infrastructure.Services;
@@ -10,29 +9,28 @@ namespace InteractHub.Infrastructure.Services;
 public class FriendService : IFriendService
 {
     private readonly AppDbContext _context;
-    private readonly UserManager<User> _userManager;
 
-    public FriendService(AppDbContext context, UserManager<User> userManager)
+    public FriendService(AppDbContext context)
     {
         _context = context;
-        _userManager = userManager;
     }
 
     // Gửi lời mời kết bạn
     public async Task<FriendResponseDto?> SendFriendRequestAsync(string senderId, string receiverId)
     {
-        var receiver = await _userManager.FindByIdAsync(receiverId);
-        if (receiver == null)
+        // Kiểm tra receiver có tồn tại không
+        var receiverExists = await _context.Users.FindAsync(receiverId);
+        if (receiverExists == null)
             throw new Exception("Receiver user does not exist.");
 
-        var sender = await _userManager.FindByIdAsync(senderId);
-        if (sender == null)
+        // Kiểm tra sender có tồn tại không (optional nhưng nên có)
+        var senderExists = await _context.Users.FindAsync(senderId);
+        if (senderExists == null)
             throw new Exception("Sender user does not exist.");
 
+        // Kiểm tra đã có request chưa (tránh duplicate)
         var existing = await _context.Friendships
-            .FirstOrDefaultAsync(f =>
-                f.SenderId == senderId && f.ReceiverId == receiverId);
-
+            .FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
         if (existing != null)
             throw new Exception("Friend request already sent.");
 
@@ -40,43 +38,43 @@ public class FriendService : IFriendService
         {
             SenderId = senderId,
             ReceiverId = receiverId,
-            Status = FriendshipStatus.Pending,
-            CreatedAt = DateTime.UtcNow
+            Status = FriendshipStatus.Pending
         };
 
         _context.Friendships.Add(friendship);
-        await _context.SaveChangesAsync();
-
+        await _context.SaveChangesAsync(); 
+        
+        // TRẢ VỀ DTO SAU KHI LƯU THÀNH CÔNG
         return await GetFriendshipDtoAsync(friendship.Id);
     }
 
     // Chấp nhận lời mời
-    public async Task<FriendResponseDto?> AcceptFriendRequestAsync(int friendshipId, string userId)
+    public async Task<FriendResponseDto?> AcceptFriendRequestAsync(
+        int friendshipId, string userId)
     {
-        var friendship = await _context.Friendships
-            .FirstOrDefaultAsync(f => f.Id == friendshipId && f.ReceiverId == userId);
+        var friendship = await _context.Friendships.FirstOrDefaultAsync(
+            f => f.Id == friendshipId && f.ReceiverId == userId);
 
         if (friendship == null) return null;
 
         friendship.Status = FriendshipStatus.Accepted;
         friendship.UpdatedAt = DateTime.UtcNow;
-
         await _context.SaveChangesAsync();
 
         return await GetFriendshipDtoAsync(friendshipId);
     }
 
     // Từ chối lời mời
-    public async Task<FriendResponseDto?> DeclineFriendRequestAsync(int friendshipId, string userId)
+    public async Task<FriendResponseDto?> DeclineFriendRequestAsync(
+        int friendshipId, string userId)
     {
-        var friendship = await _context.Friendships
-            .FirstOrDefaultAsync(f => f.Id == friendshipId && f.ReceiverId == userId);
+        var friendship = await _context.Friendships.FirstOrDefaultAsync(
+            f => f.Id == friendshipId && f.ReceiverId == userId);
 
         if (friendship == null) return null;
 
         friendship.Status = FriendshipStatus.Declined;
         friendship.UpdatedAt = DateTime.UtcNow;
-
         await _context.SaveChangesAsync();
 
         return await GetFriendshipDtoAsync(friendshipId);
@@ -96,7 +94,7 @@ public class FriendService : IFriendService
         return true;
     }
 
-    // Danh sách bạn bè
+    // Lấy danh sách bạn bè
     public async Task<List<FriendResponseDto>> GetFriendsAsync(string userId)
     {
         var friendships = await _context.Friendships
@@ -107,10 +105,10 @@ public class FriendService : IFriendService
                 f.Status == FriendshipStatus.Accepted)
             .ToListAsync();
 
-        return friendships.Select(MapToDto).ToList();
+        return friendships.Select(f => MapToDto(f)).ToList();
     }
 
-    // Lời mời chờ
+    // Lấy danh sách lời mời đang chờ
     public async Task<List<FriendResponseDto>> GetPendingRequestsAsync(string userId)
     {
         var friendships = await _context.Friendships
@@ -121,11 +119,12 @@ public class FriendService : IFriendService
                 f.Status == FriendshipStatus.Pending)
             .ToListAsync();
 
-        return friendships.Select(MapToDto).ToList();
+        return friendships.Select(f => MapToDto(f)).ToList();
     }
 
-    // Status
-    public async Task<string> GetFriendshipStatusAsync(string userId, string otherUserId)
+    // Kiểm tra trạng thái friendship
+    public async Task<string> GetFriendshipStatusAsync(
+        string userId, string otherUserId)
     {
         var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
             (f.SenderId == userId && f.ReceiverId == otherUserId) ||
@@ -135,34 +134,31 @@ public class FriendService : IFriendService
         return friendship.Status.ToString();
     }
 
-    // helper
+    // Helper: lấy friendship theo ID
     private async Task<FriendResponseDto?> GetFriendshipDtoAsync(int friendshipId)
     {
         var f = await _context.Friendships
-            .Include(x => x.Sender)
-            .Include(x => x.Receiver)
-            .FirstOrDefaultAsync(x => x.Id == friendshipId);
+            .Include(f => f.Sender)
+            .Include(f => f.Receiver)
+            .FirstOrDefaultAsync(f => f.Id == friendshipId);
 
         if (f == null) return null;
-
         return MapToDto(f);
     }
 
-    private FriendResponseDto MapToDto(Friendship f)
+    // Helper: map entity sang DTO
+    private FriendResponseDto MapToDto(Friendship f) => new()
     {
-        return new FriendResponseDto
-        {
-            Id = f.Id,
-            SenderId = f.SenderId,
-            SenderUsername = f.Sender?.UserName ?? "",
-            SenderFullName = f.Sender?.FullName ?? "",
-            SenderAvatarUrl = f.Sender?.AvatarUrl ?? "",
-            ReceiverId = f.ReceiverId,
-            ReceiverUsername = f.Receiver?.UserName ?? "",
-            ReceiverFullName = f.Receiver?.FullName ?? "",
-            ReceiverAvatarUrl = f.Receiver?.AvatarUrl ?? "",
-            Status = f.Status.ToString(),
-            CreatedAt = f.CreatedAt
-        };
-    }
+        Id = f.Id,
+        SenderId = f.SenderId,
+        SenderUsername = f.Sender.UserName!,
+        SenderFullName = f.Sender.FullName,
+        SenderAvatarUrl = f.Sender.AvatarUrl,
+        ReceiverId = f.ReceiverId,
+        ReceiverUsername = f.Receiver.UserName!,
+        ReceiverFullName = f.Receiver.FullName,
+        ReceiverAvatarUrl = f.Receiver.AvatarUrl,
+        Status = f.Status.ToString(),
+        CreatedAt = f.CreatedAt
+    };
 }

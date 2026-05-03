@@ -1,4 +1,5 @@
 using InteractHub.Core.DTOs;
+using InteractHub.Core.DTOs.Auth;
 using InteractHub.Core.Entities;
 using InteractHub.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ public class AuthController : ControllerBase
     private readonly SignInManager<User> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly JwtService _jwtService;
+    private static readonly Dictionary<string, string> _resetCodes = new();
 
     public AuthController(
         UserManager<User> userManager,
@@ -125,5 +127,79 @@ public class AuthController : ControllerBase
             FullName = user.FullName,
             Roles = roles
         });
+    }
+
+    // ADD API SEND CODE
+    [HttpPost("send-reset-code")]
+    public async Task<IActionResult> SendResetCode([FromBody] SendCodeDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+        if (user == null)
+            return BadRequest(new { message = "Email không tồn tại" });
+
+        // FIXED OTP
+        _resetCodes[dto.Email] = "123456";
+
+        return Ok(new { message = "OK" });
+    }
+
+    // FIND ACCOUNT
+    [HttpPost("find-account")]
+    public async Task<IActionResult> FindAccount([FromBody] SendCodeDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+        if (user == null)
+            return NotFound(new { message = "Không tìm thấy tài khoản" });
+
+        return Ok(new
+        {
+            fullName = user.FullName,
+            avatarUrl = user.AvatarUrl,
+            emails = new[] { user.Email },
+            phones = new string[] { }
+        });
+    }
+
+    // VERIFY CODE
+    [HttpPost("verify-reset-code")]
+    public IActionResult VerifyResetCode([FromBody] VerifyCodeDto dto)
+    {
+        if (!_resetCodes.ContainsKey(dto.Email))
+            return BadRequest(new { message = "INVALID" });
+
+        if (_resetCodes[dto.Email] != dto.Code)
+            return BadRequest(new { message = "INVALID" });
+
+        return Ok(new { message = "OK" });
+    }
+
+    // RESET PASSWORD
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+    {
+        if (!_resetCodes.ContainsKey(dto.Email))
+            return BadRequest(new { message = "INVALID" });
+
+        if (_resetCodes[dto.Email] != dto.Code)
+            return BadRequest(new { message = "INVALID" });
+
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+        if (user == null)
+            return BadRequest(new { message = "Email không tồn tại" });
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var result = await _userManager.ResetPasswordAsync(
+            user,
+            token,
+            dto.NewPassword
+        );
+
+        if (!result.Succeeded)
+            return BadRequest(new { message = "FAIL" });
+
+        _resetCodes.Remove(dto.Email);
+
+        return Ok(new { message = "OK" });
     }
 }

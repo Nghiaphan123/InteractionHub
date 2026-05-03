@@ -1,0 +1,41 @@
+[33m28f0fa1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlehieu[m[33m, [m[1;31morigin/lehieu[m[33m)[m HEAD@{0}: reset: moving to origin/lehieu
+[33m28f0fa1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlehieu[m[33m, [m[1;31morigin/lehieu[m[33m)[m HEAD@{1}: reset: moving to origin/lehieu
+[33m28f0fa1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlehieu[m[33m, [m[1;31morigin/lehieu[m[33m)[m HEAD@{2}: checkout: moving from lehieu to lehieu
+[33m28f0fa1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlehieu[m[33m, [m[1;31morigin/lehieu[m[33m)[m HEAD@{3}: commit: UI + logic: login, register
+[33m1587c83[m HEAD@{4}: commit: UI login + register
+[33m7fad9cb[m HEAD@{5}: checkout: moving from lehieu to lehieu
+[33m7fad9cb[m HEAD@{6}: reset: moving to HEAD
+[33m7fad9cb[m HEAD@{7}: commit: UI đăng nhập + đăng ký
+[33m6779456[m HEAD@{8}: merge origin/master: Merge made by the 'ort' strategy.
+[33m87cd0e6[m HEAD@{9}: reset: moving to HEAD
+[33m87cd0e6[m HEAD@{10}: reset: moving to HEAD
+[33m87cd0e6[m HEAD@{11}: checkout: moving from lehieu to lehieu
+[33m87cd0e6[m HEAD@{12}: reset: moving to origin/lehieu
+[33m40abbd4[m HEAD@{13}: reset: moving to HEAD
+[33m40abbd4[m HEAD@{14}: checkout: moving from lehieu to lehieu
+[33m40abbd4[m HEAD@{15}: reset: moving to origin/master
+[33m87cd0e6[m HEAD@{16}: rebase (abort): returning to refs/heads/lehieu
+[33m40abbd4[m HEAD@{17}: pull --rebase origin master (start): checkout 40abbd40d6821bd3367764c1ca283fee4735cc14
+[33m87cd0e6[m HEAD@{18}: checkout: moving from lehieu to lehieu
+[33m87cd0e6[m HEAD@{19}: commit: UI đăng nhập + đăng ký
+[33m1c27b02[m HEAD@{20}: reset: moving to HEAD
+[33m1c27b02[m HEAD@{21}: reset: moving to HEAD
+[33m1c27b02[m HEAD@{22}: reset: moving to HEAD
+[33m1c27b02[m HEAD@{23}: checkout: moving from lehieu to lehieu
+[33m1c27b02[m HEAD@{24}: pull origin lehieu: Fast-forward
+[33ma721143[m HEAD@{25}: reset: moving to origin/lehieu
+[33ma721143[m HEAD@{26}: commit: form đăng nhập + đăng ký
+[33mefe3f13[m HEAD@{27}: checkout: moving from lehieu to lehieu
+[33mefe3f13[m HEAD@{28}: reset: moving to origin/lehieu
+[33mefe3f13[m HEAD@{29}: checkout: moving from lehieu to lehieu
+[33mefe3f13[m HEAD@{30}: commit: UI đăng nhập + đăng ký
+[33m282421e[m HEAD@{31}: checkout: moving from lehieu to lehieu
+[33m282421e[m HEAD@{32}: commit (amend): Login UI + F2
+[33mc3c559d[m HEAD@{33}: commit: F2
+[33m60d062f[m HEAD@{34}: checkout: moving from lehieu to lehieu
+[33m60d062f[m HEAD@{35}: commit: F2
+[33m208c9b5[m HEAD@{36}: commit: F2
+[33m29b11ed[m[33m ([m[1;32mmaster[m[33m, [m[1;32mhieu-dev[m[33m, [m[1;32mLe-Hieu[m[33m)[m HEAD@{37}: checkout: moving from hieu-dev to lehieu
+[33m29b11ed[m[33m ([m[1;32mmaster[m[33m, [m[1;32mhieu-dev[m[33m, [m[1;32mLe-Hieu[m[33m)[m HEAD@{38}: checkout: moving from Le-Hieu to hieu-dev
+[33m29b11ed[m[33m ([m[1;32mmaster[m[33m, [m[1;32mhieu-dev[m[33m, [m[1;32mLe-Hieu[m[33m)[m HEAD@{39}: checkout: moving from master to Le-Hieu
+[33m29b11ed[m[33m ([m[1;32mmaster[m[33m, [m[1;32mhieu-dev[m[33m, [m[1;32mLe-Hieu[m[33m)[m HEAD@{40}: clone: from https://github.com/Nghiaphan123/InteractionHub.git

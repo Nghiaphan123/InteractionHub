@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Moon, Sun, Globe, LogOut, Check, ChevronRight } from 'lucide-react';
+import { useAuth } from "../context/AuthContext";
 
 const UserMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -9,6 +10,7 @@ const UserMenu: React.FC = () => {
   
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   // --- LOGIC DARK MODE (Chỉ khai báo 1 lần) ---
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
@@ -129,7 +131,14 @@ const UserMenu: React.FC = () => {
 
           <hr className="my-1 border-gray-100 dark:border-slate-800" />
 
-          <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 transition-colors">
+          <button 
+            onClick={() => {
+              logout();
+              setIsOpen(false);
+              navigate("/login");
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 transition-colors"
+          >
             <LogOut size={18} />
             <span className="font-medium">Đăng xuất</span>
           </button>
