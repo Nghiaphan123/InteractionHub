@@ -34,6 +34,9 @@ public class FriendService : IFriendService
         if (existing != null)
             throw new Exception("Friend request already sent.");
 
+        if (senderId == receiverId)
+            throw new Exception("Không thể tự kết bạn với bản thân.");
+
         var friendship = new Friendship
         {
             SenderId = senderId,

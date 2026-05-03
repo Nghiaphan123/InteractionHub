@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import FriendRequest from '../FriendRequest';
 import axiosClient from '../../api/axios';
+import { useAuth } from '../../context/AuthContext';
+
 
 type FriendsTab = 'requests' | 'suggestions' | 'all';
 
 const FriendsSection = () => {
+  const { user: currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState<FriendsTab>('requests');
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [friends, setFriends] = useState<any[]>([]);
@@ -150,12 +153,12 @@ const FriendsSection = () => {
             ) : (
               <div className="grid grid-cols-1 gap-3">
                 {friends.map(f => {
-                  // Lấy thông tin của người kia (không phải mình)
-                  const friendName = f.senderFullName || f.receiverFullName;
-                  const friendUsername = f.senderUsername || f.receiverUsername;
-                  const friendAvatar = f.senderAvatarUrl || f.receiverAvatarUrl;
-                  const friendId = f.senderId || f.receiverId;
-
+                  // Lấy thông tin người kia (không phải mình)
+                  const isCurrentUserSender = f.senderId === currentUser?.id;
+                  const friendName = isCurrentUserSender ? f.receiverFullName : f.senderFullName;
+                  const friendUsername = isCurrentUserSender ? f.receiverUsername : f.senderUsername;
+                  const friendAvatar = isCurrentUserSender ? f.receiverAvatarUrl : f.senderAvatarUrl;
+                  const friendId = isCurrentUserSender ? f.receiverId : f.senderId;
                   return (
                     <div key={f.id} className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm">
                       <div className="flex items-center gap-3">
