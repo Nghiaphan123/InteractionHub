@@ -180,4 +180,16 @@ public class FriendService : IFriendService
             })
             .ToListAsync();
     }
+    public async Task<bool> CancelFriendRequestAsync(string senderId, string receiverId)
+    {
+        var friendship = await _context.Friendships.FirstOrDefaultAsync(f =>
+            f.SenderId == senderId && f.ReceiverId == receiverId &&
+            f.Status == FriendshipStatus.Pending);
+
+        if (friendship == null) return false;
+
+        _context.Friendships.Remove(friendship);
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

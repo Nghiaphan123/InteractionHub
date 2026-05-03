@@ -32,6 +32,14 @@ const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
     } catch (err) { console.error(err); }
   };
 
+  const handleCancelRequest = async () => {
+    try {
+      await axiosClient.delete(`/friends/cancel/${user.id}`);
+      setCurrentFriendStatus('none');
+      onFriendStatusChange?.('none');
+    } catch (err) { console.error(err); }
+  };
+  
   // Đóng menu khi bấm ra ngoài
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -103,7 +111,8 @@ const CoverSection = ({ user, onUpdateImage, onFriendStatusChange }: {
         break;
       case 'pending':
         PrimaryButton = (
-          <button className="bg-gray-200 px-4 py-2 rounded-md font-semibold text-slate-500 cursor-default">
+          <button  onClick={handleCancelRequest}
+          className="bg-gray-200 px-4 py-2 rounded-md font-semibold text-slate-500 cursor-default">
             ⏳ Đã gửi lời mời
           </button>
         );

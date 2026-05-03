@@ -106,4 +106,12 @@ public class FriendsController : ControllerBase
         var requests = await _friendService.GetSentRequestsAsync(GetCurrentUserId());
         return Ok(requests);
     }
+
+    [HttpDelete("cancel/{receiverId}")]
+    public async Task<IActionResult> CancelRequest(string receiverId)
+    {
+        var result = await _friendService.CancelFriendRequestAsync(GetCurrentUserId(), receiverId);
+        if (!result) return NotFound(new { message = "Không tìm thấy lời mời" });
+        return Ok(new { message = "Đã hủy lời mời" });
+    }
 }
