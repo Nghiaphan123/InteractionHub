@@ -45,6 +45,14 @@ Thumbs.db
 # Logs
 logs/
 *.log
+logs_bundle/
+*.txt
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.gz
 
 # Runtime data
 pids/
